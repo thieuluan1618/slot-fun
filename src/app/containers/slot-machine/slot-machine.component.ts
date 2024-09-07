@@ -4,6 +4,9 @@ import { NgClass } from '@angular/common';
 import { SpinButtonComponent } from '../../components/spin-button/spin-button.component';
 import { BetButtonComponent } from '../../components/bet-button/bet-button.component';
 import { ClearButtonComponent } from '../../components/clear-button/clear-button.component';
+import { FaqButtonComponent } from '../../components/faq-button/faq-button.component';
+import { MaxBetButtonComponent } from '../../components/max-bet-button/max-bet-button.component';
+import { ChipComponent } from '../../components/chip/chip.component';
 
 const POSITION_UNIT = 88;
 
@@ -16,6 +19,9 @@ const POSITION_UNIT = 88;
     SpinButtonComponent,
     BetButtonComponent,
     ClearButtonComponent,
+    FaqButtonComponent,
+    MaxBetButtonComponent,
+    ChipComponent,
   ],
   templateUrl: './slot-machine.component.html',
   styleUrl: './slot-machine.component.scss',

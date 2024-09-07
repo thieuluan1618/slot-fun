@@ -488,3 +488,47 @@
   right: calc(50% - 150px);
   width: 100px;
 }
+
+#faq-button {
+  position: absolute;
+  bottom: 40px;
+  left: 130px;
+  width: 70px;
+}
+
+#max-bet-button {
+  position: absolute;
+  bottom: 40px;
+  right: 120px;
+  width: 100px;
+}
+
+#chip-10 {
+  position: absolute;
+  bottom: 105px;
+  left: 100px;
+}
+
+#chip-20 {
+  position: absolute;
+  bottom: 105px;
+  left: 160px;
+}
+
+#chip-50 {
+  position: absolute;
+  bottom: 105px;
+  left: 220px;
+}
+
+#chip-100 {
+  position: absolute;
+  bottom: 105px;
+  right: 200px;
+}
+
+#chip-250 {
+  position: absolute;
+  bottom: 105px;
+  right: 140px;
+}

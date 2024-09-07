@@ -1,5 +1,4 @@
 <button
-  style="width: 50px"
   (click)="onclick.emit($event)"
   class="border-0 p-0 bg-transparent"
   (mousedown)="changeImage(true)"
@@ -7,5 +6,5 @@
   (touchstart)="changeImage(true)"
   (touchend)="changeImage(false)"
 >
-  <img class="w-100 h-100" [src]="buttonImage" alt="Button Image" />
+  <img class="w-100" [src]="buttonImage" alt="Button Image" />
 </button>

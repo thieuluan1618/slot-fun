@@ -24,7 +24,9 @@
             "outputPath": "dist/slot-fun",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -111,6 +113,14 @@
             "production": {
               "devServerTarget": "slot-fun:serve:production"
             }
+          }
+        },
+        "deploy": {
+          "builder": "@netlify-builder/deploy:deploy",
+          "options": {
+            "outputPath": "dist/slot-fun",
+            "netlifyToken": "nfp_PVfG1GbvJjgoVnFQ9sykVQwyCGGvkYLL55d8",
+            "siteId": "2d99b883-2346-4ae5-8f58-97cb894fb82a"
           }
         }
       }

@@ -32,12 +32,12 @@
       .wheel {
         width: 120px;
         position: relative;
-        background: gray;
+        background-image: url("/assets/backgrounds/background-wheel.png");
+        background-size: cover;
         display: flex;
         flex-direction: column;
         overflow: hidden;
         height: -webkit-fill-available;
-        box-shadow: inset 10px 12px 45px rgba(0, 0, 0, 0.5);
         img {
           width: 120px;
           height: 82px;

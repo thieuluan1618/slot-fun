@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SlotMachineComponent } from './containers/slot-machine/slot-machine.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { WalletSelectionComponent } from './components/wallet-selection/wallet-selection.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     SlotMachineComponent,
     NgbModule,
+    WalletSelectionComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

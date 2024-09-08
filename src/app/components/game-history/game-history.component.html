@@ -1,1 +1,16 @@
-<p>game-history works!</p>
+<div class="d-flex gap-1">
+  <div *ngFor="let i of history">
+    <img
+      style="width: 18px"
+      alt="win-img"
+      *ngIf="i"
+      src="/assets/images/white-circle.png"
+    />
+    <img
+      style="width: 18px"
+      alt="win-img"
+      *ngIf="!i"
+      src="/assets/images/black-circle.png"
+    />
+  </div>
+</div>

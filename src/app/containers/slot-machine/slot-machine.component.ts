@@ -7,6 +7,8 @@ import { ClearButtonComponent } from '../../components/clear-button/clear-button
 import { FaqButtonComponent } from '../../components/faq-button/faq-button.component';
 import { MaxBetButtonComponent } from '../../components/max-bet-button/max-bet-button.component';
 import { ChipComponent } from '../../components/chip/chip.component';
+import { GameHistoryComponent } from '../../components/game-history/game-history.component';
+import { MoneyDisplayComponent } from '../../components/money-display/money-display.component';
 
 const POSITION_UNIT = 88;
 
@@ -22,6 +24,8 @@ const POSITION_UNIT = 88;
     FaqButtonComponent,
     MaxBetButtonComponent,
     ChipComponent,
+    GameHistoryComponent,
+    MoneyDisplayComponent,
   ],
   templateUrl: './slot-machine.component.html',
   styleUrl: './slot-machine.component.scss',

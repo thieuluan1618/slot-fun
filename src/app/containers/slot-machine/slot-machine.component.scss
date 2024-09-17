@@ -22,15 +22,15 @@
     perspective: 1000px;
     .wheel-container {
       overflow: hidden;
-      padding: 2rem;
+      padding: 1rem;
       //padding-top: 60px;
       transition: transform 1s;
-      height: 255px;
+      height: 300px;
       transform-style: preserve-3d;
       margin-right: 0em;
 
       .wheel {
-        width: 120px;
+        width: 110px;
         position: relative;
         background-image: url("/assets/backgrounds/background-wheel.png");
         background-size: cover;
@@ -39,8 +39,8 @@
         overflow: hidden;
         height: -webkit-fill-available;
         img {
-          width: 120px;
-          height: 82px;
+          width: 100px;
+          height: 100px;
           position: absolute;
           //margin-left: 10px;
           &:nth-child(1) {

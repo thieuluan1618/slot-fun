@@ -16,6 +16,14 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
+
+  #toggle-wallet-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    margin: 10px;
+  }
 }
 
 .win-condition-container {

@@ -7,6 +7,13 @@ import { AppComponent } from './app.component';
 import { SlotMachineComponent } from './containers/slot-machine/slot-machine.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { WalletSelectionComponent } from './components/wallet-selection/wallet-selection.component';
+import { ToggleWalletComponent } from './components/toggle-wallet/toggle-wallet.component';
+import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +25,15 @@ import { WalletSelectionComponent } from './components/wallet-selection/wallet-s
     SlotMachineComponent,
     NgbModule,
     WalletSelectionComponent,
+    ToggleWalletComponent,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        allowedDomains: ['gateway.api.jackpot2024.win'],
+        // disallowedRoutes: ["http://example.com/examplebadroute/"],
+      },
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

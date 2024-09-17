@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CloseButtonComponent } from '../close-button/close-button.component';
 
 @Component({
   selector: 'app-wallet-selection',
   standalone: true,
-  imports: [],
+  imports: [CloseButtonComponent],
   templateUrl: './wallet-selection.component.html',
-  styleUrl: './wallet-selection.component.scss'
+  styleUrl: './wallet-selection.component.scss',
 })
-export class WalletSelectionComponent {
-
-}
+export class WalletSelectionComponent {}

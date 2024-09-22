@@ -9,6 +9,9 @@ import { MaxBetButtonComponent } from '../../components/max-bet-button/max-bet-b
 import { ChipComponent } from '../../components/chip/chip.component';
 import { GameHistoryComponent } from '../../components/game-history/game-history.component';
 import { MoneyDisplayComponent } from '../../components/money-display/money-display.component';
+import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
+import { UserBalance } from '../../models/game-slot.model';
 
 const POSITION_UNIT = 88;
 
@@ -46,6 +49,12 @@ export class SlotMachineComponent {
   public line2Score = 0;
   public line3Score: number = 0;
   public debugLine = 4;
+
+  selectedChipValue = 0;
+  totalBet = 0;
+  totalWin = 0;
+  userBalance: UserBalance;
+  currentWallet;
 
   private knobPullSound = '../../../assets/audio/knob-pull.mp3';
   private spinningSound = '../../../assets/audio/spinning.mp3';
@@ -95,7 +104,34 @@ export class SlotMachineComponent {
     },
   };
 
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly authService: AuthService,
+  ) {
+    this.authService.login().subscribe(() => {
+      // this.signalrService.startConnection();
+      this.apiService
+        .joinRoom('main')
+        .subscribe((r: { userBalance: number; playMode: string }) => {
+          this.currentWallet = r.playMode;
+        });
+      this.apiService.getUserBalance().subscribe((b) => {
+        this.userBalance = b;
+      });
+      this.apiService.getHistory().subscribe((h) => console.log(h));
+      this.authService.getAsset().subscribe((a) => {
+        console.log(a);
+      });
+    });
+  }
+
+  getCurrentUserBalance(): number {
+    return this.userBalance?.[this.currentWallet]?.VND;
+  }
+
   public knobPulled() {
+    this.apiService.placeOrder(50000).subscribe();
+
     if (this.playerScore > 0) {
       this.knobClicked = true;
       this.showDebitMoney = false;
@@ -148,12 +184,14 @@ export class SlotMachineComponent {
       desiredImageForReel1,
       desiredPositionForReel1,
     );
+
     this.spinWheel(
       this.wheel2,
       2500,
       desiredImageForReel2,
       desiredPositionForReel2,
     );
+
     this.spinWheel(
       this.wheel3,
       3000,
@@ -559,6 +597,17 @@ export class SlotMachineComponent {
     audio.load();
     audio.play();
   }
+
+  selectChip(value: number): void {
+    this.selectedChipValue = value;
+  }
+
+  onBet(): void {
+    this.totalBet += this.selectedChipValue;
+    this.selectedChipValue = 0;
+  }
+
+  onMaxBet(): void {}
 
   private reset() {
     this.line1Score = 0;

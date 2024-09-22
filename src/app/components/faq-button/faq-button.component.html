@@ -1,5 +1,5 @@
 <button
-  (click)="onclick.emit($event)"
+  (click)="onclick.emit(); open(content)"
   class="border-0 p-0 bg-transparent"
   (mousedown)="changeImage(true)"
   (mouseup)="changeImage(false)"
@@ -8,3 +8,36 @@
 >
   <img class="w-100" [src]="buttonImage" alt="Button Image" />
 </button>
+
+<ng-template #content let-modal>
+  <!--  <div class="modal-header">-->
+  <!--    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>-->
+  <!--    <button-->
+  <!--      type="button"-->
+  <!--      class="btn-close"-->
+  <!--      aria-label="Close"-->
+  <!--      (click)="modal.dismiss('Cross click')"-->
+  <!--    ></button>-->
+  <!--  </div>-->
+  <div class="modal-body">
+    <form>
+      <div class="mb-3"></div>
+    </form>
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="modal.close('Save click')"
+    >
+      Save
+    </button>
+  </div>
+  <!--  <div class="modal-footer">-->
+  <!--    <button-->
+  <!--      type="button"-->
+  <!--      class="btn btn-outline-secondary"-->
+  <!--      (click)="modal.close('Save click')"-->
+  <!--    >-->
+  <!--      Save-->
+  <!--    </button>-->
+  <!--  </div>-->
+</ng-template>

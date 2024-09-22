@@ -16,6 +16,8 @@ import {
 })
 export class ChipComponent implements OnChanges {
   @Input() value: number;
+  @Input() selectedValue: number;
+
   @Output() onclick = new EventEmitter<MouseEvent>();
 
   buttonImage = '';

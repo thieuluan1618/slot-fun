@@ -24,6 +24,7 @@
             "outputPath": "dist/slot-fun",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "sourceMap": true,
             "polyfills": [
               "zone.js"
             ],

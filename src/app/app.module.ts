@@ -10,6 +10,8 @@ import { WalletSelectionComponent } from './components/wallet-selection/wallet-s
 import { ToggleWalletComponent } from './components/toggle-wallet/toggle-wallet.component';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
+import { StoreModule } from '@ngrx/store';
+import { ChatContainerComponent } from './components/chat-container/chat-container.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -34,6 +36,8 @@ export function tokenGetter() {
         // disallowedRoutes: ["http://example.com/examplebadroute/"],
       },
     }),
+    StoreModule.forRoot({}, {}),
+    ChatContainerComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

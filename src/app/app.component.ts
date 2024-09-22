@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { AuthService } from './services/auth.service';
+import { log, SignalrService } from './services/signalr.service';
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +12,9 @@ import { AuthService } from './services/auth.service';
 export class AppComponent {
   title = 'slot-fun';
 
-  constructor(private readonly authService: AuthService) {
-    this.authService
-      .login()
-      .subscribe(() => this.authService.getAsset().subscribe());
-  }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly signalrService: SignalrService,
+    private readonly apiService: ApiService,
+  ) {}
 }

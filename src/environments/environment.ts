@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://gateway.api.jackpot2024.win/slot/api',
+  apiUrl: 'https://gateway.api.jackpot2024.win/api',
+  apiUrlSlot: 'https://gateway.api.jackpot2024.win/slot',
   socketUrl: 'https://socket.slot.game.jackpot2024.win/slot',
 };
 

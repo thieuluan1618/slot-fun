@@ -1,7 +1,8 @@
 <button
+  [class.selected-chip]="selectedValue === value"
   style="width: 50px"
   (click)="onclick.emit($event)"
-  class="border-0 p-0 bg-transparent"
+  class="border-0 rounded-circle p-0 bg-transparent"
   (mousedown)="changeImage(true)"
   (mouseup)="changeImage(false)"
   (touchstart)="changeImage(true)"

@@ -31,16 +31,19 @@ export class AuthService {
   ) {}
 
   login(
-    username: string = 'julesschmitt',
+    username: string = 'francisco21',
     password: string = '123456',
     ip: string = 'string',
   ): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>('https://gateway.api.jackpot2024.win/api/v1/login', {
-        username,
-        password,
-        ip,
-      })
+      .post<AuthResponse>(
+        'https://gateway.api.jackpot2024.win/api/v1/users/login',
+        {
+          username,
+          password,
+          ip,
+        },
+      )
       .pipe(
         tap((res: AuthResponse) => {
           this.setToken(res.accessToken);
@@ -54,7 +57,7 @@ export class AuthService {
 
   getAsset(): Observable<any> {
     return this.http.get<any>(
-      'https://gateway.api.jackpot2024.win/slot/api/gameworker/assets',
+      'https://gateway.api.jackpot2024.win/api/gameworker/assets',
     );
   }
 

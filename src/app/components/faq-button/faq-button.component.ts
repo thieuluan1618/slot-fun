@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Output,
+  TemplateRef,
+} from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-faq-button',
@@ -14,7 +21,29 @@ export class FaqButtonComponent {
   pressedImage = 'assets/buttons/faq-mouse-up.png';
   buttonImage = this.defaultImage;
 
+  private modalService = inject(NgbModal);
+
   changeImage(pressed: boolean) {
     this.buttonImage = pressed ? this.pressedImage : this.defaultImage;
+  }
+
+  click(content: any) {
+    this.onclick.emit();
+
+    // this.modalService.open();
+    // this.open(content)
+  }
+
+  open(content: TemplateRef<any>) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          // this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        },
+      );
   }
 }

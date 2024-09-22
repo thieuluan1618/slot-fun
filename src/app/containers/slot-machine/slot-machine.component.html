@@ -109,7 +109,7 @@
   </div>
 
   <app-faq-button id="faq-button"></app-faq-button>
-  <app-bet-button id="bet-button"></app-bet-button>
+  <app-bet-button (onclick)="onBet()" id="bet-button">bet</app-bet-button>
 
   <app-spin-button
     (onclick)="!isSpinning && knobPulled()"
@@ -119,16 +119,47 @@
   <app-clear-button id="clear-button"></app-clear-button>
   <app-max-bet-button id="max-bet-button"></app-max-bet-button>
 
-  <app-chip id="chip-10" [value]="10"></app-chip>
-  <app-chip id="chip-20" [value]="20"></app-chip>
-  <app-chip id="chip-50" [value]="50"></app-chip>
-  <app-chip id="chip-100" [value]="100"></app-chip>
-  <app-chip id="chip-250" [value]="250"></app-chip>
+  <app-chip
+    [selectedValue]="selectedChipValue"
+    (onclick)="selectChip(10)"
+    id="chip-10"
+    [value]="10"
+  ></app-chip>
+  <app-chip
+    [selectedValue]="selectedChipValue"
+    (onclick)="selectChip(20)"
+    id="chip-20"
+    [value]="20"
+  ></app-chip>
+  <app-chip
+    [selectedValue]="selectedChipValue"
+    (onclick)="selectChip(50)"
+    id="chip-50"
+    [value]="50"
+  ></app-chip>
+  <app-chip
+    [selectedValue]="selectedChipValue"
+    (onclick)="selectChip(100)"
+    id="chip-100"
+    [value]="100"
+  ></app-chip>
+  <app-chip
+    [selectedValue]="selectedChipValue"
+    (onclick)="selectChip(250)"
+    id="chip-250"
+    [value]="250"
+  ></app-chip>
 
   <app-game-history id="game-history"></app-game-history>
 
-  <app-money-display id="total-bet-number"></app-money-display>
+  <app-money-display
+    [value]="totalBet"
+    id="total-bet-number"
+  ></app-money-display>
   <app-money-display id="total-win-number"></app-money-display>
-  <app-money-display id="balance-number"></app-money-display>
+  <app-money-display
+    [value]="getCurrentUserBalance()"
+    id="balance-number"
+  ></app-money-display>
   <app-money-display id="current-win-number"></app-money-display>
 </div>

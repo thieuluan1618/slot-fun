@@ -202,7 +202,10 @@
       <!--      </div>-->
     </section>
 
-    <app-wallet-selection id="wallet-selection"></app-wallet-selection>
+    <app-wallet-selection
+      *ngIf="showWallet"
+      id="wallet-selection"
+    ></app-wallet-selection>
     <!--    <div class="debug-container">-->
     <!--      <div class="debug-wrapper">-->
     <!--        <div class="debug-mode">-->
@@ -308,7 +311,10 @@
     <!--    </div>-->
   </div>
 
-  <app-toggle-wallet id="toggle-wallet-button"></app-toggle-wallet>
+  <app-toggle-wallet
+    (onclick)="showWallet = !showWallet"
+    id="toggle-wallet-button"
+  ></app-toggle-wallet>
 
   <app-chat-container></app-chat-container>
 </section>

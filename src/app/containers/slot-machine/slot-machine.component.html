@@ -5,27 +5,27 @@
         <img
           [attr.data-position]="4"
           src="./assets/images/cherry.png"
-          alt="3 BAR image"
+          alt="cherry image"
         />
         <img
           [attr.data-position]="3"
-          src="./assets/images/strawpery.png"
-          alt="BAR image"
+          src="../../../assets/images/strawberry.png"
+          alt="strawberry immage"
         />
         <img
           [attr.data-position]="2"
-          src="./assets/images/pinable.png"
-          alt="7 image"
+          src="../../../assets/images/pineapple.png"
+          alt="pineapple image"
         />
         <img
           [attr.data-position]="1"
-          src="./assets/images/2xBAR.png"
-          alt="2 BAR image"
+          src="./assets/images/bonus.png"
+          alt="bonus image"
         />
         <img
           [attr.data-position]="5"
-          src="./assets/images/BAR.png"
-          alt="Cherry image"
+          src="./assets/images/k.png"
+          alt="K image"
         />
       </div>
     </div>
@@ -34,12 +34,12 @@
         <img
           [attr.data-position]="4"
           src="./assets/images/cherry.png"
-          alt="3 BAR image"
+          alt="cherry"
         />
         <img
           [attr.data-position]="3"
-          src="./assets/images/pinable.png"
-          alt="BAR image"
+          src="../../../assets/images/pineapple.png"
+          alt="pineapple image"
         />
         <img
           [attr.data-position]="2"
@@ -48,12 +48,12 @@
         />
         <img
           [attr.data-position]="1"
-          src="./assets/images/2xBAR.png"
-          alt="2 BAR image"
+          src="./assets/images/bell.png"
+          alt="Bell image"
         />
         <img
           [attr.data-position]="5"
-          src="./assets/images/BAR.png"
+          src="./assets/images/cherry.png"
           alt="Cherry image"
         />
       </div>
@@ -67,23 +67,23 @@
         />
         <img
           [attr.data-position]="3"
-          src="./assets/images/3xBAR.png"
-          alt="BAR image"
+          src="./assets/images/bonus.png"
+          alt="Bonus image"
         />
         <img
           [attr.data-position]="2"
-          src="./assets/images/7.png"
-          alt="7 image"
+          src="./assets/images/k.png"
+          alt="K image"
         />
         <img
           [attr.data-position]="1"
-          src="./assets/images/2xBAR.png"
-          alt="2 BAR image"
+          src="./assets/images/strawberry.png"
+          alt="Strawberry image"
         />
         <img
           [attr.data-position]="5"
-          src="./assets/images/BAR.png"
-          alt="Cherry image"
+          src="./assets/images/bell-peppers.png"
+          alt="Bell image"
         />
       </div>
     </div>
@@ -116,8 +116,11 @@
     id="spin-button"
   ></app-spin-button>
 
-  <app-clear-button id="clear-button"></app-clear-button>
-  <app-max-bet-button id="max-bet-button"></app-max-bet-button>
+  <app-clear-button (onclick)="clearBet()" id="clear-button"></app-clear-button>
+  <app-max-bet-button
+    (onclick)="maxBet()"
+    id="max-bet-button"
+  ></app-max-bet-button>
 
   <app-chip
     [selectedValue]="selectedChipValue"
@@ -150,7 +153,7 @@
     [value]="250"
   ></app-chip>
 
-  <app-game-history id="game-history"></app-game-history>
+  <app-game-history [history]="history" id="game-history"></app-game-history>
 
   <app-money-display
     [value]="totalBet"

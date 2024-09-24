@@ -1,29 +1,43 @@
 <div class="wallets">
-  <div class="wallet-container d-flex flex-column gap-3 p-3">
+  <div class="wallet-container d-flex flex-column gap-2 p-3">
     <app-close-button class="close-button"></app-close-button>
-    <div class="promotion-wallet d-flex flex-column">
-      <img
-        style="width: 100px"
-        alt="promotion-wallet"
-        src="assets/wallet/promotion-wallet.png"
-      />
-      <img
-        style="max-width: 100%; height: 20px; width: auto"
-        alt="promotion-wallet"
-        src="assets/wallet/promotion-wallet-text.png"
-      />
+    <div
+      [class.active]="selectedWallet !== 'main'"
+      (click)="selectedWallet = 'promo'"
+      class="promotion-wallet p-3"
+    >
+      <div class="w-100 h-100 d-flex flex-column align-items-center">
+        <div class="flex-grow-1" style="min-height: 0">
+          <img
+            style=""
+            alt="promotion-wallet"
+            src="assets/wallet/promotion-wallet.png"
+          />
+        </div>
+        <div class="flex-shrink-0">
+          <img
+            alt="promotion-wallet"
+            src="assets/wallet/promotion-wallet-text.png"
+          />
+        </div>
+      </div>
     </div>
-    <div class="primary-wallet d-flex flex-column">
-      <img
-        style="width: 80px"
-        alt="primary-wallet"
-        src="assets/wallet/primary-wallet.png"
-      />
-      <img
-        style="max-width: 100%; height: 20px; width: auto"
-        alt="primary-wallet"
-        src="assets/wallet/primary-wallet-text.png"
-      />
+
+    <div
+      [class.active]="selectedWallet === 'main'"
+      (click)="selectedWallet = 'main'"
+      class="primary-wallet d-flex flex-column p-3"
+    >
+      <div class="flex-grow-1" style="min-height: 0">
+        <img alt="primary-wallet" src="assets/wallet/primary-wallet.png" />
+      </div>
+      <div class="flex-shrink-0">
+        <img
+          style="max-width: 100%; height: 20px; width: auto"
+          alt="primary-wallet"
+          src="assets/wallet/primary-wallet-text.png"
+        />
+      </div>
     </div>
   </div>
 </div>

@@ -11,6 +11,7 @@ import { ApiService } from './services/api.service';
 })
 export class AppComponent {
   title = 'slot-fun';
+  showWallet = true;
 
   constructor(
     private readonly authService: AuthService,

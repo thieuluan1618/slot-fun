@@ -8,4 +8,6 @@ import { CloseButtonComponent } from '../close-button/close-button.component';
   templateUrl: './wallet-selection.component.html',
   styleUrl: './wallet-selection.component.scss',
 })
-export class WalletSelectionComponent {}
+export class WalletSelectionComponent {
+  selectedWallet = 'main';
+}

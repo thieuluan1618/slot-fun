@@ -12,6 +12,7 @@ import { MoneyDisplayComponent } from '../../components/money-display/money-disp
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { UserBalance } from '../../models/game-slot.model';
+import { SocketService } from '../../services/socket.service';
 
 const POSITION_UNIT = 88;
 
@@ -54,7 +55,8 @@ export class SlotMachineComponent {
   totalBet = 0;
   totalWin = 0;
   userBalance: UserBalance;
-  currentWallet;
+  currentWallet: string;
+  history: boolean[];
 
   private knobPullSound = '../../../assets/audio/knob-pull.mp3';
   private spinningSound = '../../../assets/audio/spinning.mp3';
@@ -107,6 +109,7 @@ export class SlotMachineComponent {
   constructor(
     private readonly apiService: ApiService,
     private readonly authService: AuthService,
+    private readonly socketService: SocketService,
   ) {
     this.authService.login().subscribe(() => {
       // this.signalrService.startConnection();
@@ -119,14 +122,25 @@ export class SlotMachineComponent {
         this.userBalance = b;
       });
       this.apiService.getHistory().subscribe((h) => console.log(h));
-      this.authService.getAsset().subscribe((a) => {
-        console.log(a);
-      });
+      // this.authService.getAsset().subscribe((a) => {
+      //   console.log(a);
+      // });
+
+      this.socketService.connect();
     });
   }
 
   getCurrentUserBalance(): number {
     return this.userBalance?.[this.currentWallet]?.VND;
+  }
+
+  clearBet(): void {
+    this.totalBet = 0;
+    this.selectedChipValue = 0;
+  }
+
+  maxBet(): void {
+    // TODO maxbet
   }
 
   public knobPulled() {

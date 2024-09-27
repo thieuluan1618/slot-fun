@@ -8,3 +8,13 @@ export interface UserBalance {
   promo: CurrencyData;
   affiliate: CurrencyData;
 }
+
+export interface BetResult {
+  betResult: string;
+  betResultType: number;
+  betReward: number;
+  userBalance: CurrencyData;
+  userId: string;
+}
+
+export type WalletType = 'promo' | 'main';

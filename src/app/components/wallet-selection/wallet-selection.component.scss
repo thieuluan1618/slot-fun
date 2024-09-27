@@ -12,7 +12,7 @@
 
     .promotion-wallet {
       height: 120px;
-      opacity: 0.75;
+      opacity: 0.7;
       background-image: url("/assets/wallet/promotion-wallet-frame.png");
       background-size: cover;
       display: flex;
@@ -32,7 +32,7 @@
 
   .primary-wallet {
     height: 120px;
-    opacity: 0.75;
+    opacity: 0.7;
     background-image: url("/assets/wallet/primary-wallet-frame.png");
     background-size: cover;
     display: flex;
@@ -45,8 +45,8 @@
     position: absolute;
     right: 0;
     top: 0;
-    width: 70px;
-    height: 70px;
-    transform: translate(20px, -20px);
+    width: 66px;
+    height: 66px;
+    transform: translate(18px, -25px);
   }
 }

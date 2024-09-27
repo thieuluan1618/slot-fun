@@ -159,10 +159,16 @@
     [value]="totalBet"
     id="total-bet-number"
   ></app-money-display>
-  <app-money-display id="total-win-number"></app-money-display>
+  <app-money-display
+    [value]="totalWin"
+    id="total-win-number"
+  ></app-money-display>
   <app-money-display
     [value]="getCurrentUserBalance()"
     id="balance-number"
   ></app-money-display>
-  <app-money-display id="current-win-number"></app-money-display>
+  <app-money-display
+    [value]="currentWin"
+    id="current-win-number"
+  ></app-money-display>
 </div>

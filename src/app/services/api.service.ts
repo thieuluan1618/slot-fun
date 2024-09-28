@@ -1,7 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { UserBalance } from '../models/game-slot.model';
+import { BetResult, UserBalance, WalletType } from '../models/game-slot.model';
+import { Observable } from 'rxjs';
+
+export type WalletInfo = {
+  playMode: string;
+  userBalance: number;
+};
+
+export interface GameHistoryParams {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  wallet: string;
+  betResult?: string;
+  fromDate?: string;
+  toDate?: string;
+  userId?: string;
+  gameKey?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +29,24 @@ export class ApiService {
 
   baseUrl = environment.apiUrl;
 
-  getHistory() {
+  getHistory(params: GameHistoryParams): Observable<any> {
+    const { wallet, userId } = params;
+    const httpParams = new HttpParams()
+      .set('page', '0')
+      .set('pageSize', '10')
+      .set('search', '')
+      .set('wallet', wallet)
+      .set('betResult', '')
+      .set('fromDate', '')
+      .set('toDate', '')
+      .set('userId', userId)
+      .set('gameKey', 'slot');
+
     return this.http.get(
-      `https://gateway.api.jackpot2024.win/slot/api/gamehistory?page=0&pageSize=5&search=&wallet=main&betResult=win&fromDate=20240824&toDate=20240828&userId= `,
+      `${environment.apiUrlSlot}/ext/gamehistory?gameKey=slot&page=0&pageSize=5&search=&wallet=main&betResult=win&fromDate=&toDate=&userId=f5074a35-8444-4131-a17a-ceeca76ea334`,
+      {
+        params: {},
+      },
     );
   }
 
@@ -29,8 +62,8 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/jackpot/getJackpotWinner`);
   }
 
-  joinRoom(walletName: string) {
-    return this.http.post(
+  joinRoom(walletName: WalletType): Observable<WalletInfo> {
+    return this.http.post<WalletInfo>(
       `https://gateway.api.jackpot2024.win/slot/api/gameworker/room`,
       {
         walletName,
@@ -39,7 +72,7 @@ export class ApiService {
   }
 
   placeOrder(betAmount: number) {
-    return this.http.post(
+    return this.http.post<BetResult>(
       `https://gateway.api.jackpot2024.win/slot/api/gameworker/order`,
       {
         betAmount,
@@ -48,10 +81,10 @@ export class ApiService {
   }
 
   outRoom() {
-    return this.http.delete(`${this.baseUrl}/gameworker/room`);
+    return this.http.delete(`${environment.apiUrlSlot}/api/gameworker/room`);
   }
 
   betRewardSender() {
-    return this.http.post(`${this.baseUrl}/bet/results`, {});
+    return this.http.post(`${environment.apiUrlSlot}/bet/results`, {});
   }
 }

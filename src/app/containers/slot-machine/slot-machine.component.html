@@ -152,6 +152,12 @@
     id="chip-250"
     [value]="250"
   ></app-chip>
+  <app-chip
+    [selectedValue]="selectedChipValue"
+    (onclick)="selectChip(500)"
+    id="chip-500"
+    [value]="500"
+  ></app-chip>
 
   <app-game-history [history]="history" id="game-history"></app-game-history>
 
@@ -159,10 +165,16 @@
     [value]="totalBet"
     id="total-bet-number"
   ></app-money-display>
-  <app-money-display id="total-win-number"></app-money-display>
+  <app-money-display
+    [value]="totalWin"
+    id="total-win-number"
+  ></app-money-display>
   <app-money-display
     [value]="getCurrentUserBalance()"
     id="balance-number"
   ></app-money-display>
-  <app-money-display id="current-win-number"></app-money-display>
+  <app-money-display
+    [value]="currentWin"
+    id="current-win-number"
+  ></app-money-display>
 </div>

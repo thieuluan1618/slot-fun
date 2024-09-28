@@ -9,9 +9,9 @@ import { MaxBetButtonComponent } from '../../components/max-bet-button/max-bet-b
 import { ChipComponent } from '../../components/chip/chip.component';
 import { GameHistoryComponent } from '../../components/game-history/game-history.component';
 import { MoneyDisplayComponent } from '../../components/money-display/money-display.component';
-import { ApiService } from '../../services/api.service';
+import { ApiService, WalletInfo } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
-import { UserBalance } from '../../models/game-slot.model';
+import { BetResult, UserBalance } from '../../models/game-slot.model';
 import { SocketService } from '../../services/socket.service';
 
 const POSITION_UNIT = 88;
@@ -54,6 +54,7 @@ export class SlotMachineComponent {
   selectedChipValue = 0;
   totalBet = 0;
   totalWin = 0;
+  currentWin = 0;
   userBalance: UserBalance;
   currentWallet: string;
   history: boolean[];
@@ -111,23 +112,31 @@ export class SlotMachineComponent {
     private readonly authService: AuthService,
     private readonly socketService: SocketService,
   ) {
-    this.authService.login().subscribe(() => {
-      // this.signalrService.startConnection();
-      this.apiService
-        .joinRoom('main')
-        .subscribe((r: { userBalance: number; playMode: string }) => {
-          this.currentWallet = r.playMode;
-        });
+    this.authService.login().subscribe((userInfo) => {
+      console.log(userInfo);
+      this.socketService.connect();
+      this.apiService.joinRoom('main').subscribe((r: WalletInfo) => {
+        this.currentWallet = r.playMode;
+        this.totalWin = r.userBalance;
+        this.fetchHistory();
+      });
       this.apiService.getUserBalance().subscribe((b) => {
         this.userBalance = b;
       });
-      this.apiService.getHistory().subscribe((h) => console.log(h));
+      // this.apiService
+      //   .getHistory({ wallet: this.currentWallet, userId: '' })
+      //   .subscribe((h) => console.log(h));
       // this.authService.getAsset().subscribe((a) => {
       //   console.log(a);
       // });
-
-      this.socketService.connect();
+      //
     });
+  }
+
+  fetchHistory(): void {
+    this.apiService
+      .getHistory({ wallet: this.currentWallet })
+      .subscribe((h) => console.log({ h }));
   }
 
   getCurrentUserBalance(): number {
@@ -140,11 +149,16 @@ export class SlotMachineComponent {
   }
 
   maxBet(): void {
-    // TODO maxbet
+    this.totalBet = this.getCurrentUserBalance();
+    this.selectedChipValue = 0;
   }
 
   public knobPulled() {
-    this.apiService.placeOrder(50000).subscribe();
+    this.apiService.placeOrder(this.totalBet).subscribe((res: BetResult) => {
+      console.log({ res });
+
+      this.fetchHistory();
+    });
 
     if (this.playerScore > 0) {
       this.knobClicked = true;
@@ -620,8 +634,6 @@ export class SlotMachineComponent {
     this.totalBet += this.selectedChipValue;
     this.selectedChipValue = 0;
   }
-
-  onMaxBet(): void {}
 
   private reset() {
     this.line1Score = 0;

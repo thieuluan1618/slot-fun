@@ -1,12 +1,19 @@
 <div class="wallets">
-  <div class="wallet-container d-flex flex-column gap-2 p-3">
-    <app-close-button class="close-button"></app-close-button>
+  <div class="wallet-container d-flex flex-column gap-2" style="padding: 12px">
+    <app-close-button
+      (onclick)="onCloseWallet()"
+      class="close-button"
+    ></app-close-button>
     <div
       [class.active]="selectedWallet !== 'main'"
-      (click)="selectedWallet = 'promo'"
+      (click)="selectWallet('promo')"
       class="promotion-wallet p-3"
+      style="margin-top: 1px"
     >
-      <div class="w-100 h-100 d-flex flex-column align-items-center">
+      <div
+        role="button"
+        class="w-100 h-100 d-flex flex-column align-items-center"
+      >
         <div class="flex-grow-1" style="min-height: 0">
           <img
             style=""
@@ -24,8 +31,9 @@
     </div>
 
     <div
+      role="button"
       [class.active]="selectedWallet === 'main'"
-      (click)="selectedWallet = 'main'"
+      (click)="selectWallet('main')"
       class="primary-wallet d-flex flex-column p-3"
     >
       <div class="flex-grow-1" style="min-height: 0">

@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './money-display.component.scss',
 })
 export class MoneyDisplayComponent {
-  @Input() value: number = 1000000;
+  @Input() value = 0;
 }

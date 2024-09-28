@@ -9,7 +9,7 @@ import { MaxBetButtonComponent } from '../../components/max-bet-button/max-bet-b
 import { ChipComponent } from '../../components/chip/chip.component';
 import { GameHistoryComponent } from '../../components/game-history/game-history.component';
 import { MoneyDisplayComponent } from '../../components/money-display/money-display.component';
-import { ApiService } from '../../services/api.service';
+import { ApiService, WalletInfo } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { BetResult, UserBalance } from '../../models/game-slot.model';
 import { SocketService } from '../../services/socket.service';
@@ -113,25 +113,23 @@ export class SlotMachineComponent {
     private readonly socketService: SocketService,
   ) {
     this.authService.login().subscribe((userInfo) => {
-      // this.signalrService.startConnection();
       console.log(userInfo);
-      this.apiService
-        .joinRoom('main')
-        .subscribe((r: { userBalance: number; playMode: string }) => {
-          this.currentWallet = r.playMode;
-          this.totalWin = r.userBalance;
-        });
+      this.socketService.connect();
+      this.apiService.joinRoom('main').subscribe((r: WalletInfo) => {
+        this.currentWallet = r.playMode;
+        this.totalWin = r.userBalance;
+        this.fetchHistory();
+      });
       this.apiService.getUserBalance().subscribe((b) => {
         this.userBalance = b;
       });
-      this.apiService
-        .getHistory({ wallet: this.currentWallet, userId: '' })
-        .subscribe((h) => console.log(h));
+      // this.apiService
+      //   .getHistory({ wallet: this.currentWallet, userId: '' })
+      //   .subscribe((h) => console.log(h));
       // this.authService.getAsset().subscribe((a) => {
       //   console.log(a);
       // });
-
-      this.socketService.connect();
+      //
     });
   }
 
@@ -151,7 +149,8 @@ export class SlotMachineComponent {
   }
 
   maxBet(): void {
-    // TODO maxbet
+    this.totalBet = this.getCurrentUserBalance();
+    this.selectedChipValue = 0;
   }
 
   public knobPulled() {
@@ -635,8 +634,6 @@ export class SlotMachineComponent {
     this.totalBet += this.selectedChipValue;
     this.selectedChipValue = 0;
   }
-
-  onMaxBet(): void {}
 
   private reset() {
     this.line1Score = 0;

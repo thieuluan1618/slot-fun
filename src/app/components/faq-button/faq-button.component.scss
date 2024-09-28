@@ -4,3 +4,11 @@
   background-size: cover;
   background-image: url("/assets/images/modal-background.png");
 }
+
+.faq-lable {
+  position: absolute;
+  left: 50%;
+  bottom: calc(50% - 6px);
+  transform: translate(-50%, -50%);
+  height: 19px;
+}

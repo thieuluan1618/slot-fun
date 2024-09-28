@@ -42,9 +42,12 @@ export class ApiService {
       .set('userId', userId)
       .set('gameKey', 'slot');
 
-    return this.http.get(`${environment.apiUrlSlot}/gamehistory`, {
-      params: httpParams,
-    });
+    return this.http.get(
+      `${environment.apiUrlSlot}/ext/gamehistory?gameKey=slot&page=0&pageSize=5&search=&wallet=main&betResult=win&fromDate=&toDate=&userId=f5074a35-8444-4131-a17a-ceeca76ea334`,
+      {
+        params: {},
+      },
+    );
   }
 
   getUserBalance() {

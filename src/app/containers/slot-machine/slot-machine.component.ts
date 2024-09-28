@@ -1,7 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { BG_COLOR } from '../../shared/color';
 import { NgClass } from '@angular/common';
-import { SpinButtonComponent } from '../../components/spin-button/spin-button.component';
+import {
+  COUNTDOWN_TIME,
+  SpinButtonComponent,
+} from '../../components/spin-button/spin-button.component';
 import { BetButtonComponent } from '../../components/bet-button/bet-button.component';
 import { ClearButtonComponent } from '../../components/clear-button/clear-button.component';
 import { FaqButtonComponent } from '../../components/faq-button/faq-button.component';
@@ -155,8 +158,6 @@ export class SlotMachineComponent {
 
   public knobPulled() {
     this.apiService.placeOrder(this.totalBet).subscribe((res: BetResult) => {
-      console.log({ res });
-
       this.fetchHistory();
     });
 
@@ -208,21 +209,21 @@ export class SlotMachineComponent {
 
     this.spinWheel(
       this.wheel1,
-      2000,
+      (COUNTDOWN_TIME - 1) * 1000,
       desiredImageForReel1,
       desiredPositionForReel1,
     );
 
     this.spinWheel(
       this.wheel2,
-      2500,
+      (COUNTDOWN_TIME - 0.5) * 1000,
       desiredImageForReel2,
       desiredPositionForReel2,
     );
 
     this.spinWheel(
       this.wheel3,
-      3000,
+      COUNTDOWN_TIME * 1000,
       desiredImageForReel3,
       desiredPositionForReel3,
     );
@@ -234,7 +235,7 @@ export class SlotMachineComponent {
       this.showDebitMoney = false;
       this.checkCombos();
       this.isSpinning = false;
-    }, 3000);
+    }, COUNTDOWN_TIME * 1000);
   }
 
   private async spinWheel(reel, time, desiredImageForReel, desiredPosition) {

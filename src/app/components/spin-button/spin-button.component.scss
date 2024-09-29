@@ -5,3 +5,11 @@ button {
     max-height: 100%;
   }
 }
+
+.count-down-number {
+  position: absolute;
+  left: 50%;
+  bottom: calc(50% - 6px);
+  transform: translate(-50%, -50%);
+  height: 19px;
+}

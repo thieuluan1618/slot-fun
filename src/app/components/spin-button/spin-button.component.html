@@ -1,10 +1,21 @@
 <button
-  (click)="onclick.emit($event)"
+  (click)="onSpin($event)"
   class="border-0 p-0 bg-transparent"
   (mousedown)="changeImage(true)"
-  (mouseup)="changeImage(false)"
+  (mouseup)="changeImage(true)"
   (touchstart)="changeImage(true)"
   (touchend)="changeImage(false)"
 >
   <img class="w-100" [src]="buttonImage" alt="Button Image" />
+  <ng-container *ngIf="startCountdown">
+    <img
+      *ngFor="let img of numberImages; index as i"
+      [class.d-none]="(countdown$ | async) !== numberImages.length - i"
+      class="count-down-number"
+      src="{{
+        '/assets/buttons/count-text/' + (numberImages.length - i) + '.png'
+      }}"
+      alt="count-down-number"
+    />
+  </ng-container>
 </button>

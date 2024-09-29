@@ -40,7 +40,7 @@
         align-items: center;
         overflow: hidden;
         height: -webkit-fill-available;
-        img {
+        img:not(.wheel-light) {
           //width: 70px;
           height: 75px;
           max-height: 75px;
@@ -189,6 +189,7 @@
   position: relative;
   width: 200px;
 }
+
 #slot-display {
   background: #1b1b1b;
   background: -moz-linear-gradient(
@@ -468,15 +469,42 @@
     animation: blinker 1s linear infinite;
   }
 }
+
 .debug-controls {
   border: 2px solid $orange;
   padding: 20px;
 }
 
+.wheel-light {
+  position: absolute;
+  width: 60%;
+  bottom: -6%;
+}
+
+.light {
+  position: absolute;
+  width: 167px;
+  top: 34px;
+}
+
+#left-light {
+  left: 84px;
+}
+
+#right-light {
+  right: 84px;
+}
+
+#your-luck-here {
+  position: absolute;
+  top: 75px;
+  width: 198px;
+}
+
 #spin-button {
   position: absolute;
   bottom: 40px;
-  width: 100px;
+  width: 115px;
 }
 
 #bet-button {
@@ -496,7 +524,7 @@
 #faq-button {
   position: absolute;
   bottom: 40px;
-  left: 130px;
+  left: 165px;
   width: 70px;
 }
 

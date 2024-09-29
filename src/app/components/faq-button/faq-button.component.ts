@@ -36,7 +36,7 @@ export class FaqButtonComponent {
 
   open(content: TemplateRef<any>) {
     this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .open(content, { ariaLabelledBy: 'modal-basic-title', centered: true })
       .result.then(
         (result) => {
           // this.closeResult = `Closed with: ${result}`;

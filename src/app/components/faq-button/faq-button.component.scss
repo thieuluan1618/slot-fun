@@ -1,8 +1,34 @@
+$modalWidth: 700px;
+$modalHeight: calc($modalWidth / 2.106);
+
+::ng-deep {
+  .modal-content {
+    width: $modalWidth;
+    height: $modalHeight;
+    border-radius: 18px;
+    background-color: transparent;
+  }
+
+  //.modal-dialog {
+  //  display: flex;
+  //  flex-direction: column;
+  //  justify-content: center;
+  //  overflow-y: auto;
+  //  min-height: calc(100vh - 60px);
+  //}
+  //
+  //@media (max-width: 767px) {
+  //  .modal-dialog {
+  //    min-height: calc(100vh - 20px);
+  //  }
+  //}
+}
+
 .modal-body {
-  width: 632px;
-  height: 300px;
+  width: $modalWidth;
+  height: $modalHeight;
   background-size: cover;
-  background-image: url("/assets/images/modal-background.png");
+  background-image: url(/assets/images/modal-background.png);
 }
 
 .faq-lable {
@@ -11,4 +37,19 @@
   bottom: calc(50% - 6px);
   transform: translate(-50%, -50%);
   height: 19px;
+}
+
+.exit-button {
+  width: 35px;
+  height: 35px;
+  background-image: url(/assets/images/exit-button-hover.png);
+  background-color: transparent;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  object-fit: contain;
+
+  &:hover {
+    background-image: url(/assets/images/exit-button.png);
+  }
 }

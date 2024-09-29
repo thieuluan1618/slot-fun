@@ -15,34 +15,17 @@
 </button>
 
 <ng-template #content let-modal>
-  <!--  <div class="modal-header">-->
-  <!--    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>-->
-  <!--    <button-->
-  <!--      type="button"-->
-  <!--      class="btn-close"-->
-  <!--      aria-label="Close"-->
-  <!--      (click)="modal.dismiss('Cross click')"-->
-  <!--    ></button>-->
-  <!--  </div>-->
   <div class="modal-body">
-    <form>
-      <div class="mb-3"></div>
-    </form>
     <button
       type="button"
-      class="btn btn-outline-secondary"
-      (click)="modal.close('Save click')"
+      class="exit-button rounded-circle p-0 border-0 float-end"
+      (click)="modal.dismiss('Cross click')"
     >
-      Save
+      <!--      <img-->
+      <!--        src="/assets/images/exit-button.png"-->
+      <!--        alt="exit img"-->
+      <!--        style="width: 30px; height: 30px"-->
+      <!--      />-->
     </button>
   </div>
-  <!--  <div class="modal-footer">-->
-  <!--    <button-->
-  <!--      type="button"-->
-  <!--      class="btn btn-outline-secondary"-->
-  <!--      (click)="modal.close('Save click')"-->
-  <!--    >-->
-  <!--      Save-->
-  <!--    </button>-->
-  <!--  </div>-->
 </ng-template>

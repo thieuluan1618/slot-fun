@@ -16,6 +16,7 @@ import { ApiService, WalletInfo } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { BetResult, UserBalance } from '../../models/game-slot.model';
 import { SocketService } from '../../services/socket.service';
+import { YourLuckHereTextComponent } from '../../components/your-luck-here-text/your-luck-here-text.component';
 
 const POSITION_UNIT = 88;
 
@@ -33,6 +34,7 @@ const POSITION_UNIT = 88;
     ChipComponent,
     GameHistoryComponent,
     MoneyDisplayComponent,
+    YourLuckHereTextComponent,
   ],
   templateUrl: './slot-machine.component.html',
   styleUrl: './slot-machine.component.scss',

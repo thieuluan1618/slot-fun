@@ -1,4 +1,19 @@
 <div class="slot-machine">
+  <img
+    class="light"
+    id="left-light"
+    src="/assets/images/left-light.png"
+    alt="left light"
+  />
+  <img
+    class="light"
+    id="right-light"
+    src="/assets/images/right-light.png"
+    alt="right light"
+  />
+
+  <app-your-luck-here-text id="your-luck-here"></app-your-luck-here-text>
+
   <div class="slot-wheel-wrapper">
     <div class="wheel-container">
       <div #wheelCell1 class="wheel">
@@ -26,6 +41,12 @@
           [attr.data-position]="5"
           src="./assets/images/k.png"
           alt="K image"
+        />
+
+        <img
+          class="wheel-light"
+          src="/assets/images/wheel-light.png"
+          alt="wheel light"
         />
       </div>
     </div>
@@ -56,6 +77,12 @@
           src="./assets/images/cherry.png"
           alt="Cherry image"
         />
+
+        <img
+          class="wheel-light"
+          src="/assets/images/wheel-light.png"
+          alt="wheel light"
+        />
       </div>
     </div>
     <div class="wheel-container">
@@ -84,6 +111,12 @@
           [attr.data-position]="5"
           src="./assets/images/bell-peppers.png"
           alt="Bell image"
+        />
+
+        <img
+          class="wheel-light"
+          src="/assets/images/wheel-light.png"
+          alt="wheel light"
         />
       </div>
     </div>

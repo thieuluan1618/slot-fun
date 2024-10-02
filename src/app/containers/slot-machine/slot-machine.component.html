@@ -195,18 +195,27 @@
   <app-game-history [history]="history" id="game-history"></app-game-history>
 
   <app-money-display
+    style="width: 190px"
+    [imgSrc]="'/assets/images/total-bet-label.png'"
     [value]="totalBet"
     id="total-bet-number"
   ></app-money-display>
+
   <app-money-display
+    style="width: 138px"
+    [imgSrc]="'/assets/images/credit-label.png'"
     [value]="totalWin"
     id="total-win-number"
   ></app-money-display>
+
   <app-money-display
     [value]="getCurrentUserBalance()"
     id="balance-number"
   ></app-money-display>
+
   <app-money-display
+    style="width: 138px"
+    [imgSrc]="'/assets/images/win-label.png'"
     [value]="currentWin"
     id="current-win-number"
   ></app-money-display>

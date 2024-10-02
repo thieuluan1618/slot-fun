@@ -1,1 +1,4 @@
-<span class="money">{{ value }}</span>
+<div class="w-100 d-flex align-items-center justify-content-between">
+  <img *ngIf="imgSrc" style="height: 22px" class="label-image" [src]="imgSrc" />
+  <span class="money">{{ value }}</span>
+</div>

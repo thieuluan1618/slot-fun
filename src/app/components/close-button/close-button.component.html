@@ -1,5 +1,5 @@
 <button
-  (click)="onclick.emit($event)"
+  (click)="onclick.emit($event); $event.stopPropagation()"
   class="border-0 p-0 rounded-circle bg-transparent"
 >
   <img class="w-100" src="/assets/images/x-icon.png" alt="Button Image" />

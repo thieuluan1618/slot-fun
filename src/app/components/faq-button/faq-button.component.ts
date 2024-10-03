@@ -6,11 +6,12 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { WinConditionsComponent } from '../win-conditions/win-conditions.component';
 
 @Component({
   selector: 'app-faq-button',
   standalone: true,
-  imports: [],
+  imports: [WinConditionsComponent],
   templateUrl: './faq-button.component.html',
   styleUrl: './faq-button.component.scss',
 })

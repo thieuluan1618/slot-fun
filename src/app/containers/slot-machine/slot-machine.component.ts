@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { BG_COLOR } from '../../shared/color';
-import { NgClass } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import {
   COUNTDOWN_TIME,
   SpinButtonComponent,
@@ -35,6 +35,7 @@ const POSITION_UNIT = 88;
     GameHistoryComponent,
     MoneyDisplayComponent,
     YourLuckHereTextComponent,
+    NgOptimizedImage,
   ],
   templateUrl: './slot-machine.component.html',
   styleUrl: './slot-machine.component.scss',
@@ -202,12 +203,24 @@ export class SlotMachineComponent {
     const desiredImageForReel3 =
       debugReel3Image || Math.floor(Math.random() * 5) + 1;
 
+    console.log({
+      desiredImageForReel1,
+      desiredImageForReel2,
+      desiredImageForReel3,
+    });
+
     const desiredPositionForReel1 =
       (this.debugMode && this.debugLine) || Math.floor(Math.random() * 5) + 1;
     const desiredPositionForReel2 =
       (this.debugMode && this.debugLine) || Math.floor(Math.random() * 5) + 1;
     const desiredPositionForReel3 =
       (this.debugMode && this.debugLine) || Math.floor(Math.random() * 5) + 1;
+
+    console.log({
+      desiredPositionForReel1,
+      desiredPositionForReel2,
+      desiredPositionForReel3,
+    });
 
     this.spinWheel(
       this.wheel1,

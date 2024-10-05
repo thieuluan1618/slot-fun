@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { BG_COLOR } from '../../shared/color';
-import { NgClass } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import {
   COUNTDOWN_TIME,
   SpinButtonComponent,
@@ -35,6 +35,7 @@ const POSITION_UNIT = 88;
     GameHistoryComponent,
     MoneyDisplayComponent,
     YourLuckHereTextComponent,
+    NgOptimizedImage,
   ],
   templateUrl: './slot-machine.component.html',
   styleUrl: './slot-machine.component.scss',
@@ -182,6 +183,11 @@ export class SlotMachineComponent {
   }
 
   private startSpinning() {
+    // Choose a random symbol for all reels
+    const desiredImage = Math.floor(Math.random() * 5) + 1;
+    // Choose a random position (line) for all reels
+    const desiredPosition = Math.floor(Math.random() * 3) + 2; // 2, 3, or 4 to ensure visibility
+
     const debugReel1Image =
       this.debugMode &&
       this.debugWheel1.nativeElement.childNodes[0] &&
@@ -202,6 +208,12 @@ export class SlotMachineComponent {
     const desiredImageForReel3 =
       debugReel3Image || Math.floor(Math.random() * 5) + 1;
 
+    console.log({
+      desiredImageForReel1,
+      desiredImageForReel2,
+      desiredImageForReel3,
+    });
+
     const desiredPositionForReel1 =
       (this.debugMode && this.debugLine) || Math.floor(Math.random() * 5) + 1;
     const desiredPositionForReel2 =
@@ -209,25 +221,31 @@ export class SlotMachineComponent {
     const desiredPositionForReel3 =
       (this.debugMode && this.debugLine) || Math.floor(Math.random() * 5) + 1;
 
+    console.log({
+      desiredPositionForReel1,
+      desiredPositionForReel2,
+      desiredPositionForReel3,
+    });
+
     this.spinWheel(
       this.wheel1,
       (COUNTDOWN_TIME - 1) * 1000,
-      desiredImageForReel1,
-      desiredPositionForReel1,
+      desiredImage,
+      desiredPosition,
     );
 
     this.spinWheel(
       this.wheel2,
       (COUNTDOWN_TIME - 0.5) * 1000,
-      desiredImageForReel2,
-      desiredPositionForReel2,
+      desiredImage,
+      desiredPosition,
     );
 
     this.spinWheel(
       this.wheel3,
       COUNTDOWN_TIME * 1000,
-      desiredImageForReel3,
-      desiredPositionForReel3,
+      desiredImage,
+      desiredPosition,
     );
 
     this.spinningPlay(this.spinningSound);

@@ -1,0 +1,30 @@
+.win-conditions {
+  background-color: transparent;
+  color: white;
+  border-radius: 10px;
+  //padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.win-conditions h3 {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.table-bordered {
+  border: 2px solid orange;
+}
+.table-bordered td {
+  //padding: 20px;
+  border: 1px solid orange;
+  vertical-align: middle;
+}
+.symbol-image {
+  max-width: 50px;
+  padding: 0;
+  //margin-bottom: 10px;
+}
+
+.table > :not(caption) > * > * {
+  background-color: transparent;
+  color: white;
+}

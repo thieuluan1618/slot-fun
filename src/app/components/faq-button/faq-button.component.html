@@ -18,8 +18,9 @@
   <div class="modal-body">
     <button
       type="button"
-      class="exit-button rounded-circle p-0 border-0 float-end"
+      class="exit-button position-absolute rounded-circle p-0 border-0 float-end"
       (click)="modal.dismiss('Cross click')"
+      style="right: 16px; top: 16px"
     >
       <!--      <img-->
       <!--        src="/assets/images/exit-button.png"-->
@@ -27,5 +28,10 @@
       <!--        style="width: 30px; height: 30px"-->
       <!--      />-->
     </button>
+
+    <div class="d-flex flex-column align-items-center text-white w-100 mt-3">
+      <h3>Win Conditions</h3>
+      <app-win-conditions></app-win-conditions>
+    </div>
   </div>
 </ng-template>

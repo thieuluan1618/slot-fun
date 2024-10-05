@@ -9,13 +9,54 @@ import { NgForOf } from '@angular/common';
   styleUrl: './win-conditions.component.scss',
 })
 export class WinConditionsComponent {
-  items = [
-    { image: 'Bell', value: 150 },
-    { image: 'Cherries', value: 100 },
-    { image: 'Grapes', value: 90 },
-    { image: 'Lemon', value: 80 },
-    { image: 'Melon', value: 70 },
-    { image: 'Orange', value: 60 },
-    { image: 'Scatter', value: 50 },
+  winConditions = [
+    {
+      symbol: '🛎️',
+      image: '/assets/symbols/Bell.png',
+      line: 'Any line',
+      ratio: '150%',
+    },
+    {
+      symbol: '🍒',
+      image: '/assets/symbols/Cherries.png',
+      line: 'Any line',
+      ratio: '100%',
+    },
+    {
+      symbol: '🍇',
+      image: '/assets/symbols/Grape.png',
+      line: 'Any line',
+      ratio: '90%',
+    },
+    {
+      symbol: '🍋',
+      image: '/assets/symbols/Lemon.png',
+      line: 'Any line',
+      ratio: '80%',
+    },
+    {
+      symbol: '🍈',
+      image: '/assets/symbols/Melon.png',
+      line: 'Any line',
+      ratio: '70%',
+    },
+    {
+      symbol: '🍊',
+      image: '/assets/symbols/Orange.png',
+      line: 'Any line',
+      ratio: '60%',
+    },
+    {
+      symbol: '⚡',
+      image: '/assets/symbols/Scatter.png',
+      line: 'Any line',
+      ratio: '50%',
+    },
+    {
+      symbol: '⚡',
+      image: '/assets/symbols/7.png',
+      line: 'Any line',
+      ratio: 'Jackpot',
+    },
   ];
 }

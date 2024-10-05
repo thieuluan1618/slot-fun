@@ -1,6 +1,20 @@
-<div class="win-condition-container">
-  <div class="row" *ngFor="let item of items">
-    <div class="col-8">{{ item.image }}</div>
-    <div class="col-4">{{ item.value }}</div>
+<div class="container">
+  <div class="win-conditions">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <tr>
+          <td *ngFor="let condition of winConditions" class="text-center">
+            <!--            <div>{{ condition.symbol }}</div>-->
+            <!--            <div>{{ condition.symbol }}</div>-->
+            <!--            <div>{{ condition.symbol }}</div>-->
+            <img [src]="condition.image" alt="symbol" class="symbol-image" />
+            <img [src]="condition.image" alt="symbol" class="symbol-image" />
+            <img [src]="condition.image" alt="symbol" class="symbol-image" />
+            <div>{{ condition.line }}</div>
+            <div>{{ condition.ratio }}</div>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>

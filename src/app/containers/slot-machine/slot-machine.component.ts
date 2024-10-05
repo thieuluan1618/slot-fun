@@ -183,6 +183,11 @@ export class SlotMachineComponent {
   }
 
   private startSpinning() {
+    // Choose a random symbol for all reels
+    const desiredImage = Math.floor(Math.random() * 5) + 1;
+    // Choose a random position (line) for all reels
+    const desiredPosition = Math.floor(Math.random() * 3) + 2; // 2, 3, or 4 to ensure visibility
+
     const debugReel1Image =
       this.debugMode &&
       this.debugWheel1.nativeElement.childNodes[0] &&
@@ -225,22 +230,22 @@ export class SlotMachineComponent {
     this.spinWheel(
       this.wheel1,
       (COUNTDOWN_TIME - 1) * 1000,
-      desiredImageForReel1,
-      desiredPositionForReel1,
+      desiredImage,
+      desiredPosition,
     );
 
     this.spinWheel(
       this.wheel2,
       (COUNTDOWN_TIME - 0.5) * 1000,
-      desiredImageForReel2,
-      desiredPositionForReel2,
+      desiredImage,
+      desiredPosition,
     );
 
     this.spinWheel(
       this.wheel3,
       COUNTDOWN_TIME * 1000,
-      desiredImageForReel3,
-      desiredPositionForReel3,
+      desiredImage,
+      desiredPosition,
     );
 
     this.spinningPlay(this.spinningSound);

@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { StoreModule } from '@ngrx/store';
 import { ChatContainerComponent } from './components/chat-container/chat-container.component';
+import {SlotMachineV2Component} from './containers/slot-machine-v2/slot-machine-v2.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -38,6 +39,7 @@ export function tokenGetter() {
     }),
     StoreModule.forRoot({}, {}),
     ChatContainerComponent,
+    SlotMachineV2Component,
   ],
   providers: [],
   bootstrap: [AppComponent],

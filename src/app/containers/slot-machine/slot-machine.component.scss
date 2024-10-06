@@ -2,6 +2,8 @@
 @import "./../../shared/scss/animations.scss";
 @import "./../../shared/scss/mixins.scss";
 
+$iconHeight: 88px;
+
 .slot-machine {
   display: flex;
   justify-content: center;
@@ -51,16 +53,25 @@
             transform: rotateY(0deg) translateY(0);
           }
           &:nth-child(2) {
-            transform: rotateY(0deg) translateY(88px);
+            transform: rotateY(0deg) translateY($iconHeight);
           }
           &:nth-child(3) {
-            transform: rotateY(0deg) translateY(172px);
+            transform: rotateY(0deg) translateY($iconHeight * 2);
           }
           &:nth-child(4) {
-            transform: rotateY(0deg) translateY(264px);
+            transform: rotateY(0deg) translateY($iconHeight * 3);
           }
           &:nth-child(5) {
-            transform: rotateY(0deg) translateY(-88px);
+            transform: rotateY(0deg) translateY($iconHeight * 4);
+          }
+          &:nth-child(6) {
+            transform: rotateY(0deg) translateY($iconHeight * 5);
+          }
+          &:nth-child(7) {
+            transform: rotateY(0deg) translateY($iconHeight * 6);
+          }
+          &:nth-child(8) {
+            transform: rotateY(0deg) translateY(-$iconHeight);
           }
         }
       }

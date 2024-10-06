@@ -17,8 +17,13 @@ import { AuthService } from '../../services/auth.service';
 import { BetResult, UserBalance } from '../../models/game-slot.model';
 import { SocketService } from '../../services/socket.service';
 import { YourLuckHereTextComponent } from '../../components/your-luck-here-text/your-luck-here-text.component';
-
-const POSITION_UNIT = 88;
+import {
+  dataPositionMap,
+  generateRotatingToDesiredMap,
+  rotatingToDesiredMap,
+  translationMap,
+  visibilityMap,
+} from '../../slot.const';
 
 @Component({
   selector: 'app-slot-machine',
@@ -102,6 +107,9 @@ export class SlotMachineComponent {
       2: false,
       3: false,
     },
+    '6,6,6': { 1: false, 2: false, 3: false },
+    '7,7,7': { 1: false, 2: false, 3: false },
+    '8,8,8': { 1: false, 2: false, 3: false },
     cherryAndSevenCombo: false,
     anyBarCombo: false,
     checkComboOfAnyBar(combination: string) {
@@ -184,9 +192,12 @@ export class SlotMachineComponent {
 
   private startSpinning() {
     // Choose a random symbol for all reels
-    const desiredImage = Math.floor(Math.random() * 5) + 1;
+    const desiredImage = 8;
     // Choose a random position (line) for all reels
-    const desiredPosition = Math.floor(Math.random() * 3) + 2; // 2, 3, or 4 to ensure visibility
+    // const desiredPosition = Math.floor(Math.random() * 3) + 2; // 2, 3, or 4 to ensure visibility
+    const desiredPosition = 2; // Center wheel
+
+    console.log({ desiredImage, desiredPosition });
 
     const debugReel1Image =
       this.debugMode &&
@@ -208,11 +219,11 @@ export class SlotMachineComponent {
     const desiredImageForReel3 =
       debugReel3Image || Math.floor(Math.random() * 5) + 1;
 
-    console.log({
-      desiredImageForReel1,
-      desiredImageForReel2,
-      desiredImageForReel3,
-    });
+    // console.log({
+    //   desiredImageForReel1,
+    //   desiredImageForReel2,
+    //   desiredImageForReel3,
+    // });
 
     const desiredPositionForReel1 =
       (this.debugMode && this.debugLine) || Math.floor(Math.random() * 5) + 1;
@@ -221,11 +232,11 @@ export class SlotMachineComponent {
     const desiredPositionForReel3 =
       (this.debugMode && this.debugLine) || Math.floor(Math.random() * 5) + 1;
 
-    console.log({
-      desiredPositionForReel1,
-      desiredPositionForReel2,
-      desiredPositionForReel3,
-    });
+    // console.log({
+    //   desiredPositionForReel1,
+    //   desiredPositionForReel2,
+    //   desiredPositionForReel3,
+    // });
 
     this.spinWheel(
       this.wheel1,
@@ -259,241 +270,54 @@ export class SlotMachineComponent {
   }
 
   private async spinWheel(reel, time, desiredImageForReel, desiredPosition) {
-    const translationMap = {
-      1: 360,
-      2: POSITION_UNIT * 2,
-      3: POSITION_UNIT,
-      4: 0,
-      5: -POSITION_UNIT,
-    };
-    const dataPositionMap = {
-      [`${POSITION_UNIT * 3}`]: 1,
-      [`${POSITION_UNIT * 2}`]: 2,
-      [POSITION_UNIT]: 3,
-      ['0']: 4,
-      [`-${POSITION_UNIT}`]: 5,
-    };
+    const rotateToPositionMap = generateRotatingToDesiredMap(8);
+    console.log('hihi ✅', {
+      rotateToPositionMap,
+      translationMap,
+      dataPositionMap,
+    });
 
-    const visibilityMap = {
-      1: 'hidden',
-      2: 'visible',
-      3: 'visible',
-      4: 'visible',
-      5: 'hidden',
-    };
-    const rotatingToDesiredMap = {
-      1: {
-        1: {
-          1: POSITION_UNIT * 3,
-          2: POSITION_UNIT * 2,
-          3: POSITION_UNIT,
-          4: 0,
-          5: -POSITION_UNIT,
-        },
-        2: {
-          1: -POSITION_UNIT,
-          2: POSITION_UNIT * 3,
-          3: POSITION_UNIT * 2,
-          4: POSITION_UNIT,
-          5: 0,
-        },
-        3: {
-          1: 0,
-          2: -POSITION_UNIT,
-          3: POSITION_UNIT * 3,
-          4: POSITION_UNIT * 2,
-          5: POSITION_UNIT,
-        },
-        4: {
-          1: POSITION_UNIT,
-          2: 0,
-          3: -POSITION_UNIT,
-          4: POSITION_UNIT * 3,
-          5: POSITION_UNIT * 2,
-        },
-        5: {
-          1: POSITION_UNIT * 2,
-          2: POSITION_UNIT,
-          3: 0,
-          4: -POSITION_UNIT,
-          5: POSITION_UNIT * 3,
-        },
-      },
-      2: {
-        1: {
-          1: POSITION_UNIT * 2,
-          2: POSITION_UNIT,
-          3: 0,
-          4: -POSITION_UNIT,
-          5: POSITION_UNIT * 3,
-        },
-        2: {
-          1: POSITION_UNIT * 3,
-          2: POSITION_UNIT * 2,
-          3: POSITION_UNIT,
-          4: 0,
-          5: -POSITION_UNIT,
-        },
-        3: {
-          1: -POSITION_UNIT,
-          2: POSITION_UNIT * 3,
-          3: POSITION_UNIT * 2,
-          4: POSITION_UNIT,
-          5: 0,
-        },
-        4: {
-          1: 0,
-          2: -POSITION_UNIT,
-          3: POSITION_UNIT * 3,
-          4: POSITION_UNIT * 2,
-          5: POSITION_UNIT,
-        },
-        5: {
-          1: POSITION_UNIT,
-          2: 0,
-          3: -POSITION_UNIT,
-          4: POSITION_UNIT * 3,
-          5: POSITION_UNIT * 2,
-        },
-      },
-      3: {
-        1: {
-          1: POSITION_UNIT,
-          2: 0,
-          3: -POSITION_UNIT,
-          4: POSITION_UNIT * 3,
-          5: POSITION_UNIT * 2,
-        },
-        2: {
-          1: POSITION_UNIT * 2,
-          2: POSITION_UNIT,
-          3: 0,
-          4: -POSITION_UNIT,
-          5: POSITION_UNIT * 3,
-        },
-        3: {
-          1: POSITION_UNIT * 3,
-          2: POSITION_UNIT * 2,
-          3: POSITION_UNIT,
-          4: 0,
-          5: -POSITION_UNIT,
-        },
-        4: {
-          1: -POSITION_UNIT,
-          2: POSITION_UNIT * 3,
-          3: POSITION_UNIT * 2,
-          4: POSITION_UNIT,
-          5: 0,
-        },
-        5: {
-          1: 0,
-          2: -POSITION_UNIT,
-          3: POSITION_UNIT * 3,
-          4: POSITION_UNIT * 2,
-          5: POSITION_UNIT,
-        },
-      },
-      4: {
-        1: {
-          1: 0,
-          2: -POSITION_UNIT,
-          3: POSITION_UNIT * 3,
-          4: POSITION_UNIT * 2,
-          5: POSITION_UNIT,
-        },
-        2: {
-          1: POSITION_UNIT,
-          2: 0,
-          3: -POSITION_UNIT,
-          4: POSITION_UNIT * 3,
-          5: POSITION_UNIT * 2,
-        },
-        3: {
-          1: POSITION_UNIT * 2,
-          2: POSITION_UNIT,
-          3: 0,
-          4: -POSITION_UNIT,
-          5: POSITION_UNIT * 3,
-        },
-        4: {
-          1: POSITION_UNIT * 3,
-          2: POSITION_UNIT * 2,
-          3: POSITION_UNIT,
-          4: 0,
-          5: -POSITION_UNIT,
-        },
-        5: {
-          1: -POSITION_UNIT,
-          2: POSITION_UNIT * 3,
-          3: POSITION_UNIT * 2,
-          4: POSITION_UNIT,
-          5: 0,
-        },
-      },
-      5: {
-        1: {
-          1: -POSITION_UNIT,
-          2: POSITION_UNIT * 3,
-          3: POSITION_UNIT * 2,
-          4: POSITION_UNIT,
-          5: 0,
-        },
-        2: {
-          1: 0,
-          2: -POSITION_UNIT,
-          3: POSITION_UNIT * 3,
-          4: POSITION_UNIT * 2,
-          5: POSITION_UNIT,
-        },
-        3: {
-          1: POSITION_UNIT,
-          2: 0,
-          3: -POSITION_UNIT,
-          4: POSITION_UNIT * 3,
-          5: POSITION_UNIT * 2,
-        },
-        4: {
-          1: POSITION_UNIT * 2,
-          2: POSITION_UNIT,
-          3: 0,
-          4: -POSITION_UNIT,
-          5: POSITION_UNIT * 3,
-        },
-        5: {
-          1: POSITION_UNIT * 3,
-          2: POSITION_UNIT * 2,
-          3: POSITION_UNIT,
-          4: 0,
-          5: -POSITION_UNIT,
-        },
-      },
-    };
     Array.from(reel.nativeElement.childNodes).map((child: HTMLElement) => {
+      // console.log({ postion: child.dataset.position });
+      const symbolPosition = child.dataset.position;
       const calculatedPosition =
-        rotatingToDesiredMap[child.dataset.position][desiredImageForReel][
+        rotateToPositionMap[symbolPosition][desiredImageForReel][
           desiredPosition
         ];
+
+      console.log({
+        child: child.dataset.position,
+        calculatedPosition,
+        desiredPosition,
+      });
       child.style.transform = `translateY(${calculatedPosition}px)`;
       child.dataset.position = dataPositionMap[calculatedPosition];
     });
 
-    const interval = setInterval(() => {
-      Array.from(reel.nativeElement.childNodes).map((child: HTMLElement) => {
-        if (child.dataset.position === '5') child.dataset.position = '1';
-        else
-          child.dataset.position = (
-            parseInt(child.dataset.position) + 1
-          ).toString();
-        child.style.transform = `translateY(${
-          translationMap[child.dataset.position]
-        }px)`;
-        child.style.visibility = visibilityMap[child.dataset.position];
-        return child;
-      });
-    }, 50);
-    setTimeout(() => {
-      clearInterval(interval);
-    }, time);
+    // const interval = setInterval(() => {
+    //   Array.from(reel.nativeElement.childNodes).map((child: HTMLElement) => {
+    //     if (child.dataset.position === '8') {
+    //       child.dataset.position = '1';
+    //     } else {
+    //       child.dataset.position = (
+    //         parseInt(child.dataset.position) + 1
+    //       ).toString();
+    //     }
+    //
+    //     child.style.transform = `translateY(${
+    //       translationMap[child.dataset.position]
+    //     }px)`;
+    //
+    //     // Hide item outside the wheel
+    //     child.style.visibility = visibilityMap[child.dataset.position];
+    //
+    //     return child;
+    //   });
+    // }, 50);
+    //
+    // setTimeout(() => {
+    //   clearInterval(interval);
+    // }, time);
   }
 
   private checkCombos() {
@@ -523,6 +347,9 @@ export class SlotMachineComponent {
         2: 10,
         3: 10,
       },
+      '6,6,6': { 1: 300, 2: 300, 3: 300 },
+      '7,7,7': { 1: 400, 2: 400, 3: 400 },
+      '8,8,8': { 1: 500, 2: 500, 3: 500 },
       checkComboOfAnyBar(combination: string) {
         return combination.includes('5') && 5;
       },
@@ -532,11 +359,14 @@ export class SlotMachineComponent {
     };
 
     const originalPositionMap = {
-      0: 4,
-      1: 3,
-      2: 2,
-      3: 1,
-      4: 5,
+      0: 7,
+      1: 6,
+      2: 5,
+      3: 4,
+      4: 3,
+      5: 2,
+      6: 1,
+      7: 8,
     };
 
     let line1: any = [];
@@ -556,6 +386,7 @@ export class SlotMachineComponent {
         return child;
       },
     );
+
     Array.from(this.wheel2.nativeElement.childNodes).map(
       (child: HTMLElement, index) => {
         if (child.dataset.position === '4')

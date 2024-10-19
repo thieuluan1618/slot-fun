@@ -13,7 +13,7 @@ import { WalletType } from './models/game-slot.model';
 })
 export class AppComponent {
   title = 'slot-fun';
-  showWallet = true;
+  showWallet = false;
 
   constructor(
     private readonly authService: AuthService,

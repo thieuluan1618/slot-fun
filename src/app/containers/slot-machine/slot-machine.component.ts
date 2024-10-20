@@ -126,8 +126,13 @@ export class SlotMachineComponent {
 
   public knobPulled() {
     this.apiService.placeOrder(this.totalBet).subscribe((res: BetResult) => {
+      console.log({ betResult: res });
+      if (res.betResult === 'win') {
+        this.reels.startPlay(res.betResultType);
+      } else {
+        this.reels.startPlay();
+      }
       this.fetchHistory();
-      this.reels.startPlay(150);
     });
 
     if (this.playerScore > 0) {

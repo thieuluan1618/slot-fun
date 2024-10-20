@@ -1,30 +1,35 @@
 import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
   AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
 import {
   Application,
   Assets,
   BlurFilter,
   Container,
-  Graphics,
   Sprite,
-  TextStyle,
   Texture,
-  Text,
 } from 'pixi.js';
 
 @Component({
   selector: 'app-reels',
   template: '<div #pixiContainer></div>',
-  styleUrls: ['./reels.scss'],
+  styleUrls: [],
   standalone: true,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Reels implements OnInit, AfterViewInit {
+  @Input() width: number;
+  @Input() height: number;
+
   @ViewChild('pixiContainer', { static: true }) pixiContainer!: ElementRef;
+
+  running = false;
 
   private readonly REEL_SYMBOLS = [
     'Bell',
@@ -40,10 +45,10 @@ export class Reels implements OnInit, AfterViewInit {
   private readonly SYMBOL_WEIGHTS = [2, 1, 0, 7, 6, 5, 4, 3];
 
   private app!: Application;
-  private readonly REEL_WIDTH = 160;
-  private readonly SYMBOL_SIZE = 150;
+  private readonly REEL_WIDTH = 110;
+  // private readonly REEL_PADDING = 30;
+  private readonly SYMBOL_SIZE = 85;
   private reels: any[] = [];
-  private running = false;
   private slotTextures: Texture[] = [];
   private tweening: any[] = [];
 
@@ -54,6 +59,8 @@ export class Reels implements OnInit, AfterViewInit {
     [1, 3, 5, 7, 0, 2, 4, 6], // Reel 2 pattern
     [2, 5, 0, 7, 4, 1, 6, 3], // Reel 3 pattern
   ];
+
+  private symbolMapRef: Record<string, Sprite[]> = {};
 
   constructor() {}
 
@@ -68,8 +75,8 @@ export class Reels implements OnInit, AfterViewInit {
     this.app = new Application();
 
     await this.app.init({
-      width: 500,
-      height: 500,
+      width: this.width,
+      height: this.height,
       // backgroundColor: 0x000000, // Set to black
       backgroundAlpha: 0, // Make it fully transparent
       antialias: true, // Enable antialiasing for smoother graphics
@@ -95,6 +102,7 @@ export class Reels implements OnInit, AfterViewInit {
       '/assets/symbols/Orange.png',
       '/assets/symbols/Scatter.png',
       '/assets/symbols/7.png',
+      '/assets/backgrounds/background-wheel.png',
     ]);
 
     this.onAssetsLoaded();
@@ -113,19 +121,33 @@ export class Reels implements OnInit, AfterViewInit {
     ];
 
     this.createReels();
-    // this.createCovers();
+    console.log(this.symbolMapRef);
   }
 
   createReels() {
     const reelContainer = new Container();
+    reelContainer.label = 'reel-container';
+    const bgTexture = Texture.from('/assets/backgrounds/background-wheel.png');
+    // Create and add the background for this reel
+    // background.height = this.app.screen.height;
 
     for (let i = 0; i < 3; i++) {
       const rc = new Container();
+      const rcBg = new Sprite(bgTexture);
+      const reelGap = (this.app.screen.width - 3 * this.REEL_WIDTH) / 2;
+      const symbolsGap = (this.app.screen.width - 3 * this.SYMBOL_SIZE) / 2;
 
-      // Positioning reel
-      rc.x = i * this.REEL_WIDTH; // Ex: 0 - 50 - 100
+      rcBg.width = (this.app.screen.width - 2 * reelGap) / 3;
+      rcBg.height = this.app.screen.height;
+
+      const rcX = i * this.REEL_WIDTH + i * reelGap;
+      rc.x = rcX; // Ex: 0 - 50 - 100
       rc.y = 0;
+      // rc.height = reelContainer.height;
+      rcBg.x = 0;
+      rcBg.y = 0;
 
+      rc.addChild(rcBg);
       reelContainer.addChild(rc);
 
       const reel = {
@@ -145,12 +167,21 @@ export class Reels implements OnInit, AfterViewInit {
           this.reelPatterns[i][j % this.reelPatterns[i].length];
         const symbol = new Sprite(this.slotTextures[textureIndex]);
 
+        if (!this.symbolMapRef[this.REEL_SYMBOLS[textureIndex]]) {
+          this.symbolMapRef[this.REEL_SYMBOLS[textureIndex]] = [];
+        }
+
+        this.symbolMapRef[this.REEL_SYMBOLS[textureIndex]].push(symbol);
+
+        symbol.label = this.REEL_SYMBOLS[textureIndex];
+
         symbol.y = j * this.SYMBOL_SIZE;
         symbol.scale.x = symbol.scale.y = Math.min(
           this.SYMBOL_SIZE / symbol.width,
           this.SYMBOL_SIZE / symbol.height,
         );
-        symbol.x = Math.round((this.SYMBOL_SIZE - symbol.width) / 2);
+
+        symbol.x = (this.REEL_WIDTH - this.SYMBOL_SIZE) / 2;
 
         reel.symbols.push(symbol);
 
@@ -158,51 +189,23 @@ export class Reels implements OnInit, AfterViewInit {
       }
       this.reels.push(reel);
     }
+
+    reelContainer.y = 0;
+    reelContainer.x = 0;
+
     this.app.stage.addChild(reelContainer);
-
-    const margin = (this.app.screen.height - this.SYMBOL_SIZE * 3) / 2;
-    reelContainer.y = margin;
-    reelContainer.x = Math.round(this.app.screen.width - this.REEL_WIDTH * 3);
-  }
-
-  createCovers() {
-    const margin = (this.app.screen.height - this.SYMBOL_SIZE * 3) / 2;
-
-    const bottom = new Container();
-    const style = new TextStyle({
-      fontFamily: 'Arial',
-      fontSize: 36,
-      fontStyle: 'italic',
-      fontWeight: 'bold',
-      stroke: '#4a1850',
-      dropShadow: true,
-      wordWrap: true,
-      wordWrapWidth: 440,
-    });
-
-    const playText = new Text('Spin the wheels!', style);
-    playText.x = Math.round((this.app.screen.width - playText.width) / 2);
-    playText.y =
-      this.SYMBOL_SIZE * 3 +
-      margin +
-      Math.round((margin - playText.height) / 2);
-    bottom.addChild(playText);
-
-    this.app.stage.addChild(bottom);
-
-    // Set the interactivity.
-    bottom.eventMode = 'static';
-    bottom.cursor = 'pointer';
-    bottom.on('pointerdown', () => this.startPlay(50));
   }
 
   startPlay(result?) {
-    if (this.running) return;
+    if (this.running) {
+      return;
+    }
     this.running = true;
 
     this.reels.forEach((r) => (r.position = 0));
 
     const targetSymbols = getSymbolsForWinRatio(result);
+    const randomRowOffset = Math.round(Math.random() * 2 - 1);
 
     for (let i = 0; i < this.reels.length; i++) {
       const r = this.reels[i];
@@ -224,7 +227,6 @@ export class Reels implements OnInit, AfterViewInit {
             ]
         );
       }
-      // console.log(r);
       const extra = Math.floor(Math.random() * 3);
 
       const fullRotations = 10; // Number of full rotations before stopping
@@ -232,7 +234,8 @@ export class Reels implements OnInit, AfterViewInit {
       const target =
         r.position +
         reelLength * fullRotations +
-        this.SYMBOL_WEIGHTS[targetIndex];
+        this.SYMBOL_WEIGHTS[targetIndex] +
+        randomRowOffset;
 
       const time = 5000 + i * 600 + extra * 600;
 

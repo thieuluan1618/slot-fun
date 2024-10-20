@@ -18,12 +18,12 @@ import {
 } from 'pixi.js';
 
 @Component({
-  selector: 'app-slot-machine-v3',
+  selector: 'app-reels',
   template: '<div #pixiContainer></div>',
-  styleUrls: ['./slot-machine-v3.component.scss'],
+  styleUrls: ['./reels.scss'],
   standalone: true,
 })
-export class SlotMachineV3Component implements OnInit, AfterViewInit {
+export class Reels implements OnInit, AfterViewInit {
   @ViewChild('pixiContainer', { static: true }) pixiContainer!: ElementRef;
 
   private readonly REEL_SYMBOLS = [
@@ -64,14 +64,14 @@ export class SlotMachineV3Component implements OnInit, AfterViewInit {
     await this.loadAssets();
   }
 
-  private async initPixiApp() {
+  async initPixiApp() {
     this.app = new Application();
 
     await this.app.init({
       width: 500,
       height: 500,
       // backgroundColor: 0x000000, // Set to black
-      // backgroundAlpha: 0, // Make it fully transparent
+      backgroundAlpha: 0, // Make it fully transparent
       antialias: true, // Enable antialiasing for smoother graphics
     });
 
@@ -85,7 +85,7 @@ export class SlotMachineV3Component implements OnInit, AfterViewInit {
     globalThis.__PIXI_APP__ = this.app;
   }
 
-  private async loadAssets() {
+  async loadAssets() {
     await Assets.load([
       '/assets/symbols/Bell.png',
       '/assets/symbols/Cherries.png',
@@ -100,7 +100,7 @@ export class SlotMachineV3Component implements OnInit, AfterViewInit {
     this.onAssetsLoaded();
   }
 
-  private onAssetsLoaded() {
+  onAssetsLoaded() {
     this.slotTextures = [
       Texture.from('/assets/symbols/Bell.png'),
       Texture.from('/assets/symbols/Cherries.png'),
@@ -113,10 +113,10 @@ export class SlotMachineV3Component implements OnInit, AfterViewInit {
     ];
 
     this.createReels();
-    this.createCovers();
+    // this.createCovers();
   }
 
-  private createReels() {
+  createReels() {
     const reelContainer = new Container();
 
     for (let i = 0; i < 3; i++) {
@@ -165,7 +165,7 @@ export class SlotMachineV3Component implements OnInit, AfterViewInit {
     reelContainer.x = Math.round(this.app.screen.width - this.REEL_WIDTH * 3);
   }
 
-  private createCovers() {
+  createCovers() {
     const margin = (this.app.screen.height - this.SYMBOL_SIZE * 3) / 2;
 
     const bottom = new Container();
@@ -196,7 +196,7 @@ export class SlotMachineV3Component implements OnInit, AfterViewInit {
     bottom.on('pointerdown', () => this.startPlay(50));
   }
 
-  private startPlay(result?) {
+  startPlay(result?) {
     if (this.running) return;
     this.running = true;
 

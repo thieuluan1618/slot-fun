@@ -2,6 +2,8 @@
 @import "./../../shared/scss/animations.scss";
 @import "./../../shared/scss/mixins.scss";
 
+$iconHeight: 88px;
+
 .slot-machine {
   display: flex;
   justify-content: center;
@@ -15,56 +17,9 @@
   //border: 2px solid $orange;
 
   .slot-wheel-wrapper {
-    display: flex;
-    margin-top: 35px;
-    justify-content: center;
-    -webkit-perspective: 1000px;
-    //padding-top: 20px;
-    perspective: 1000px;
-    .wheel-container {
-      overflow: hidden;
-      padding: 1rem;
-      //padding-top: 60px;
-      transition: transform 1s;
-      height: 300px;
-      transform-style: preserve-3d;
-      margin-right: 0em;
-
-      .wheel {
-        width: 110px;
-        position: relative;
-        background-image: url("/assets/backgrounds/background-wheel.png");
-        background-size: cover;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        overflow: hidden;
-        height: -webkit-fill-available;
-        img:not(.wheel-light) {
-          //width: 70px;
-          height: 75px;
-          max-height: 75px;
-
-          position: absolute;
-          //margin-left: 10px;
-          &:nth-child(1) {
-            transform: rotateY(0deg) translateY(0);
-          }
-          &:nth-child(2) {
-            transform: rotateY(0deg) translateY(88px);
-          }
-          &:nth-child(3) {
-            transform: rotateY(0deg) translateY(172px);
-          }
-          &:nth-child(4) {
-            transform: rotateY(0deg) translateY(264px);
-          }
-          &:nth-child(5) {
-            transform: rotateY(0deg) translateY(-88px);
-          }
-        }
-      }
-    }
+    margin-top: 60px;
+    width: 400px;
+    height: 270px;
   }
   .win-red-line {
     border-radius: 10px;
@@ -177,6 +132,10 @@
       }
     }
   }
+}
+
+.reels-comp {
+  z-index: 1;
 }
 
 #slot-machine {

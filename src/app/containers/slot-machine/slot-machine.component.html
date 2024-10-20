@@ -14,200 +14,74 @@
 
   <app-your-luck-here-text id="your-luck-here"></app-your-luck-here-text>
 
-  <div class="slot-wheel-wrapper">
-    <div class="wheel-container">
-      <div #wheelCell1 class="wheel">
-        <img
-          [attr.data-position]="4"
-          src="./assets/symbols/Bell.png"
-          alt="symbol 1"
-        />
-        <img
-          [attr.data-position]="3"
-          src="./assets/symbols/Cherries.png"
-          alt="symbol 2"
-        />
-        <img
-          [attr.data-position]="2"
-          src="./assets/symbols/Grape.png"
-          alt="symbol 3"
-        />
-        <img
-          [attr.data-position]="1"
-          src="./assets/symbols/Lemon.png"
-          alt="symbol 4"
-        />
-        <img
-          [attr.data-position]="5"
-          src="./assets/symbols/Orange.png"
-          alt="symbol 5"
-        />
+  <div #wheelWrapper class="slot-wheel-wrapper">
+    <app-reels
+      #appReels
+      [width]="wheelWrapper.clientWidth - 16"
+      [height]="wheelWrapper.clientHeight - 16"
+      class="reels-comp"
+    ></app-reels>
+    <!--    <div class="wheel-container">-->
+    <!--      <div #wheelCell1 class="wheel">-->
+    <!--        &lt;!&ndash;        <img&ndash;&gt;-->
+    <!--        &lt;!&ndash;          class="wheel-light"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          ngSrc="/assets/images/wheel-light.png"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          alt="wheel light"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          height="63"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          width="123"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        />&ndash;&gt;-->
+    <!--      </div>-->
+    <!--    </div>-->
 
-        <!--        <img-->
-        <!--          [attr.data-position]="6"-->
-        <!--          src="./assets/symbols/Scatter.png"-->
-        <!--          alt="symbol 6"-->
-        <!--        />-->
+    <!--    <div class="wheel-container">-->
+    <!--      <div #wheelCell2 class="wheel">-->
+    <!--        &lt;!&ndash;        <img&ndash;&gt;-->
+    <!--        &lt;!&ndash;          class="wheel-light"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          ngSrc="/assets/images/wheel-light.png"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          alt="wheel light"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          height="63"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          width="123"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        />&ndash;&gt;-->
+    <!--      </div>-->
+    <!--    </div>-->
 
-        <!--        <img-->
-        <!--          [attr.data-position]="7"-->
-        <!--          src="./assets/symbols/Scatter.png"-->
-        <!--          alt="symbol 7"-->
-        <!--        />-->
+    <!--    <div class="wheel-container">-->
+    <!--      <div #wheelCell3 class="wheel">-->
+    <!--        &lt;!&ndash;        <img&ndash;&gt;-->
+    <!--        &lt;!&ndash;          class="wheel-light"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          ngSrc="/assets/images/wheel-light.png"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          alt="wheel light"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          height="63"&ndash;&gt;-->
+    <!--        &lt;!&ndash;          width="123"&ndash;&gt;-->
+    <!--        &lt;!&ndash;        />&ndash;&gt;-->
+    <!--      </div>-->
+    <!--    </div>-->
 
-        <!--        <img-->
-        <!--          [attr.data-position]="7"-->
-        <!--          src="./assets/symbols/Scatter.png"-->
-        <!--          alt="symbol 8"-->
-        <!--        />-->
-
-        <!--        <img-->
-        <!--          class="wheel-light"-->
-        <!--          ngSrc="/assets/images/wheel-light.png"-->
-        <!--          alt="wheel light"-->
-        <!--          height="63"-->
-        <!--          width="123"-->
-        <!--        />-->
-      </div>
-    </div>
-
-    <div class="wheel-container">
-      <div #wheelCell2 class="wheel">
-        <img
-          [attr.data-position]="4"
-          src="./assets/symbols/Bell.png"
-          alt="symbol 1"
-        />
-        <img
-          [attr.data-position]="3"
-          src="./assets/symbols/Cherries.png"
-          alt="symbol 2"
-        />
-        <img
-          [attr.data-position]="2"
-          src="./assets/symbols/Grape.png"
-          alt="symbol 3"
-        />
-        <img
-          [attr.data-position]="1"
-          src="./assets/symbols/Lemon.png"
-          alt="symbol 4"
-        />
-        <img
-          [attr.data-position]="5"
-          src="./assets/symbols/Orange.png"
-          alt="symbol 5"
-        />
-
-        <!--        <img-->
-        <!--          [attr.data-position]="6"-->
-        <!--          src="./assets/symbols/Scatter.png"-->
-        <!--          alt="symbol 6"-->
-        <!--        />-->
-
-        <!--        <img-->
-        <!--          [attr.data-position]="7"-->
-        <!--          src="./assets/symbols/Scatter.png"-->
-        <!--          alt="symbol 7"-->
-        <!--        />-->
-
-        <!--        <img-->
-        <!--          [attr.data-position]="7"-->
-        <!--          src="./assets/symbols/Scatter.png"-->
-        <!--          alt="symbol 8"-->
-        <!--        />-->
-
-        <!--        <img-->
-        <!--          class="wheel-light"-->
-        <!--          ngSrc="/assets/images/wheel-light.png"-->
-        <!--          alt="wheel light"-->
-        <!--          height="63"-->
-        <!--          width="123"-->
-        <!--        />-->
-      </div>
-    </div>
-
-    <div class="wheel-container">
-      <div #wheelCell3 class="wheel">
-        <img
-          [attr.data-position]="4"
-          src="./assets/symbols/Bell.png"
-          alt="symbol 1"
-        />
-        <img
-          [attr.data-position]="3"
-          src="./assets/symbols/Cherries.png"
-          alt="symbol 2"
-        />
-        <img
-          [attr.data-position]="2"
-          src="./assets/symbols/Grape.png"
-          alt="symbol 3"
-        />
-        <img
-          [attr.data-position]="1"
-          src="./assets/symbols/Lemon.png"
-          alt="symbol 4"
-        />
-        <img
-          [attr.data-position]="5"
-          src="./assets/symbols/Orange.png"
-          alt="symbol 5"
-        />
-
-        <!--        <img-->
-        <!--          [attr.data-position]="6"-->
-        <!--          src="./assets/symbols/Scatter.png"-->
-        <!--          alt="symbol 6"-->
-        <!--        />-->
-
-        <!--        <img-->
-        <!--          [attr.data-position]="7"-->
-        <!--          src="./assets/symbols/Scatter.png"-->
-        <!--          alt="symbol 7"-->
-        <!--        />-->
-
-        <!--        <img-->
-        <!--          [attr.data-position]="7"-->
-        <!--          src="./assets/symbols/Scatter.png"-->
-        <!--          alt="symbol 8"-->
-        <!--        />-->
-
-        <!--        <img-->
-        <!--          class="wheel-light"-->
-        <!--          ngSrc="/assets/images/wheel-light.png"-->
-        <!--          alt="wheel light"-->
-        <!--          height="63"-->
-        <!--          width="123"-->
-        <!--        />-->
-      </div>
-    </div>
-
-    <div
-      [ngClass]="{
-        active: line1Score !== 0 && line1Score === getMaxScore(),
-      }"
-      class="wheel-line top"
-    ></div>
-    <div
-      [ngClass]="{
-        active: line2Score !== 0 && line2Score === getMaxScore(),
-      }"
-      class="wheel-line center"
-    ></div>
-    <div
-      [ngClass]="{
-        active: line3Score !== 0 && line3Score === getMaxScore(),
-      }"
-      class="wheel-line bottom"
-    ></div>
+    <!--    <div-->
+    <!--      [ngClass]="{-->
+    <!--        active: line1Score !== 0 && line1Score === getMaxScore(),-->
+    <!--      }"-->
+    <!--      class="wheel-line top"-->
+    <!--    ></div>-->
+    <!--    <div-->
+    <!--      [ngClass]="{-->
+    <!--        active: line2Score !== 0 && line2Score === getMaxScore(),-->
+    <!--      }"-->
+    <!--      class="wheel-line center"-->
+    <!--    ></div>-->
+    <!--    <div-->
+    <!--      [ngClass]="{-->
+    <!--        active: line3Score !== 0 && line3Score === getMaxScore(),-->
+    <!--      }"-->
+    <!--      class="wheel-line bottom"-->
+    <!--    ></div>-->
   </div>
 
   <app-faq-button id="faq-button"></app-faq-button>
   <app-bet-button (onclick)="onBet()" id="bet-button">bet</app-bet-button>
 
   <app-spin-button
-    (onclick)="!isSpinning && knobPulled()"
+    (onclick)="!reels.running && knobPulled()"
     id="spin-button"
   ></app-spin-button>
 

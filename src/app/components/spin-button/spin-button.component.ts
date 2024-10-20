@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { finalize, Observable, scan, share, takeWhile, timer } from 'rxjs';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
-export const COUNTDOWN_TIME = 3; // seconds
+export const COUNTDOWN_TIME = 5; // seconds
 
 @Component({
   selector: 'app-spin-button',

@@ -5,6 +5,7 @@
     </section>
 
     <app-wallet-selection
+      [@slideInOut]
       *ngIf="showWallet"
       (closeWallet)="showWallet = false"
       (walletChanged)="onWalletChange($event)"
@@ -17,5 +18,5 @@
     id="toggle-wallet-button"
   ></app-toggle-wallet>
 
-  <app-chat-container></app-chat-container>
+  <app-chat-container id="chat-box"></app-chat-container>
 </section>

@@ -54,7 +54,7 @@ export class SlotMachineComponent {
   currentWin = 0;
   userBalance: UserBalance;
   currentWallet: string;
-  history: boolean[];
+  history: boolean[] = Array.from({ length: 10 }, () => Math.random() < 0.5);
 
   private knobPullSound = '../../../assets/audio/knob-pull.mp3';
   private spinningSound = '../../../assets/audio/spinning.mp3';

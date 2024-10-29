@@ -9,5 +9,14 @@ import { NgForOf, NgIf } from '@angular/common';
   styleUrl: './game-history.component.scss',
 })
 export class GameHistoryComponent {
-  @Input() history: boolean[] = [true, false, false, true, true, false];
+  @Input() history: boolean[] = [
+    true,
+    false,
+    false,
+    true,
+    true,
+    false,
+    false,
+    true,
+  ];
 }

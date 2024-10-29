@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { AuthService } from './services/auth.service';
-import { log, SignalrService } from './services/signalr.service';
 import { ApiService } from './services/api.service';
 import { switchMap } from 'rxjs';
 import { WalletType } from './models/game-slot.model';
@@ -31,11 +30,10 @@ import {
 })
 export class AppComponent {
   title = 'slot-fun';
-  showWallet = false;
+  showWallet = true;
 
   constructor(
     private readonly authService: AuthService,
-    private readonly signalrService: SignalrService,
     private readonly apiService: ApiService,
   ) {}
 

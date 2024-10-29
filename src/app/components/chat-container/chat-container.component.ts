@@ -10,12 +10,9 @@ import { SafePipe } from '../../pipes/safe.pipe';
   styleUrl: './chat-container.component.scss',
 })
 export class ChatContainerComponent implements OnInit {
-  kiwiUrl: SafeResourceUrl;
+  kiwiUrl = 'https://kiwiirc.com/nextclient/';
 
   constructor(private sanitizer: DomSanitizer) {}
 
-  ngOnInit() {
-    const url = 'https://kiwiirc.com/nextclient/';
-    this.kiwiUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
+  ngOnInit() {}
 }

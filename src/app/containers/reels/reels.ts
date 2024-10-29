@@ -14,6 +14,7 @@ import {
   Container,
   Sprite,
   Texture,
+  Ticker,
 } from 'pixi.js';
 
 @Component({
@@ -121,7 +122,6 @@ export class Reels implements OnInit, AfterViewInit {
     ];
 
     this.createReels();
-    console.log(this.symbolMapRef);
   }
 
   createReels() {
@@ -246,17 +246,23 @@ export class Reels implements OnInit, AfterViewInit {
         time,
         this.backout(0.4),
         null,
-        i === this.reels.length - 1 ? () => this.reelsComplete() : null,
+        i === this.reels.length - 1
+          ? () => this.reelsComplete(targetIndex)
+          : null,
       );
     }
   }
 
-  private reelsComplete() {
+  private reelsComplete(symbolIndex: number) {
     this.running = false;
+
+    if (symbolIndex) {
+      console.log({ symbolIndex });
+      this.animateWinningSymbols(symbolIndex);
+    }
   }
 
   private updateSlots() {
-    // console.log('init');
     for (let i = 0; i < this.reels.length; i++) {
       const reel = this.reels[i];
       reel.blur.blurY = (reel.position - reel.previousPosition) * 8;
@@ -349,6 +355,44 @@ export class Reels implements OnInit, AfterViewInit {
         symbolsCount) %
       symbolsCount;
     return Math.floor(reel.position) + adjustedIndex;
+  }
+
+  private animateWinningSymbols(index): void {
+    const scaleFactor = 1.2; // Maximum scale factor
+    const animationSpeed = 0.005; // Reduced speed for smoother animation
+    const animationDuration = 1500; // Total duration of animation in milliseconds
+
+    let elapsedTime = 0;
+    let scaleDirection = 1;
+
+    const animate = (ticker: Ticker) => {
+      const delta = ticker.deltaTime;
+
+      elapsedTime += delta;
+
+      this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach((symbol) => {
+        symbol.scale.x += scaleDirection * animationSpeed * delta;
+        symbol.scale.y += scaleDirection * animationSpeed * delta;
+
+        // console.log({ elapsedTime });
+        if (symbol.scale.x >= scaleFactor || symbol.scale.x <= 1) {
+          scaleDirection *= -1;
+        }
+      });
+
+      if (elapsedTime >= animationDuration) {
+        // Stop the animation
+        this.app.ticker.remove(animate);
+
+        // Reset scales when animation is complete
+        this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach((symbol) => {
+          symbol.scale.set(1);
+        });
+      }
+    };
+
+    // Start the animation
+    this.app.ticker.add(animate);
   }
 }
 

@@ -1,17 +1,23 @@
 .wallets {
+  $containerRatio: 110/107;
+  $container-width: 240px;
+  $container-height: $containerRatio * $container-width;
+  $wallet-height: 23/55 * $container-height;
+  $close-button-size: 0.25 * $container-width;
+
   padding-right: 30px;
   .active {
     opacity: 1 !important;
   }
   .wallet-container {
     position: relative;
-    width: 267px;
-    height: 275px;
+    width: $container-width;
+    height: $container-height;
     background-image: url("/assets/wallet/wallet-frame.png");
     background-size: cover;
 
     .promotion-wallet {
-      height: 120px;
+      height: $wallet-height;
       opacity: 0.7;
       background-image: url("/assets/wallet/promotion-wallet-frame.png");
       background-size: cover;
@@ -31,7 +37,7 @@
   }
 
   .primary-wallet {
-    height: 120px;
+    height: $wallet-height;
     opacity: 0.7;
     background-image: url("/assets/wallet/primary-wallet-frame.png");
     background-size: cover;
@@ -45,8 +51,8 @@
     position: absolute;
     right: 0;
     top: 0;
-    width: 66px;
-    height: 66px;
-    transform: translate(18px, -25px);
+    width: $close-button-size;
+    height: $close-button-size;
+    transform: translate(18px, -21px);
   }
 }

@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { NgIf } from '@angular/common';
+import {DecimalPipe, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-money-display',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, DecimalPipe],
   templateUrl: './money-display.component.html',
   styleUrl: './money-display.component.scss',
 })

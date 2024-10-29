@@ -45,17 +45,8 @@ export class SlotMachineComponent {
   public knobClicked = false;
   public isSpinning = false;
 
-  public bgColorCombination = BG_COLOR.WHITE;
-  public backgroundOfTopLine = 'red';
-  public backgroundOfCentralLine = 'red';
-  public backgroundOfBottomLine = '#00a1ff';
   public debitedMoney: number | string = 0;
-  public debugMode: boolean = false;
   public showDebitMoney = false;
-  public line1Score = 0;
-  public line2Score = 0;
-  public line3Score: number = 0;
-  public debugLine = 4;
 
   selectedChipValue = 0;
   totalBet = 0;
@@ -63,7 +54,7 @@ export class SlotMachineComponent {
   currentWin = 0;
   userBalance: UserBalance;
   currentWallet: string;
-  history: boolean[];
+  history: boolean[] = Array.from({ length: 10 }, () => Math.random() < 0.5);
 
   private knobPullSound = '../../../assets/audio/knob-pull.mp3';
   private spinningSound = '../../../assets/audio/spinning.mp3';
@@ -179,15 +170,9 @@ export class SlotMachineComponent {
     this.selectedChipValue = 0;
   }
 
-  private reset() {
-    this.line1Score = 0;
-    this.line2Score = 0;
-    this.line3Score = 0;
-  }
+  private reset() {}
 
-  private resetBgColor() {
-    this.bgColorCombination = 'white';
-  }
+  private resetBgColor() {}
 
   onDragStart(event: DragEvent) {
     event.dataTransfer.setData('text', (event.target as HTMLElement).id);
@@ -208,9 +193,5 @@ export class SlotMachineComponent {
         .getElementById(event.dataTransfer.getData('text'))
         .cloneNode(true),
     );
-  }
-
-  public getMaxScore() {
-    return Math.max(this.line1Score, this.line2Score, this.line3Score);
   }
 }

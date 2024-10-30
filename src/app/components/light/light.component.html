@@ -1,30 +1,37 @@
-<p>light works!</p>
-<div>
-  <img
-    class="light"
-    id="left-light"
-    src="/assets/images/left-light.png"
-    alt="left light"
-  />
-  <img
-    class="light"
-    id="right-light"
-    src="/assets/images/right-light.png"
-    alt="right light"
-  />
+<div class="left-light light" *ngIf="type === 'left'">
+  <!--  <img-->
+  <!--    class="light"-->
+  <!--    id="left-light"-->
+  <!--    src="/assets/images/left-light.png"-->
+  <!--    alt="left light"-->
+  <!--  />-->
+  <div class="blink-light">
+    <img
+      *ngFor="let light of [1, 2, 3, 4, 5, 6]"
+      style="height: 30px"
+      alt="small light"
+      src="/assets/images/dot-light.png"
+    />
+  </div>
+  <!--  <img-->
+  <!--    class="light"-->
+  <!--    id="right-light"-->
+  <!--    src="/assets/images/right-light.png"-->
+  <!--    alt="right light"-->
+  <!--  />-->
 </div>
 
-<div>
+<div class="right-light light" *ngIf="type === 'right'">
   <img
     class="light"
     id="left-light"
     src="/assets/images/left-light.png"
     alt="left light"
   />
-  <img
-    class="light"
-    id="right-light"
-    src="/assets/images/right-light.png"
-    alt="right light"
-  />
+  <!--  <img-->
+  <!--    class="light"-->
+  <!--    id="right-light"-->
+  <!--    src="/assets/images/right-light.png"-->
+  <!--    alt="right light"-->
+  <!--  />-->
 </div>

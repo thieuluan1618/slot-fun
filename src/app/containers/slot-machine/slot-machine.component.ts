@@ -18,6 +18,7 @@ import { BetResult, UserBalance } from '../../models/game-slot.model';
 import { SocketService } from '../../services/socket.service';
 import { YourLuckHereTextComponent } from '../../components/your-luck-here-text/your-luck-here-text.component';
 import { Reels } from '../reels/reels';
+import { LightComponent } from '../../components/light/light.component';
 
 @Component({
   selector: 'app-slot-machine',
@@ -36,6 +37,7 @@ import { Reels } from '../reels/reels';
     YourLuckHereTextComponent,
     NgOptimizedImage,
     Reels,
+    LightComponent,
   ],
   templateUrl: './slot-machine.component.html',
   styleUrl: './slot-machine.component.scss',

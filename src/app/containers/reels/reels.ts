@@ -10,12 +10,33 @@ import {
 import {
   Application,
   Assets,
-  BlurFilter,
-  Container,
+  BlurFilter, ColorMatrixFilter,
+  Container, Graphics,
   Sprite,
   Texture,
   Ticker,
 } from 'pixi.js';
+
+interface Particle extends Graphics {
+  velX: number;
+  velY: number;
+  life: number;
+  maxLife: number;
+}
+
+interface BuzzConfig {
+  duration: number;
+  initialAmplitude: number;
+  buzzFrequency: number;
+  scaleMin: number;
+  scaleMax: number;
+  scalePulseSpeed: number;
+  rotationMax: number;
+  pattern: 'circular' | 'random' | 'directional' | 'wave';
+  direction?: number;
+  glowIntensity?: number;
+  shakeIntensity?: number;
+}
 
 @Component({
   selector: 'app-reels',
@@ -258,7 +279,8 @@ export class Reels implements OnInit, AfterViewInit {
 
     if (symbolIndex) {
       console.log({ symbolIndex });
-      this.animateWinningSymbols(symbolIndex);
+      // this.animateWinningSymbols(symbolIndex);
+      this.addBuzzEffect(symbolIndex)
     }
   }
 
@@ -394,6 +416,339 @@ export class Reels implements OnInit, AfterViewInit {
     // Start the animation
     this.app.ticker.add(animate);
   }
+
+  private addGlowEffect(index: number): void {
+    const glowFilter = new BlurFilter();
+    const colorMatrix = new ColorMatrixFilter();
+    const duration = 1500;
+    let elapsed = 0;
+
+    // Set initial glow values
+    glowFilter.blur = 0;
+    colorMatrix.brightness(1, false);
+
+    const animate = (ticker: Ticker) => {
+      elapsed += ticker.deltaTime;
+      // Sine wave for smooth pulsing
+      const wave = Math.sin(elapsed * 0.1);
+
+      this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach(symbol => {
+        symbol.filters = [glowFilter, colorMatrix];
+        glowFilter.blur = 5 + wave * 3;
+        colorMatrix.brightness(1 + wave * 0.3, false);
+      });
+
+      if (elapsed >= duration) {
+        this.app.ticker.remove(animate);
+        this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach(symbol => {
+          symbol.filters = null;
+        });
+      }
+    };
+
+    this.app.ticker.add(animate);
+  }
+
+  private addSpinningStars(index: number): void {
+    const numStars = 6;
+    const radius = 50;
+    const stars: Graphics[] = [];
+    const duration = 2000;
+    let elapsed = 0;
+
+    // Create stars
+    for (let i = 0; i < numStars; i++) {
+      const star = new Graphics()
+        .fill({ color: 0xFFFF00 }) // Updated to use fill
+        .star(0, 0, 5, 10, 5); // Using the built-in drawStar method
+
+      star.alpha = 0.8;
+      stars.push(star);
+      this.app.stage.addChild(star);
+    }
+
+    const animate = (ticker: Ticker) => {
+      elapsed += ticker.deltaTime;
+
+      this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach(symbol => {
+        const symbolBounds = symbol.getBounds();
+        const centerX = symbolBounds.x + symbolBounds.width / 2;
+        const centerY = symbolBounds.y + symbolBounds.height / 2;
+
+        stars.forEach((star, i) => {
+          const angle = (elapsed * 0.1) + (i * (Math.PI * 2) / numStars);
+          star.position.x = centerX + Math.cos(angle) * radius;
+          star.position.y = centerY + Math.sin(angle) * radius;
+          star.rotation += 0.1;
+
+          // Add pulsing effect
+          star.scale.set(1 + Math.sin(elapsed * 0.1) * 0.2);
+          // Add fade in/out effect
+          star.alpha = 0.8 + Math.sin(elapsed * 0.15) * 0.2;
+        });
+      });
+
+      if (elapsed >= duration) {
+        this.app.ticker.remove(animate);
+        stars.forEach(star => {
+          star.destroy(true);
+        });
+      }
+    };
+
+    this.app.ticker.add(animate);
+  }
+
+  /**
+   * worked
+   * */
+  private addRainbowEffect(index: number): void {
+    const duration = 2000;
+    let elapsed = 0;
+    const colorMatrix = new ColorMatrixFilter();
+
+    const animate = (ticker: Ticker) => {
+      elapsed += ticker.deltaTime;
+
+      this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach(symbol => {
+        // Cycle through hue values
+        const hue = (elapsed * 2) % 360;
+        colorMatrix.hue(hue, false);
+        symbol.filters = [colorMatrix];
+      });
+
+      if (elapsed >= duration) {
+        this.app.ticker.remove(animate);
+        this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach(symbol => {
+          symbol.filters = null;
+        });
+      }
+    };
+
+    this.app.ticker.add(animate);
+  }
+
+  private addSparkleEffect(index: number): void {
+    const particles: Particle[] = [];
+    const numParticles = 20;
+    const duration = 1500;
+    let elapsed = 0;
+
+    this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach(symbol => {
+      const bounds = symbol.getBounds();
+      const centerX = bounds.x + bounds.width / 2;
+      const centerY = bounds.y + bounds.height / 2;
+
+      // Create particles
+      for (let i = 0; i < numParticles; i++) {
+        const angle = (Math.PI * 2 * i) / numParticles;
+        const speed = 2 + Math.random() * 3;
+
+        const particle = new Graphics() as Particle;
+        particle
+          .fill({ color: 0xFFFFFF })
+          .star(0, 0, 4, 4, 2);
+
+        particle.position.x = centerX;
+        particle.position.y = centerY;
+        particle.velX = Math.cos(angle) * speed;
+        particle.velY = Math.sin(angle) * speed;
+        particle.life = 1;
+        particle.maxLife = 1;
+        particle.alpha = 1;
+
+        particles.push(particle);
+        this.app.stage.addChild(particle);
+      }
+    });
+
+    const animate = (ticker: Ticker) => {
+      elapsed += ticker.deltaTime;
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const particle = particles[i];
+
+        // Update position
+        particle.position.x += particle.velX;
+        particle.position.y += particle.velY;
+
+        // Update life and scale
+        particle.life -= 0.02;
+        particle.alpha = particle.life;
+        particle.scale.set(particle.life * 0.5);
+
+        // Rotate particle
+        particle.rotation += 0.1;
+
+        // Remove dead particles
+        if (particle.life <= 0) {
+          particle.destroy();
+          particles.splice(i, 1);
+        }
+      }
+
+      if (elapsed >= duration || particles.length === 0) {
+        this.app.ticker.remove(animate);
+        particles.forEach(particle => particle.destroy());
+        particles.length = 0;
+      }
+    };
+
+    this.app.ticker.add(animate);
+  }
+
+  private addBuzzEffect(index: number, customConfig?: Partial<BuzzConfig>): void {
+    // Default configuration
+    const defaultConfig: BuzzConfig = {
+      duration: 1500,
+      initialAmplitude: 8,
+      buzzFrequency: 0.8,
+      scaleMin: 0.9,
+      scaleMax: 1.15,
+      scalePulseSpeed: 0.15,
+      rotationMax: 0.1,
+      pattern: 'random',
+      glowIntensity: 0.5,
+      shakeIntensity: 1
+    };
+
+    const config = { ...defaultConfig, ...customConfig };
+    let elapsed = 0;
+
+    const originalStates = new WeakMap<Sprite, {
+      x: number;
+      y: number;
+      scale: number;
+      rotation: number;
+      alpha: number;
+    }>();
+
+    this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach(symbol => {
+      originalStates.set(symbol, {
+        x: symbol.position.x,
+        y: symbol.position.y,
+        scale: symbol.scale.x,
+        rotation: symbol.rotation,
+        alpha: symbol.alpha
+      });
+
+      // Add initial glow filter if enabled
+      if (config.glowIntensity) {
+        const blurFilter = new BlurFilter();
+        const colorMatrix = new ColorMatrixFilter();
+        colorMatrix.brightness(1.2, false);
+        symbol.filters = [blurFilter, colorMatrix];
+      }
+    });
+
+    // Easing functions
+    const easings = {
+      elastic: (t: number): number => {
+        const p = 0.3;
+        return Math.pow(2, -10 * t) * Math.sin((t - p / 4) * (2 * Math.PI) / p) + 1;
+      },
+      bounce: (t: number): number => {
+        if (t < 1 / 2.75) return 7.5625 * t * t;
+        if (t < 2 / 2.75) return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75;
+        if (t < 2.5 / 2.75) return 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375;
+        return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
+      },
+      back: (t: number): number => {
+        const c1 = 1.70158;
+        const c3 = c1 + 1;
+        return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+      }
+    };
+
+    // Pattern generators
+    const patterns = {
+      circular: (time: number, intensity: number) => ({
+        x: Math.cos(time * config.buzzFrequency) * intensity,
+        y: Math.sin(time * config.buzzFrequency) * intensity
+      }),
+      random: (time: number, intensity: number) => ({
+        x: (Math.random() - 0.5) * intensity * 2,
+        y: (Math.random() - 0.5) * intensity * 2
+      }),
+      directional: (time: number, intensity: number) => {
+        const angle = config.direction || 0;
+        return {
+          x: Math.cos(angle) * Math.sin(time * config.buzzFrequency) * intensity,
+          y: Math.sin(angle) * Math.sin(time * config.buzzFrequency) * intensity
+        };
+      },
+      wave: (time: number, intensity: number) => ({
+        x: Math.sin(time * config.buzzFrequency) * intensity,
+        y: Math.cos(time * config.buzzFrequency * 2) * intensity * 0.5
+      })
+    };
+
+    const animate = (ticker: Ticker) => {
+      elapsed += ticker.deltaTime;
+      const progress = Math.min(elapsed / config.duration, 1);
+      const inverseProgress = 1 - progress;
+
+      this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach(symbol => {
+        const originalState = originalStates.get(symbol)!;
+
+        // Calculate buzz intensity with elastic easing
+        const buzzIntensity = config.initialAmplitude * config.shakeIntensity * (1 - easings.elastic(progress));
+
+        // Get offset based on selected pattern
+        const offset = patterns[config.pattern](elapsed, buzzIntensity);
+
+        // Position with pattern offset
+        symbol.position.x = originalState.x + offset.x;
+        symbol.position.y = originalState.y + offset.y;
+
+        // Complex scale animation
+        const scaleRange = config.scaleMax - config.scaleMin;
+        const baseScale = config.scaleMin + scaleRange * (1 - easings.back(progress));
+        const scalePulse = Math.sin(elapsed * config.scalePulseSpeed) * 0.1 * inverseProgress;
+        const scaleWobble = Math.sin(elapsed * 0.3) * 0.05 * inverseProgress;
+        const currentScale = baseScale + scalePulse + scaleWobble;
+
+        symbol.scale.set(currentScale);
+
+        // Rotation animation
+        const rotationShake = (Math.random() - 0.5) * config.rotationMax * inverseProgress;
+        const rotationWave = Math.sin(elapsed * 0.2) * config.rotationMax * 0.5 * inverseProgress;
+        symbol.rotation = rotationShake + rotationWave;
+
+        // Alpha pulse
+        const alphaPulse = 0.9 + Math.sin(elapsed * 0.2) * 0.1;
+        symbol.alpha = alphaPulse;
+
+        // Update glow effect
+        // @ts-ignore
+        if (config.glowIntensity && symbol.filters?.length) {
+          const blurFilter = symbol.filters[0] as BlurFilter;
+          const glowAmount = Math.sin(elapsed * 0.1) * 2 * config.glowIntensity * inverseProgress;
+          blurFilter.blur = glowAmount;
+
+          const colorMatrix = symbol.filters[1] as ColorMatrixFilter;
+          const brightnessValue = 1 + Math.sin(elapsed * 0.15) * 0.2 * config.glowIntensity * inverseProgress;
+          colorMatrix.brightness(brightnessValue, false);
+        }
+      });
+
+      if (elapsed >= config.duration) {
+        this.app.ticker.remove(animate);
+        // Smooth reset to original state
+        this.symbolMapRef[this.REEL_SYMBOLS[index]].forEach(symbol => {
+          const originalState = originalStates.get(symbol)!;
+          symbol.position.x = originalState.x;
+          symbol.position.y = originalState.y;
+          symbol.scale.set(originalState.scale);
+          symbol.rotation = originalState.rotation;
+          symbol.alpha = originalState.alpha;
+          symbol.filters = null;
+        });
+      }
+    };
+
+    this.app.ticker.add(animate);
+  }
 }
 
 function getSymbolsForWinRatio(winRatio: number): string[] {
@@ -417,4 +772,5 @@ function getSymbolsForWinRatio(winRatio: number): string[] {
     default:
       return []; // No win
   }
+
 }

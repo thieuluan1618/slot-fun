@@ -1,0 +1,19 @@
+.light {
+  width: 167px;
+  height: 61px;
+}
+
+.left-light {
+  background: url("/assets/images/left-light.png") no-repeat left center;
+  background-size: contain;
+}
+
+/* In case you need the right light later */
+.right-light {
+  background: url("/assets/images/right-light.png") no-repeat right center;
+  background-size: contain;
+}
+
+.blink-light {
+  display: flex;
+}

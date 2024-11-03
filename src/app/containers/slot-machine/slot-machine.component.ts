@@ -18,6 +18,7 @@ import { BetResult, UserBalance } from '../../models/game-slot.model';
 import { SocketService } from '../../services/socket.service';
 import { YourLuckHereTextComponent } from '../../components/your-luck-here-text/your-luck-here-text.component';
 import { Reels } from '../reels/reels';
+import { LightComponent } from '../../components/light/light.component';
 
 @Component({
   selector: 'app-slot-machine',
@@ -36,6 +37,7 @@ import { Reels } from '../reels/reels';
     YourLuckHereTextComponent,
     NgOptimizedImage,
     Reels,
+    LightComponent,
   ],
   templateUrl: './slot-machine.component.html',
   styleUrl: './slot-machine.component.scss',
@@ -116,15 +118,17 @@ export class SlotMachineComponent {
   }
 
   public knobPulled() {
-    this.apiService.placeOrder(this.totalBet).subscribe((res: BetResult) => {
-      console.log({ betResult: res });
-      if (res.betResult === 'win') {
-        this.reels.startPlay(res.betResultType);
-      } else {
-        this.reels.startPlay();
-      }
-      this.fetchHistory();
-    });
+    this.reels.startPlay(150);
+    //
+    // this.apiService.placeOrder(this.totalBet).subscribe((res: BetResult) => {
+    //   console.log({ betResult: res });
+    //   if (res.betResult === 'win') {
+    //     this.reels.startPlay(res.betResultType);
+    //   } else {
+    //     this.reels.startPlay();
+    //   }
+    //   this.fetchHistory();
+    // });
 
     if (this.playerScore > 0) {
       this.knobClicked = true;

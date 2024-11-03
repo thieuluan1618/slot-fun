@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { SafePipe } from '../../pipes/safe.pipe';
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: 'app-chat-container',
@@ -9,10 +10,15 @@ import { SafePipe } from '../../pipes/safe.pipe';
   templateUrl: './chat-container.component.html',
   styleUrl: './chat-container.component.scss',
 })
-export class ChatContainerComponent implements OnInit {
-  kiwiUrl = 'https://kiwiirc.com/nextclient/';
+export class ChatContainerComponent {
+  kiwiUrl = environment.kiwiIrcEmbeddingUrl;
+
+  width = environment.kiwiChatBoxWidth;
+  height = environment.kiwiChatBoxHeight;
 
   constructor(private sanitizer: DomSanitizer) {}
 
-  ngOnInit() {}
+  safeSrc() {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.kiwiUrl)
+  }
 }

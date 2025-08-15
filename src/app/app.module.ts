@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { StoreModule } from '@ngrx/store';
 import { ChatContainerComponent } from './components/chat-container/chat-container.component';
+import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 import { Reels } from './containers/reels/reels';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -41,6 +42,7 @@ export function tokenGetter() {
     }),
     StoreModule.forRoot({}, {}),
     ChatContainerComponent,
+    LoadingOverlayComponent,
     Reels,
   ],
   providers: [],

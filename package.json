@@ -4,7 +4,7 @@
   "homepage": "https://github.com/thieuluan1618/slot-fun",
   "scripts": {
     "ng": "ng",
-    "start": "SET NODE_OPTIONS=--max-old-space-size=4096 && ng serve",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

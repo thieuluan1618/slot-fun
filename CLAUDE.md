@@ -5,32 +5,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev        # Dev server at http://localhost:4200 (Vite)
-npm run build      # TypeScript check + Vite production build (output: dist/)
-npm run preview    # Preview production build locally
-npm run lint       # ESLint on src-react/
+pnpm dev           # Dev server at http://localhost:4200 (Vite)
+pnpm build         # TypeScript check + Vite production build (output: dist/)
+pnpm preview       # Preview production build locally
 ```
 
 ## Architecture
 
 React 18 + Vite slot machine game using PIXI.js 8 for reel rendering. Single-page app — everything renders through `App` → `SlotMachine`.
 
-Source lives in `src-react/`. Legacy Angular code remains in `src/` for reference.
+Source lives in `src/`.
 
 ### Key layers
 
-- **Components** (`src-react/components/`):
-  - `SlotMachine` — main container. Orchestrates betting, spinning, wallet, history state. Coordinates between API results and the Reels renderer.
-  - `Reels` — PIXI.js Application wrapped in `forwardRef`. Exposes `startPlay(winRatio?)` via `useImperativeHandle`. Owns the entire reel animation lifecycle: asset loading, tween-based spinning, win effects (buzz). This is the rendering core.
-  - `ImageButton` — reusable press-state image button (used by bet, clear, max-bet buttons)
-  - `SpinButton` — spin button with countdown timer
-  - `Chip`, `MoneyDisplay`, `GameHistory`, `WalletSelection`, `LoadingOverlay`, `FaqModal`, `WinConditions` — presentational components with SCSS modules
-- **Services** (`src-react/services/`): Singleton class instances (not React context)
+- **Components** (`src/components/`):
+  - `game/SlotMachine` — main container. Orchestrates betting, spinning, wallet, history state. Coordinates between API results and the Reels renderer.
+  - `game/Reels` — PIXI.js Application wrapped in `forwardRef`. Exposes `startPlay(winRatio?)` via `useImperativeHandle`. Owns the entire reel animation lifecycle: asset loading, tween-based spinning, win effects (buzz). This is the rendering core.
+  - `game/MoneyDisplay`, `game/GameHistory`, `game/WinConditions` — game state display components
+  - `controls/ImageButton` — reusable press-state image button (used by bet, clear, max-bet buttons)
+  - `controls/SpinButton` — spin button with countdown timer
+  - `controls/Chip` — bet chip selector
+  - `overlays/FaqModal`, `overlays/LoadingOverlay`, `overlays/WalletSelection` — overlay UI
+- **Models** (`src/models/game-slot.model.ts`): All shared types — `UserBalance`, `WalletType`, `WalletInfo`, `AuthResponse`, `BetResult`, `CurrencyData`
+- **Services** (`src/services/`): Singleton class instances (not React context)
   - `authService` — JWT login, stores token in localStorage
   - `apiService` — fetch-based HTTP calls to `gateway.api.jackpot2024.win`
   - `socketService` — Socket.io connection to real-time game server
-- **Config** (`src-react/config/environment.ts`): API URLs, socket URL. Uses `import.meta.env.PROD` for production detection.
-- **Styles** (`src-react/styles/`): SCSS variables auto-injected via Vite config. Bootstrap imported globally.
+- **Config** (`src/config/environment.ts`): API URLs, socket URL. Uses `import.meta.env.PROD` for production detection.
+- **Styles**: Tailwind CSS 4 (`src/styles/tailwind.css`) + Bootstrap 5 via SCSS (`src/styles/global.scss`). Some components retain co-located SCSS files for complex layout/animations.
 
 ### Reel mechanics
 
@@ -44,10 +46,10 @@ React `useState` hooks in `SlotMachine` and `App`. Wallet switching triggers `ou
 
 ## Static assets
 
-`public/assets/` — copied from original `src/assets/`. Vite serves these at `/assets/...`.
+`public/assets/` — Vite serves these at `/assets/...`.
 
 ## Deployment
 
 Production URL: https://slot-fun-game.netlify.app/
 
-Build output goes to `dist/`. For Netlify, set build command to `npm run build` and publish directory to `dist`.
+Build output goes to `dist/`. For Netlify, set build command to `pnpm build` and publish directory to `dist`.

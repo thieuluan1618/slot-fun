@@ -1,5 +1,0 @@
-@mixin transform-origin($styles...) {
-  -webkit-transform-origin: $styles;
-  -moz-transform-origin: $styles;
-  transform-origin: $styles;
-}

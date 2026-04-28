@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Reels from './Reels';
 import SpinButton from '../controls/SpinButton';
 import ImageButton from '../controls/ImageButton';
@@ -29,11 +29,10 @@ export default function SlotMachine({
 
   const [selectedChipValue, setSelectedChipValue] = useState(0);
   const [totalBet, setTotalBet] = useState(0);
-  const [currentWin] = useState(0);
-  const [playerScore, setPlayerScore] = useState(10);
-  const [history] = useState<boolean[]>(() =>
-    Array.from({ length: 10 }, () => Math.random() < 0.5),
-  );
+  const [currentWin, setCurrentWin] = useState(0);
+  const [credit, setCredit] = useState(0);
+  const [history, setHistory] = useState<boolean[]>([]);
+  const pendingResultRef = useRef<{ winRatio: number; reward: number }>({ winRatio: 0, reward: 0 });
 
   const [reelDimensions, setReelDimensions] = useState({ width: 484, height: 254 });
 
@@ -46,10 +45,11 @@ export default function SlotMachine({
     }
   }, []);
 
-  function getCurrentUserBalance(): number {
-    if (!userBalance || !currentWallet) return 0;
-    return userBalance[currentWallet]?.VND ?? 0;
-  }
+  useEffect(() => {
+    setCredit(totalWin);
+  }, [totalWin]);
+
+  const WIN_RATIOS = [150, 100, 90, 80, 70, 60, 50, 0];
 
   function clearBet() {
     setTotalBet(0);
@@ -57,7 +57,7 @@ export default function SlotMachine({
   }
 
   function maxBet() {
-    setTotalBet(getCurrentUserBalance());
+    setTotalBet(credit);
     setSelectedChipValue(0);
   }
 
@@ -66,12 +66,30 @@ export default function SlotMachine({
     setSelectedChipValue(0);
   }
 
-  function knobPulled() {
-    reelsRef.current?.startPlay(150);
-    if (playerScore > 0) {
-      playAudio('/assets/audio/knob-pull.mp3');
-      setPlayerScore((prev) => prev - 1);
+  function knobPulled(): boolean {
+    if (totalBet <= 0 || totalBet > credit) return false;
+
+    setCredit((prev) => prev - totalBet);
+    setCurrentWin(0);
+
+    const isWin = Math.random() < 0.7;
+    const winRatio = isWin ? WIN_RATIOS[Math.floor(Math.random() * WIN_RATIOS.length)] : -1;
+    const reward = isWin ? totalBet * (winRatio === 0 ? 10 : winRatio / 100) : 0;
+
+    pendingResultRef.current = { winRatio, reward };
+    reelsRef.current?.startPlay(isWin ? winRatio : undefined);
+    playAudio('/assets/audio/knob-pull.mp3');
+  }
+
+  function onSpinComplete() {
+    const { reward } = pendingResultRef.current;
+    const isWin = reward > 0;
+    setCurrentWin(reward);
+    if (isWin) {
+      setCredit((prev) => prev + reward);
     }
+    setHistory((prev) => [isWin, ...prev].slice(0, 10));
+    setTotalBet(0);
   }
 
   function playAudio(src: string) {
@@ -100,6 +118,7 @@ export default function SlotMachine({
           height={reelDimensions.height}
           onLoadingMessage={onLoadingMessage}
           onLoadingDone={onLoadingDone}
+          onSpinComplete={onSpinComplete}
         />
       </div>
 
@@ -115,7 +134,7 @@ export default function SlotMachine({
       </div>
 
       <div id="spin-button">
-        <SpinButton onClick={() => !reelsRef.current?.running && knobPulled()} />
+        <SpinButton onClick={() => reelsRef.current?.running ? false : knobPulled()} />
       </div>
 
       <div id="clear-button">
@@ -155,11 +174,11 @@ export default function SlotMachine({
       </div>
 
       <div id="total-win-number" style={{ width: 138 }}>
-        <MoneyDisplay imgSrc="/assets/images/credit-label.png" value={totalWin} />
+        <MoneyDisplay imgSrc="/assets/images/credit-label.png" value={credit} />
       </div>
 
       <div id="balance-number">
-        <MoneyDisplay value={getCurrentUserBalance()} />
+        <MoneyDisplay value={credit} />
       </div>
 
       <div id="current-win-number" style={{ width: 138 }}>

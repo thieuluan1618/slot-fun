@@ -47,6 +47,7 @@ interface ReelsProps {
   height: number;
   onLoadingMessage?: (msg: string) => void;
   onLoadingDone?: () => void;
+  onSpinComplete?: () => void;
 }
 
 const REEL_SYMBOLS = [
@@ -86,7 +87,7 @@ function getSymbolsForWinRatio(winRatio: number): string[] {
 }
 
 const Reels = forwardRef<ReelsHandle, ReelsProps>(
-  ({ width, height, onLoadingMessage, onLoadingDone }, ref) => {
+  ({ width, height, onLoadingMessage, onLoadingDone, onSpinComplete }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const appRef = useRef<Application | null>(null);
     const reelsRef = useRef<any[]>([]);
@@ -305,6 +306,7 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
       if (symbolName) {
         addBuzzEffectByName(symbolName);
       }
+      onSpinComplete?.();
     }
 
     function updateSlots() {

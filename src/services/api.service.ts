@@ -7,8 +7,8 @@ import type {
 } from "../models/game-slot.model";
 
 const MOCK_BALANCE: UserBalance = {
-  main: { VND: 5000000, USDT: 200 },
-  promo: { VND: 1000000, USDT: 50 },
+  main: { VND: 5000, USDT: 200 },
+  promo: { VND: 1000, USDT: 50 },
   affiliate: { VND: 0, USDT: 0 },
 };
 

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 const COUNTDOWN_TIME = 5;
 
 interface SpinButtonProps {
-  onClick: () => void;
+  onClick: () => boolean | void;
 }
 
 export default function SpinButton({ onClick }: SpinButtonProps) {
@@ -33,8 +33,8 @@ export default function SpinButton({ onClick }: SpinButtonProps) {
   }, [countdown]);
 
   function onSpin() {
-    onClick();
-    startCountdown();
+    const result = onClick();
+    if (result !== false) startCountdown();
   }
 
   return (
@@ -42,14 +42,14 @@ export default function SpinButton({ onClick }: SpinButtonProps) {
       onClick={onSpin}
       className="relative max-h-full max-w-full border-0 bg-transparent p-0"
       onMouseDown={() => setImage(pressedImage)}
-      onMouseUp={() => setImage(pressedImage)}
+      onMouseUp={() => setImage(defaultImage)}
       onTouchStart={() => setImage(pressedImage)}
       onTouchEnd={() => setImage(defaultImage)}
     >
       <img className="max-h-full w-full" src={image} alt="Spin" />
       {countdown !== null && countdown > 0 && (
         <img
-          className="absolute bottom-[calc(50%-6px)] left-1/2 h-[19px] -translate-x-1/2 -translate-y-1/2"
+          className="absolute top-1 left-1/2 h-[16px] -translate-x-1/2"
           src={`/assets/buttons/count-text/${countdown}.png`}
           alt={`${countdown}`}
         />

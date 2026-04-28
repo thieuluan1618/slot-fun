@@ -1,0 +1,38 @@
+$modalWidth: 700px;
+$modalHeight: calc($modalWidth / 2.106);
+
+.faq-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.faq-modal-content {
+  position: relative;
+  width: $modalWidth;
+  height: $modalHeight;
+  border-radius: 18px;
+  background-size: cover;
+  background-image: url(/assets/images/modal-background.png);
+}
+
+.exit-button {
+  width: 35px;
+  height: 35px;
+  background-image: url(/assets/images/exit-button-hover.png);
+  background-color: transparent;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  &:hover {
+    background-image: url(/assets/images/exit-button.png);
+  }
+}

@@ -5,49 +5,49 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm start          # Dev server at http://localhost:4200 (ng serve)
-npm run build      # Dev build (output: dist/slot-fun)
-ng build --prod    # Production build (uses environment.prod.ts)
-npm test           # Unit tests (Karma + Jasmine)
-npm run lint       # ESLint
-ng deploy          # Deploy to Netlify
-ng generate component <name>  # Scaffolding (standalone + SCSS, no test files)
+npm run dev        # Dev server at http://localhost:4200 (Vite)
+npm run build      # TypeScript check + Vite production build (output: dist/)
+npm run preview    # Preview production build locally
+npm run lint       # ESLint on src-react/
 ```
 
 ## Architecture
 
-Angular 17 slot machine game using PIXI.js 8 for reel rendering. Single-page app with no routing — everything renders through `AppComponent` → `SlotMachineComponent`.
+React 18 + Vite slot machine game using PIXI.js 8 for reel rendering. Single-page app — everything renders through `App` → `SlotMachine`.
+
+Source lives in `src-react/`. Legacy Angular code remains in `src/` for reference.
 
 ### Key layers
 
-- **Containers** (`containers/`): Smart components that own game logic
-  - `slot-machine` — orchestrates betting, spinning, wallet, history. Coordinates between API results and the Reels renderer.
-  - `reels` — standalone PIXI.js Application embedded via `ViewChild`. Owns the entire reel animation lifecycle: asset loading, tween-based spinning, win effects (buzz, glow, sparkle, rainbow). This is the rendering core.
-- **Components** (`components/`): Presentational UI (chip, spin-button, bet-button, money-display, game-history, wallet-selection, etc.). All standalone components with SCSS.
-- **Services** (`services/`):
-  - `AuthService` — JWT login via `@auth0/angular-jwt`, stores token in localStorage
-  - `ApiService` — HTTP calls to `gateway.api.jackpot2024.win` (join room, place order, history, balance)
-  - `SocketService` — Socket.io connection to real-time game server
-  - `LoadingService` — BehaviorSubject-based loading state for the animated loading overlay
+- **Components** (`src-react/components/`):
+  - `SlotMachine` — main container. Orchestrates betting, spinning, wallet, history state. Coordinates between API results and the Reels renderer.
+  - `Reels` — PIXI.js Application wrapped in `forwardRef`. Exposes `startPlay(winRatio?)` via `useImperativeHandle`. Owns the entire reel animation lifecycle: asset loading, tween-based spinning, win effects (buzz). This is the rendering core.
+  - `ImageButton` — reusable press-state image button (used by bet, clear, max-bet buttons)
+  - `SpinButton` — spin button with countdown timer
+  - `Chip`, `MoneyDisplay`, `GameHistory`, `WalletSelection`, `LoadingOverlay`, `FaqModal`, `WinConditions` — presentational components with SCSS modules
+- **Services** (`src-react/services/`): Singleton class instances (not React context)
+  - `authService` — JWT login, stores token in localStorage
+  - `apiService` — fetch-based HTTP calls to `gateway.api.jackpot2024.win`
+  - `socketService` — Socket.io connection to real-time game server
+- **Config** (`src-react/config/environment.ts`): API URLs, socket URL. Uses `import.meta.env.PROD` for production detection.
+- **Styles** (`src-react/styles/`): SCSS variables auto-injected via Vite config. Bootstrap imported globally.
 
 ### Reel mechanics
 
-The `Reels` component uses a custom tween system (not PIXI's built-in). `startPlay(winRatio?)` accepts a win ratio number that maps to a specific symbol combination via `getSymbolsForWinRatio()`. Each reel has a pattern (`reelPatterns`) and weight system (`SYMBOL_WEIGHTS`) that determines final stopping position. The backout easing creates the slot-machine bounce effect.
+The `Reels` component uses a custom tween system (not PIXI's built-in). `startPlay(winRatio?)` accepts a win ratio number that maps to a specific symbol combination via `getSymbolsForWinRatio()`. Each reel has a pattern (`REEL_PATTERNS`) and weight system (`SYMBOL_WEIGHTS`) that determines final stopping position. The backout easing creates the slot-machine bounce effect.
 
 Win ratios: 150=Bell, 100=Cherries, 90=Grapes, 80=Lemon, 70=Melon, 60=Orange, 50=Scatter, 0=Seven(Jackpot).
 
 ### State management
 
-NgRx Store is imported but not actively used — state lives in component properties. Wallet switching triggers `outRoom()` → `joinRoom()` API sequence.
+React `useState` hooks in `SlotMachine` and `App`. Wallet switching triggers `outRoom()` → `joinRoom()` API sequence.
 
-### Environment config
+## Static assets
 
-`src/environments/environment.ts` holds API URLs, socket URL, and KiwiIRC config. Production build swaps to `environment.prod.ts` via Angular file replacements.
-
-### Schematics config
-
-`angular.json` schematics set `skipTests: true` for components, services, directives, and pipes. New components default to standalone with SCSS.
+`public/assets/` — copied from original `src/assets/`. Vite serves these at `/assets/...`.
 
 ## Deployment
 
-Netlify via `@netlify-builder/deploy`. Production URL: https://slot-fun-game.netlify.app/
+Production URL: https://slot-fun-game.netlify.app/
+
+Build output goes to `dist/`. For Netlify, set build command to `npm run build` and publish directory to `dist`.

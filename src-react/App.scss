@@ -1,0 +1,42 @@
+.slot-main-container {
+  background-image: url("/assets/images/slot_bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  #toggle-wallet-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    margin: 10px;
+  }
+}
+
+#wallet-selection {
+  position: absolute;
+  bottom: 25%;
+  right: 0;
+}
+
+.slide-in {
+  animation: slideIn 150ms ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

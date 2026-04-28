@@ -1,0 +1,149 @@
+.slot-machine {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  position: relative;
+  align-items: center;
+  background-image: url("/assets/slot-machines/slot-machine-violet.png");
+  background-size: contain;
+  height: 630px;
+  width: 800px;
+
+  .slot-wheel-wrapper {
+    margin-top: 60px;
+    width: 500px;
+    height: 270px;
+  }
+
+  .reels-comp {
+    z-index: 1;
+  }
+
+  .light {
+    position: absolute;
+    width: 167px;
+    top: 34px;
+  }
+
+  #left-light {
+    left: 84px;
+  }
+
+  #right-light {
+    right: 84px;
+  }
+
+  #your-luck-here {
+    position: absolute;
+    top: 75px;
+    width: 198px;
+  }
+
+  #spin-button {
+    position: absolute;
+    bottom: 40px;
+    width: 115px;
+  }
+
+  #bet-button {
+    position: absolute;
+    bottom: 40px;
+    left: calc(50% - 150px);
+    width: 100px;
+  }
+
+  #clear-button {
+    position: absolute;
+    bottom: 40px;
+    right: calc(50% - 165px);
+    width: 115px;
+  }
+
+  .faq-button-pos {
+    position: absolute;
+    bottom: 40px;
+    left: 165px;
+    width: 70px;
+  }
+
+  #max-bet-button {
+    position: absolute;
+    bottom: 40px;
+    right: 120px;
+    width: 100px;
+  }
+
+  #chip-10 {
+    position: absolute;
+    bottom: 105px;
+    left: 10%;
+  }
+
+  #chip-20 {
+    position: absolute;
+    bottom: 105px;
+    left: 19%;
+  }
+
+  #chip-50 {
+    position: absolute;
+    bottom: 105px;
+    left: 29%;
+  }
+
+  #chip-100 {
+    position: absolute;
+    bottom: 105px;
+    right: 29%;
+  }
+
+  #chip-250 {
+    position: absolute;
+    bottom: 105px;
+    right: 19%;
+  }
+
+  #chip-500 {
+    position: absolute;
+    bottom: 105px;
+    right: 10%;
+  }
+
+  #game-history {
+    position: absolute;
+    top: 168px;
+  }
+
+  #total-bet-number {
+    position: absolute;
+    bottom: 122px;
+  }
+
+  #total-win-number {
+    position: absolute;
+    top: 116px;
+    left: 98px;
+  }
+
+  #balance-number {
+    position: absolute;
+    top: 116px;
+  }
+
+  #current-win-number {
+    position: absolute;
+    top: 116px;
+    right: 99px;
+  }
+}
+
+.selected-chip {
+  box-shadow: 0 0 5px 2px rgb(255, 255, 255);
+  transform: scale(1.1);
+}
+
+.text-bg {
+  top: 2px;
+  left: 0;
+  width: 100%;
+}

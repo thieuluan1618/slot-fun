@@ -17,6 +17,8 @@ import {
   Ticker,
 } from 'pixi.js';
 
+import { LoadingService } from '../../services/loading.service';
+
 interface Particle extends Graphics {
   velX: number;
   velY: number;
@@ -84,13 +86,25 @@ export class Reels implements OnInit, AfterViewInit {
 
   private symbolMapRef: Record<string, Sprite[]> = {};
 
-  constructor() {}
+  constructor(private loadingService: LoadingService) {}
 
   ngOnInit() {}
 
   async ngAfterViewInit() {
-    await this.initPixiApp();
-    await this.loadAssets();
+    const loadingService = this.loadingService;
+    
+    try {
+      loadingService.show('Initializing game engine...');
+      await this.initPixiApp();
+      
+      loadingService.show('Loading game assets...');
+      await this.loadAssets();
+      
+      loadingService.hide();
+    } catch (error) {
+      console.error('Failed to initialize game:', error);
+      loadingService.hide();
+    }
   }
 
   async initPixiApp() {

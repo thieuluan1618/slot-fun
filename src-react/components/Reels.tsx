@@ -142,6 +142,10 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
         mounted = false;
         appRef.current?.destroy(true);
         appRef.current = null;
+        reelsRef.current = [];
+        tweeningRef.current = [];
+        slotTexturesRef.current = [];
+        symbolMapRefRef.current = {};
       };
     }, []);
 
@@ -201,8 +205,8 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
           previousPosition: 0,
           blur: new BlurFilter(),
         };
-        reel.blur.blurX = 0;
-        reel.blur.blurY = 0;
+        reel.blur.strengthX = 0;
+        reel.blur.strengthY = 0;
         rc.filters = [reel.blur];
 
         for (let j = 0; j < slotTexturesRef.current.length; j++) {
@@ -243,6 +247,7 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
 
       const targetSymbols = getSymbolsForWinRatio(result!);
       const randomRowOffset = Math.round(Math.random() * 2 - 1);
+      const winningSymbol = targetSymbols.length > 0 ? targetSymbols[0] : null;
 
       for (let i = 0; i < reelsRef.current.length; i++) {
         const r = reelsRef.current[i];
@@ -287,23 +292,23 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
           backout(0.4),
           null,
           i === reelsRef.current.length - 1
-            ? () => reelsComplete(targetIndex)
+            ? () => reelsComplete(winningSymbol)
             : null,
         );
       }
     }
 
-    function reelsComplete(symbolIndex: number) {
+    function reelsComplete(symbolName: string | null) {
       runningRef.current = false;
-      if (symbolIndex) {
-        addBuzzEffect(symbolIndex);
+      if (symbolName) {
+        addBuzzEffectByName(symbolName);
       }
     }
 
     function updateSlots() {
       for (let i = 0; i < reelsRef.current.length; i++) {
         const reel = reelsRef.current[i];
-        reel.blur.blurY =
+        reel.blur.strengthY =
           (reel.position - reel.previousPosition) * 8;
         reel.previousPosition = reel.position;
 
@@ -375,8 +380,8 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
       return (t: number) => --t * t * ((amount + 1) * t + amount) + 1;
     }
 
-    function addBuzzEffect(
-      index: number,
+    function addBuzzEffectByName(
+      symbolName: string,
       customConfig?: Partial<BuzzConfig>,
     ) {
       const app = appRef.current;
@@ -403,7 +408,7 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
         { x: number; y: number; scale: number; rotation: number; alpha: number }
       >();
 
-      const symbols = symbolMapRefRef.current[REEL_SYMBOLS[index]] || [];
+      const symbols = symbolMapRefRef.current[symbolName] || [];
 
       symbols.forEach((symbol) => {
         originalStates.set(symbol, {
@@ -512,7 +517,7 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
             symbol.filters?.length
           ) {
             const blurFilter = symbol.filters[0] as BlurFilter;
-            blurFilter.blur =
+            blurFilter.strength =
               Math.sin(elapsed * 0.1) *
               2 *
               config.glowIntensity *

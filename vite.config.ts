@@ -8,6 +8,7 @@ export default defineConfig({
       scss: {
         additionalData: `@use "variables" as *;\n`,
         loadPaths: ['./src-react/styles'],
+        silenceDeprecations: ['color-functions', 'import', 'global-builtin'],
       },
     },
   },

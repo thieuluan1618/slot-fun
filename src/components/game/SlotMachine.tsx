@@ -79,6 +79,7 @@ export default function SlotMachine({
     pendingResultRef.current = { winRatio, reward };
     reelsRef.current?.startPlay(isWin ? winRatio : undefined);
     playAudio('/assets/audio/knob-pull.mp3');
+    return true;
   }
 
   function onSpinComplete() {

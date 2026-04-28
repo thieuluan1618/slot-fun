@@ -8,9 +8,13 @@ export default function GameHistory({ history }: GameHistoryProps) {
       {history.map((win, i) => (
         <div key={i}>
           <img
-            className="w-[18px]"
-            alt={win ? 'win' : 'loss'}
-            src={win ? '/assets/images/white-circle.png' : '/assets/images/black-circle.png'}
+            className="w-4.5"
+            alt={win ? "win" : "loss"}
+            src={
+              win
+                ? "/assets/images/white-circle.png"
+                : "/assets/images/black-circle.png"
+            }
           />
         </div>
       ))}

@@ -94,6 +94,7 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
     const runningRef = useRef(false);
     const slotTexturesRef = useRef<Texture[]>([]);
     const symbolMapRefRef = useRef<Record<string, Sprite[]>>({});
+    const buzzingSymbolsRef = useRef<WeakSet<Sprite>>(new WeakSet());
 
     useImperativeHandle(ref, () => ({
       startPlay: (result?: number) => startPlay(result),
@@ -220,12 +221,13 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
           symbolMap[REEL_SYMBOLS[textureIndex]].push(symbol);
 
           symbol.label = REEL_SYMBOLS[textureIndex];
-          symbol.y = j * SYMBOL_SIZE;
+          symbol.anchor.set(0.5, 0.5);
+          symbol.y = j * SYMBOL_SIZE + SYMBOL_SIZE / 2;
           symbol.scale.x = symbol.scale.y = Math.min(
             SYMBOL_SIZE / symbol.width,
             SYMBOL_SIZE / symbol.height,
           );
-          symbol.x = (REEL_WIDTH - SYMBOL_SIZE) / 2;
+          symbol.x = REEL_WIDTH / 2;
 
           reel.symbols.push(symbol);
           rc.addChild(symbol);
@@ -314,10 +316,11 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
 
         for (let j = 0; j < reel.symbols.length; j++) {
           const symbol = reel.symbols[j];
+          if (buzzingSymbolsRef.current.has(symbol)) continue;
           const prevy = symbol.y;
           symbol.y =
             ((reel.position + j) % reel.symbols.length) * SYMBOL_SIZE -
-            SYMBOL_SIZE;
+            SYMBOL_SIZE / 2;
           if (symbol.y < 0 && prevy > SYMBOL_SIZE) {
             symbol.y += reel.symbols.length * SYMBOL_SIZE;
           }
@@ -389,15 +392,15 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
 
       const defaultConfig: BuzzConfig = {
         duration: 1500,
-        initialAmplitude: 8,
+        initialAmplitude: 5,
         buzzFrequency: 0.8,
-        scaleMin: 0.9,
-        scaleMax: 1.15,
+        scaleMin: 0.95,
+        scaleMax: 1.1,
         scalePulseSpeed: 0.15,
-        rotationMax: 0.1,
+        rotationMax: 0.05,
         pattern: 'random',
-        glowIntensity: 0.5,
-        shakeIntensity: 1,
+        glowIntensity: 0.3,
+        shakeIntensity: 0.6,
       };
 
       const config = { ...defaultConfig, ...customConfig };
@@ -411,6 +414,7 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
       const symbols = symbolMapRefRef.current[symbolName] || [];
 
       symbols.forEach((symbol) => {
+        buzzingSymbolsRef.current.add(symbol);
         originalStates.set(symbol, {
           x: symbol.position.x,
           y: symbol.position.y,
@@ -495,11 +499,11 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
             config.scaleMin + scaleRange * (1 - easings.back(progress));
           const scalePulse =
             Math.sin(elapsed * config.scalePulseSpeed) *
-            0.1 *
+            0.03 *
             inverseProgress;
           const scaleWobble =
-            Math.sin(elapsed * 0.3) * 0.05 * inverseProgress;
-          symbol.scale.set(baseScale + scalePulse + scaleWobble);
+            Math.sin(elapsed * 0.3) * 0.02 * inverseProgress;
+          symbol.scale.set(orig.scale * (baseScale + scalePulse + scaleWobble));
 
           const rotationShake =
             (Math.random() - 0.5) * config.rotationMax * inverseProgress;
@@ -544,6 +548,7 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
             symbol.rotation = orig.rotation;
             symbol.alpha = orig.alpha;
             symbol.filters = null;
+            buzzingSymbolsRef.current.delete(symbol);
           });
         }
       };

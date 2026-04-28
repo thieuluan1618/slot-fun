@@ -4,11 +4,16 @@ interface MoneyDisplayProps {
   style?: React.CSSProperties;
 }
 
-export default function MoneyDisplay({ value, imgSrc, style }: MoneyDisplayProps) {
-  const formatted = value?.toLocaleString('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }) ?? '0';
+export default function MoneyDisplay({
+  value,
+  imgSrc,
+  style,
+}: MoneyDisplayProps) {
+  const formatted =
+    value?.toLocaleString("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }) ?? "0";
 
   return (
     <div className="flex w-full items-center justify-between" style={style}>

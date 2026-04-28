@@ -1,14 +1,15 @@
-import { io, Socket } from 'socket.io-client';
-import { environment } from '../config/environment';
-import { authService } from './auth.service';
+import { io, Socket } from "socket.io-client";
+import { environment } from "../config/environment";
+import { authService } from "./auth.service";
 
 class SocketService {
   private socket: Socket | null = null;
 
   connect(): void {
+    if (environment.mockApi) return;
     const token = authService.getToken();
     this.socket = io(environment.socketUrl, {
-      transports: ['websocket'],
+      transports: ["websocket"],
       extraHeaders: {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },

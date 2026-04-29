@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Reels from './Reels';
 import SpinButton from '../controls/SpinButton';
 import ImageButton from '../controls/ImageButton';
 import Chip from '../controls/Chip';
 import GameHistory from './GameHistory';
 import MoneyDisplay from './MoneyDisplay';
-import FaqModal from '../overlays/FaqModal';
+const FaqModal = lazy(() => import('../overlays/FaqModal'));
 import type { ReelsHandle } from './Reels';
 import type { UserBalance, WalletType } from '../../models/game-slot.model';
 import './SlotMachine.scss';
@@ -119,7 +119,9 @@ export default function SlotMachine({
         />
       </div>
 
-      <FaqModal className="faq-button-pos" />
+      <Suspense>
+        <FaqModal className="faq-button-pos" />
+      </Suspense>
 
       <div id="bet-button">
         <ImageButton

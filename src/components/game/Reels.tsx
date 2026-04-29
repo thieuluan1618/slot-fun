@@ -35,6 +35,26 @@ export interface ReelsHandle {
   running: boolean;
 }
 
+interface Reel {
+  container: Container;
+  symbols: Sprite[];
+  position: number;
+  previousPosition: number;
+  blur: BlurFilter;
+}
+
+interface Tween {
+  object: Reel;
+  property: keyof Pick<Reel, 'position' | 'previousPosition'>;
+  propertyBeginValue: number;
+  target: number;
+  easing: (t: number) => number;
+  time: number;
+  change: ((t: Tween) => void) | null;
+  complete: ((t: Tween) => void) | null;
+  start: number;
+}
+
 interface ReelsProps {
   ref?: Ref<ReelsHandle>;
   width: number;
@@ -83,11 +103,11 @@ function getSymbolsForWinRatio(winRatio: number): string[] {
 function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComplete }: ReelsProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const appRef = useRef<Application | null>(null);
-    const reelsRef = useRef<any[]>([]);
-    const tweeningRef = useRef<any[]>([]);
+    const reelsRef = useRef<Reel[]>([]);
+    const tweeningRef = useRef<Tween[]>([]);
     const runningRef = useRef(false);
     const slotTexturesRef = useRef<Texture[]>([]);
-    const symbolMapRefRef = useRef<Record<string, Sprite[]>>({});
+    const symbolMapRef = useRef<Record<string, Sprite[]>>({});
     const buzzingSymbolsRef = useRef<WeakSet<Sprite>>(new WeakSet());
 
     useImperativeHandle(ref, () => ({
@@ -154,7 +174,7 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
         reelsRef.current = [];
         tweeningRef.current = [];
         slotTexturesRef.current = [];
-        symbolMapRefRef.current = {};
+        symbolMapRef.current = {};
       };
     }, []);
 
@@ -216,7 +236,7 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
         reelsRef.current.push(reel);
       }
 
-      symbolMapRefRef.current = symbolMap;
+      symbolMapRef.current = symbolMap;
       reelContainer.y = 0;
       reelContainer.x = 0;
       app.stage.addChild(reelContainer);
@@ -310,7 +330,7 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
       }
 
       const now = Date.now();
-      const remove: any[] = [];
+      const remove: Tween[] = [];
 
       for (let i = 0; i < tweeningRef.current.length; i++) {
         const t = tweeningRef.current[i];
@@ -334,13 +354,13 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
     }
 
     function tweenTo(
-      object: any,
-      property: string,
+      object: Reel,
+      property: Tween['property'],
       target: number,
       time: number,
       easing: (t: number) => number,
-      onchange: ((t: any) => void) | null,
-      oncomplete: ((t: any) => void) | null,
+      onchange: ((t: Tween) => void) | null,
+      oncomplete: ((t: Tween) => void) | null,
     ) {
       const tween = {
         object,
@@ -393,7 +413,7 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
         { x: number; y: number; scale: number; rotation: number; alpha: number }
       >();
 
-      const symbols = symbolMapRefRef.current[symbolName] || [];
+      const symbols = symbolMapRef.current[symbolName] || [];
 
       symbols.forEach((symbol) => {
         buzzingSymbolsRef.current.add(symbol);

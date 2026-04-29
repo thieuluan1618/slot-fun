@@ -10,7 +10,7 @@ import type { UserBalance, WalletType } from './models/game-slot.model';
 import './App.scss';
 
 export default function App() {
-  const [showWallet, setShowWallet] = useState(true);
+  const [showWallet, setShowWallet] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentWallet, setCurrentWallet] = useState<WalletType>('main');
   const [totalWin, setTotalWin] = useState(0);

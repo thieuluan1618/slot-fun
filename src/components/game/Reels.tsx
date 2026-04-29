@@ -10,19 +10,11 @@ import {
   BlurFilter,
   ColorMatrixFilter,
   Container,
-  Graphics,
   Rectangle,
   Sprite,
   Texture,
   Ticker,
 } from 'pixi.js';
-
-interface Particle extends Graphics {
-  velX: number;
-  velY: number;
-  life: number;
-  maxLife: number;
-}
 
 interface BuzzConfig {
   duration: number;

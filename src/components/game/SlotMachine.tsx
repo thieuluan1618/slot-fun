@@ -78,7 +78,8 @@ export default function SlotMachine({
 
     pendingResultRef.current = { winRatio, reward };
     reelsRef.current?.startPlay(isWin ? winRatio : undefined);
-    playAudio('/assets/audio/knob-pull.mp3');
+    knobAudio.current.currentTime = 0;
+    knobAudio.current.play();
     return true;
   }
 
@@ -93,12 +94,7 @@ export default function SlotMachine({
     setTotalBet(0);
   }
 
-  function playAudio(src: string) {
-    const audio = new Audio();
-    audio.src = src;
-    audio.load();
-    audio.play();
-  }
+  const knobAudio = useRef(new Audio('/assets/audio/knob-pull.mp3'));
 
   const chipValues = [10, 20, 50, 100, 250, 500];
 

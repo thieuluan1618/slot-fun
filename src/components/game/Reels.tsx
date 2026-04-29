@@ -11,6 +11,7 @@ import {
   ColorMatrixFilter,
   Container,
   Graphics,
+  Rectangle,
   Sprite,
   Texture,
   Ticker,
@@ -110,20 +111,35 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
       async function init() {
         if (!containerRef.current) return;
 
-        onLoadingMessage?.('Initializing game engine...');
+        onLoadingMessage?.('Loading game...');
 
         const app = new Application();
-        await app.init({
-          width,
-          height,
-          backgroundAlpha: 0,
-          antialias: true,
-        });
+        const [, assets] = await Promise.all([
+          app.init({
+            width,
+            height,
+            backgroundAlpha: 0,
+            antialias: true,
+          }),
+          Assets.load([
+            '/assets/symbols/merged-symbols.png',
+            '/assets/backgrounds/background-wheel.png',
+          ]),
+        ]);
 
         if (!mounted) {
           app.destroy(true);
           return;
         }
+
+        const sheetTexture = assets['/assets/symbols/merged-symbols.png'] as Texture;
+        const symbolHeight = 260;
+        slotTexturesRef.current = REEL_SYMBOLS.map((_, i) =>
+          new Texture({
+            source: sheetTexture.source,
+            frame: new Rectangle(0, i * symbolHeight, 300, symbolHeight),
+          }),
+        );
 
         containerRef.current.appendChild(app.canvas);
         appRef.current = app;
@@ -131,8 +147,7 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
         app.ticker.add(() => updateSlots());
         (globalThis as any).__PIXI_APP__ = app;
 
-        onLoadingMessage?.('Loading game assets...');
-        await loadAssets(app);
+        createReels(app);
 
         if (!mounted) return;
         onLoadingDone?.();
@@ -150,33 +165,6 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
         symbolMapRefRef.current = {};
       };
     }, []);
-
-    async function loadAssets(app: Application) {
-      await Assets.load([
-        '/assets/symbols/Bell.png',
-        '/assets/symbols/Cherries.png',
-        '/assets/symbols/Grape.png',
-        '/assets/symbols/Lemon.png',
-        '/assets/symbols/Melon.png',
-        '/assets/symbols/Orange.png',
-        '/assets/symbols/Scatter.png',
-        '/assets/symbols/7.png',
-        '/assets/backgrounds/background-wheel.png',
-      ]);
-
-      slotTexturesRef.current = [
-        Texture.from('/assets/symbols/Bell.png'),
-        Texture.from('/assets/symbols/Cherries.png'),
-        Texture.from('/assets/symbols/Grape.png'),
-        Texture.from('/assets/symbols/Lemon.png'),
-        Texture.from('/assets/symbols/Melon.png'),
-        Texture.from('/assets/symbols/Orange.png'),
-        Texture.from('/assets/symbols/Scatter.png'),
-        Texture.from('/assets/symbols/7.png'),
-      ];
-
-      createReels(app);
-    }
 
     function createReels(app: Application) {
       const reelContainer = new Container();

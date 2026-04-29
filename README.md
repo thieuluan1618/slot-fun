@@ -2,7 +2,7 @@
 
 An online slot machine game built with React 18, Vite, and PIXI.js 8, featuring real-time multiplayer and casino-style gameplay.
 
-**[Live Demo](https://slot-fun-game.netlify.app/)**
+**[Live Demo](https://slot-fun.vercel.app/)**
 
 ## Tech Stack
 
@@ -11,7 +11,7 @@ An online slot machine game built with React 18, Vite, and PIXI.js 8, featuring 
 - **Game Engine**: PIXI.js 8 for reel animations
 - **Styling**: Tailwind CSS 4 + SCSS + Bootstrap 5
 - **Real-time**: Socket.io Client
-- **Deployment**: Netlify
+- **Deployment**: Vercel
 
 ## Development
 
@@ -52,4 +52,4 @@ public/assets/                  # Static images, audio, symbols
 
 ## Deployment
 
-Netlify auto-deploys from `main`. Build command: `pnpm build`, publish directory: `dist/`.
+Vercel auto-deploys from `main`. Build command: `pnpm build`, publish directory: `dist/`.

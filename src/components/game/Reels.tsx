@@ -1,5 +1,5 @@
 import {
-  forwardRef,
+  type Ref,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -44,6 +44,7 @@ export interface ReelsHandle {
 }
 
 interface ReelsProps {
+  ref?: Ref<ReelsHandle>;
   width: number;
   height: number;
   onLoadingMessage?: (msg: string) => void;
@@ -87,8 +88,7 @@ function getSymbolsForWinRatio(winRatio: number): string[] {
   }
 }
 
-const Reels = forwardRef<ReelsHandle, ReelsProps>(
-  ({ width, height, onLoadingMessage, onLoadingDone, onSpinComplete }, ref) => {
+function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComplete }: ReelsProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const appRef = useRef<Application | null>(null);
     const reelsRef = useRef<any[]>([]);
@@ -546,10 +546,7 @@ const Reels = forwardRef<ReelsHandle, ReelsProps>(
       app.ticker.add(animate);
     }
 
-    return <div ref={containerRef} />;
-  },
-);
-
-Reels.displayName = 'Reels';
+  return <div ref={containerRef} />;
+}
 
 export default Reels;

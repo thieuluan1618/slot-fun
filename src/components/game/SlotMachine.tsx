@@ -100,8 +100,8 @@ export default function SlotMachine({
 
   return (
     <div className="slot-machine">
-      <img className="light" id="left-light" src="/assets/images/left-light.png" alt="left light" />
-      <img className="light" id="right-light" src="/assets/images/right-light.png" alt="right light" />
+      <img className="light" id="left-light" src="/assets/images/left-light.webp" alt="left light" />
+      <img className="light" id="right-light" src="/assets/images/right-light.webp" alt="right light" />
 
       <div id="your-luck-here">
         <img className="w-full" src="/assets/images/your-luck-here.png" alt="your luck here" />

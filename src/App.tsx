@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import SlotMachine from './components/game/SlotMachine';
 import WalletSelection from './components/overlays/WalletSelection';
 import LoadingOverlay from './components/overlays/LoadingOverlay';
@@ -81,6 +82,7 @@ export default function App() {
       </section>
 
       <LoadingOverlay visible={loading} />
+      <Analytics />
     </>
   );
 }

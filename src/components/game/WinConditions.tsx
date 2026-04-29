@@ -13,14 +13,14 @@ const winConditions = [
 
 export default function WinConditions() {
   return (
-    <div className="container">
+    <div>
       <div className="win-conditions">
-        <div className="table-responsive">
-          <table className="table table-bordered">
+        <div className="overflow-x-auto">
+          <table className="table-bordered">
             <tbody>
               <tr>
                 {winConditions.map((c, i) => (
-                  <td key={i} className="text-center">
+                  <td key={i} className="text-center align-middle">
                     <img src={c.image} alt="symbol" className="symbol-image" />
                     <img src={c.image} alt="symbol" className="symbol-image" />
                     <img src={c.image} alt="symbol" className="symbol-image" />

@@ -108,8 +108,8 @@ export default function SlotMachine({
       <img className="light" id="right-light" src="/assets/images/right-light.png" alt="right light" />
 
       <div id="your-luck-here">
-        <img className="w-100" src="/assets/images/your-luck-here.png" alt="your luck here" />
-        <img className="position-absolute text-bg" src="/assets/images/your-luck-here-bg.png" alt="bg" />
+        <img className="w-full" src="/assets/images/your-luck-here.png" alt="your luck here" />
+        <img className="absolute text-bg" src="/assets/images/your-luck-here-bg.png" alt="bg" />
       </div>
 
       <div ref={wheelRef} className="slot-wheel-wrapper">

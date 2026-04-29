@@ -73,7 +73,7 @@ export default function App() {
         >
           <img
             style={{ maxWidth: 100 }}
-            className="w-100"
+            className="w-full"
             src="/assets/images/cash-coin.png"
             alt="Toggle wallet"
           />

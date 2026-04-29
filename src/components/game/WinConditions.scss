@@ -13,19 +13,18 @@
 
 .table-bordered {
   border: 2px solid orange;
+  border-collapse: collapse;
 }
 
 .table-bordered td {
   border: 1px solid orange;
   vertical-align: middle;
+  background-color: transparent;
+  color: white;
+  padding: 0.5rem;
 }
 
 .symbol-image {
   max-width: 50px;
   padding: 0;
-}
-
-.table > :not(caption) > * > * {
-  background-color: transparent;
-  color: white;
 }

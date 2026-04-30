@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260">
+  <defs>
+    <linearGradient id="pharGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="50%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    <linearGradient id="pharBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E90FF"/>
+      <stop offset="100%" stop-color="#0F1F5F"/>
+    </linearGradient>
+    <linearGradient id="pharSkin" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#D4A574"/>
+      <stop offset="100%" stop-color="#C4956A"/>
+    </linearGradient>
+    <filter id="pharGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Nemes headdress - sides -->
+  <path d="M 75 90 L 60 230 Q 80 240 100 230 L 110 140" fill="url(#pharBlue)" stroke="#0A1040" stroke-width="2"/>
+  <path d="M 225 90 L 240 230 Q 220 240 200 230 L 190 140" fill="url(#pharBlue)" stroke="#0A1040" stroke-width="2"/>
+  <!-- Headdress stripes -->
+  <path d="M 68 140 L 95 140" stroke="#FFD700" stroke-width="2"/>
+  <path d="M 64 170 L 98 165" stroke="#FFD700" stroke-width="2"/>
+  <path d="M 62 200 L 99 190" stroke="#FFD700" stroke-width="2"/>
+  <path d="M 232 140 L 205 140" stroke="#FFD700" stroke-width="2"/>
+  <path d="M 236 170 L 202 165" stroke="#FFD700" stroke-width="2"/>
+  <path d="M 238 200 L 201 190" stroke="#FFD700" stroke-width="2"/>
+  <!-- Nemes headdress - top -->
+  <path d="M 75 90 Q 100 30 150 20 Q 200 30 225 90 Q 200 80 150 75 Q 100 80 75 90 Z" fill="url(#pharBlue)" stroke="#0A1040" stroke-width="2"/>
+  <!-- Gold band -->
+  <path d="M 78 88 Q 150 72 222 88" fill="none" stroke="url(#pharGold)" stroke-width="8"/>
+  <path d="M 78 88 Q 150 72 222 88" fill="none" stroke="#B8860B" stroke-width="1" opacity="0.3"/>
+  <!-- Face -->
+  <ellipse cx="150" cy="130" rx="42" ry="50" fill="url(#pharSkin)" stroke="#A0784C" stroke-width="2"/>
+  <!-- Eyes -->
+  <path d="M 125 120 Q 135 115 145 120 Q 135 125 125 120 Z" fill="white" stroke="#333" stroke-width="1.5"/>
+  <circle cx="135" cy="120" r="4" fill="#2C1810"/>
+  <path d="M 155 120 Q 165 115 175 120 Q 165 125 155 120 Z" fill="white" stroke="#333" stroke-width="1.5"/>
+  <circle cx="165" cy="120" r="4" fill="#2C1810"/>
+  <!-- Eye liner (kohl) -->
+  <path d="M 122 120 Q 115 122 110 125" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 178 120 Q 185 122 190 125" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
+  <!-- Nose -->
+  <path d="M 150 125 L 147 140 Q 150 143 153 140 Z" fill="#C4956A" stroke="#A0784C" stroke-width="1"/>
+  <!-- Mouth -->
+  <path d="M 138 152 Q 150 158 162 152" fill="none" stroke="#8B5E3C" stroke-width="2"/>
+  <!-- Uraeus (cobra) on forehead -->
+  <path d="M 150 75 Q 148 60 150 48 Q 155 42 158 48 Q 160 55 155 65 Q 152 72 150 75" fill="url(#pharGold)" stroke="#B8860B" stroke-width="1.5" filter="url(#pharGlow)"/>
+  <circle cx="154" cy="50" r="2" fill="#CC3333"/>
+  <!-- Chin beard -->
+  <rect x="145" y="168" width="10" height="30" rx="3" fill="url(#pharGold)" stroke="#B8860B" stroke-width="1.5"/>
+  <!-- Collar -->
+  <path d="M 100 175 Q 150 195 200 175 Q 205 182 200 190 Q 150 210 100 190 Q 95 182 100 175 Z" fill="url(#pharGold)" stroke="#B8860B" stroke-width="2"/>
+  <!-- Collar gems -->
+  <circle cx="130" cy="183" r="4" fill="#CC3333"/>
+  <circle cx="150" cy="188" r="4" fill="#40E0D0"/>
+  <circle cx="170" cy="183" r="4" fill="#CC3333"/>
+</svg>

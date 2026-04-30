@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 177 425" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="reelBg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1a1205" stop-opacity="0.95"/>
+      <stop offset="15%" stop-color="#1f160a"/>
+      <stop offset="50%" stop-color="#251c10"/>
+      <stop offset="85%" stop-color="#1f160a"/>
+      <stop offset="100%" stop-color="#1a1205" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#DAA520" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#DAA520" stop-opacity="0.04"/>
+      <stop offset="50%" stop-color="#FFD700" stop-opacity="0.07"/>
+      <stop offset="80%" stop-color="#DAA520" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#DAA520" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="vignette" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
+      <stop offset="15%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="85%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.4"/>
+    </linearGradient>
+    <pattern id="hieroglyphs" x="0" y="0" width="60" height="80" patternUnits="userSpaceOnUse">
+      <rect width="60" height="80" fill="none"/>
+      <path d="M 15 20 L 15 10 Q 20 5 25 10 L 25 20" fill="none" stroke="#DAA520" stroke-width="0.3" opacity="0.06"/>
+      <circle cx="40" cy="15" r="4" fill="none" stroke="#DAA520" stroke-width="0.3" opacity="0.05"/>
+      <path d="M 10 50 L 20 45 L 20 55 Z" fill="none" stroke="#DAA520" stroke-width="0.3" opacity="0.05"/>
+      <path d="M 35 55 Q 45 48 50 55 Q 45 62 35 55" fill="none" stroke="#DAA520" stroke-width="0.3" opacity="0.06"/>
+    </pattern>
+  </defs>
+  <rect width="177" height="425" fill="url(#reelBg)"/>
+  <rect width="177" height="425" fill="url(#hieroglyphs)"/>
+  <rect width="177" height="425" fill="url(#sheen)"/>
+  <rect width="177" height="425" fill="url(#vignette)"/>
+  <line x1="0" y1="0" x2="0" y2="425" stroke="#DAA520" stroke-width="1" opacity="0.15"/>
+  <line x1="176" y1="0" x2="176" y2="425" stroke="#DAA520" stroke-width="1" opacity="0.15"/>
+</svg>

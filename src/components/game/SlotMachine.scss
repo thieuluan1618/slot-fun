@@ -744,6 +744,11 @@
       border-color: var(--gold-dim);
       color: var(--gold-dim);
     }
+
+    &--muted {
+      opacity: 0.4;
+      text-decoration: line-through;
+    }
   }
 
   .hud-icons {

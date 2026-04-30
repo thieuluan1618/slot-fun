@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260">
+  <defs>
+    <linearGradient id="wildGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="40%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FF8C00"/>
+    </linearGradient>
+    <linearGradient id="wildBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1A0A30"/>
+      <stop offset="100%" stop-color="#0D1B3E"/>
+    </linearGradient>
+    <linearGradient id="shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFD700" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#FFE066" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#FFD700" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="wildGlow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="textGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Background shield shape -->
+  <path d="M 150 20 L 250 60 L 260 160 Q 230 230 150 250 Q 70 230 40 160 L 50 60 Z" fill="url(#wildBg)" stroke="url(#wildGold)" stroke-width="4" filter="url(#wildGlow)"/>
+  <!-- Inner border -->
+  <path d="M 150 35 L 238 70 L 247 155 Q 220 218 150 235 Q 80 218 53 155 L 62 70 Z" fill="none" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
+  <!-- Decorative corners -->
+  <circle cx="150" cy="35" r="5" fill="#FFD700" filter="url(#wildGlow)"/>
+  <circle cx="238" cy="70" r="4" fill="#DAA520"/>
+  <circle cx="62" cy="70" r="4" fill="#DAA520"/>
+  <!-- Egyptian wing decorations - top -->
+  <path d="M 90 70 Q 120 55 150 60 Q 180 55 210 70" fill="none" stroke="#40E0D0" stroke-width="2.5" opacity="0.7"/>
+  <path d="M 100 78 Q 125 67 150 70 Q 175 67 200 78" fill="none" stroke="#40E0D0" stroke-width="1.5" opacity="0.5"/>
+  <!-- WILD text -->
+  <text x="150" y="148" text-anchor="middle" font-family="serif" font-size="56" font-weight="bold" fill="url(#wildGold)" stroke="#B8860B" stroke-width="1" filter="url(#textGlow)">WILD</text>
+  <!-- Shimmer line across text -->
+  <rect x="70" y="115" width="160" height="40" fill="url(#shimmer)" opacity="0.3"/>
+  <!-- Bottom decorative elements -->
+  <path d="M 100 180 Q 150 195 200 180" fill="none" stroke="#FFD700" stroke-width="2"/>
+  <path d="M 110 190 Q 150 202 190 190" fill="none" stroke="#40E0D0" stroke-width="1.5" opacity="0.6"/>
+  <!-- Gem accents -->
+  <circle cx="110" cy="100" r="5" fill="#CC3333" stroke="#FFD700" stroke-width="1.5"/>
+  <circle cx="190" cy="100" r="5" fill="#CC3333" stroke="#FFD700" stroke-width="1.5"/>
+  <circle cx="150" cy="210" r="6" fill="#40E0D0" stroke="#FFD700" stroke-width="1.5"/>
+  <!-- Small stars/sparkles -->
+  <path d="M 85 140 L 87 135 L 89 140 L 84 137 L 90 137 Z" fill="#FFE066" opacity="0.7"/>
+  <path d="M 211 140 L 213 135 L 215 140 L 210 137 L 216 137 Z" fill="#FFE066" opacity="0.7"/>
+</svg>

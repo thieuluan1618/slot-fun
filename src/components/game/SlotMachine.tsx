@@ -15,7 +15,7 @@ interface SlotMachineProps {
   onLoadingDone?: () => void;
 }
 
-const WIN_RATIOS = [150, 100, 90, 80, 70, 60, 50, 0];
+const WIN_RATIOS = [150, 50, 45, 40, 35, 30, 25, 20, 0];
 const CHIP_VALUES = [10, 20, 50, 100, 250, 500];
 
 const PAYTABLE = [
@@ -51,8 +51,11 @@ export default function SlotMachine({
   const [reelDimensions, setReelDimensions] = useState({ width: 644, height: 404 });
   const [now, setNow] = useState(() => new Date());
   const [isReal, setIsReal] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const pendingResultRef = useRef<{ winRatio: number; reward: number }>({ winRatio: 0, reward: 0 });
   const knobAudio = useRef(new Audio('/assets/audio/knob-pull.mp3'));
+  const spinAudio = useRef(new Audio('/assets/audio/spinning.mp3'));
+  const payoutAudio = useRef(new Audio('/assets/audio/pay-out.wav'));
 
   // Measure reel inner container once mounted.
   useLayoutEffect(() => {
@@ -109,14 +112,18 @@ export default function SlotMachine({
     setCredit((prev) => prev - totalBet);
     setCurrentWin(0);
 
-    const isWin = Math.random() < 0.7;
+    const isWin = Math.random() < 0.85;
     const winRatio = isWin ? WIN_RATIOS[Math.floor(Math.random() * WIN_RATIOS.length)] : -1;
     const reward = isWin ? totalBet * (winRatio === 0 ? 10 : winRatio / 100) : 0;
 
     pendingResultRef.current = { winRatio, reward };
     reelsRef.current?.startPlay(isWin ? winRatio : undefined);
-    knobAudio.current.currentTime = 0;
-    knobAudio.current.play().catch(() => undefined);
+    if (!isMuted) {
+      knobAudio.current.currentTime = 0;
+      knobAudio.current.play().catch(() => undefined);
+      spinAudio.current.currentTime = 0;
+      spinAudio.current.play().catch(() => undefined);
+    }
     return true;
   }
 
@@ -126,9 +133,27 @@ export default function SlotMachine({
     setCurrentWin(reward);
     if (isWin) {
       setCredit((prev) => prev + reward);
+      if (!isMuted) {
+        payoutAudio.current.currentTime = 0;
+        payoutAudio.current.play().catch(() => undefined);
+      }
     }
+    spinAudio.current.pause();
     setHistory((prev) => [isWin, ...prev].slice(0, 12));
     setTotalBet(0);
+  }
+
+  function toggleSound() {
+    setIsMuted((prev) => {
+      const mute = !prev;
+      knobAudio.current.muted = mute;
+      spinAudio.current.muted = mute;
+      payoutAudio.current.muted = mute;
+      if (mute) {
+        spinAudio.current.pause();
+      }
+      return mute;
+    });
   }
 
   const onSpinClick = useCallback(() => {
@@ -327,7 +352,7 @@ export default function SlotMachine({
         <div className="bottom-hud">
           <div className="hud-icons">
             <button type="button" className="hud-icon-btn" aria-label="Menu">☰</button>
-            <button type="button" className="hud-icon-btn" aria-label="Sound">♪</button>
+            <button type="button" className={`hud-icon-btn ${isMuted ? 'hud-icon-btn--muted' : ''}`} aria-label="Sound" onClick={toggleSound}>♪</button>
           </div>
 
           <div className="hud-div" />

@@ -10,7 +10,6 @@ import {
   BlurFilter,
   ColorMatrixFilter,
   Container,
-  Rectangle,
   Sprite,
   Texture,
   Ticker,
@@ -66,36 +65,57 @@ interface ReelsProps {
 
 const REEL_SYMBOLS = [
   'Bell',
-  'Cherries',
-  'Grapes',
-  'Lemon',
-  'Melon',
-  'Orange',
   'Scatter',
   'Seven',
+  'Ankh',
+  'Scarab',
+  'EyeOfHorus',
+  'Pharaoh',
+  'Pyramid',
+  'Wild',
 ];
 
-const SYMBOL_WEIGHTS = [2, 1, 0, 7, 6, 5, 4, 3];
+const SYMBOL_FILES: Record<string, string> = {
+  Bell: '/assets/symbols/Bell.png',
+  Scatter: '/assets/symbols/Scatter.png',
+  Seven: '/assets/symbols/7.png',
+  Ankh: '/assets/symbols/Ankh.svg',
+  Scarab: '/assets/symbols/Scarab.svg',
+  EyeOfHorus: '/assets/symbols/EyeOfHorus.svg',
+  Pharaoh: '/assets/symbols/Pharaoh.svg',
+  Pyramid: '/assets/symbols/Pyramid.svg',
+  Wild: '/assets/symbols/Wild.svg',
+};
 
-const REEL_WIDTH = 110;
-const SYMBOL_SIZE = 85;
+const SYMBOL_WEIGHTS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+const NUM_REELS = 5;
+const VISIBLE_ROWS = 4;
+const REEL_GAP = 4;
 
 const REEL_PATTERNS: number[][] = [
-  [0, 1, 2, 3, 4, 5, 6, 7],
-  [1, 3, 5, 7, 0, 2, 4, 6],
-  [2, 5, 0, 7, 4, 1, 6, 3],
+  [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  [1, 3, 5, 7, 0, 2, 4, 6, 8],
+  [2, 5, 8, 0, 3, 6, 1, 4, 7],
+  [3, 7, 2, 6, 1, 5, 0, 8, 4],
+  [4, 8, 3, 7, 2, 6, 1, 5, 0],
 ];
+
+function repeatSymbol(name: string): string[] {
+  return Array(NUM_REELS).fill(name);
+}
 
 function getSymbolsForWinRatio(winRatio: number): string[] {
   switch (winRatio) {
-    case 150: return ['Bell', 'Bell', 'Bell'];
-    case 100: return ['Cherries', 'Cherries', 'Cherries'];
-    case 90:  return ['Grapes', 'Grapes', 'Grapes'];
-    case 80:  return ['Lemon', 'Lemon', 'Lemon'];
-    case 70:  return ['Melon', 'Melon', 'Melon'];
-    case 60:  return ['Orange', 'Orange', 'Orange'];
-    case 50:  return ['Scatter', 'Scatter', 'Scatter'];
-    case 0:   return ['Seven', 'Seven', 'Seven'];
+    case 150: return repeatSymbol('Bell');
+    case 50:  return repeatSymbol('Scatter');
+    case 45:  return repeatSymbol('Ankh');
+    case 40:  return repeatSymbol('Scarab');
+    case 35:  return repeatSymbol('EyeOfHorus');
+    case 30:  return repeatSymbol('Pharaoh');
+    case 25:  return repeatSymbol('Pyramid');
+    case 20:  return repeatSymbol('Wild');
+    case 0:   return repeatSymbol('Seven');
     default:  return [];
   }
 }
@@ -109,6 +129,9 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
     const slotTexturesRef = useRef<Texture[]>([]);
     const symbolMapRef = useRef<Record<string, Sprite[]>>({});
     const buzzingSymbolsRef = useRef<WeakSet<Sprite>>(new WeakSet());
+    const buzzTickerRef = useRef<((ticker: Ticker) => void) | null>(null);
+    const reelWidthRef = useRef(0);
+    const symbolSizeRef = useRef(0);
 
     useImperativeHandle(ref, () => ({
       startPlay: (result?: number) => startPlay(result),
@@ -126,6 +149,7 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
         onLoadingMessage?.('Loading game...');
 
         const app = new Application();
+        const symbolPaths = REEL_SYMBOLS.map((name) => SYMBOL_FILES[name]);
         const [, assets] = await Promise.all([
           app.init({
             width,
@@ -134,8 +158,8 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
             antialias: true,
           }),
           Assets.load([
-            '/assets/symbols/merged-symbols.png',
-            '/assets/backgrounds/background-wheel.png',
+            ...symbolPaths,
+            '/assets/backgrounds/background-wheel.svg',
           ]),
         ]);
 
@@ -144,13 +168,8 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
           return;
         }
 
-        const sheetTexture = assets['/assets/symbols/merged-symbols.png'] as Texture;
-        const symbolHeight = 260;
-        slotTexturesRef.current = REEL_SYMBOLS.map((_, i) =>
-          new Texture({
-            source: sheetTexture.source,
-            frame: new Rectangle(0, i * symbolHeight, 300, symbolHeight),
-          }),
+        slotTexturesRef.current = REEL_SYMBOLS.map(
+          (name) => assets[SYMBOL_FILES[name]] as Texture,
         );
 
         containerRef.current.appendChild(app.canvas);
@@ -179,20 +198,24 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
     }, []);
 
     function createReels(app: Application) {
+      const reelWidth = Math.floor((app.screen.width - (NUM_REELS - 1) * REEL_GAP) / NUM_REELS);
+      const symbolSize = Math.floor(app.screen.height / VISIBLE_ROWS);
+      reelWidthRef.current = reelWidth;
+      symbolSizeRef.current = symbolSize;
+
       const reelContainer = new Container();
       reelContainer.label = 'reel-container';
-      const bgTexture = Texture.from('/assets/backgrounds/background-wheel.png');
+      const bgTexture = Texture.from('/assets/backgrounds/background-wheel.svg');
       const symbolMap: Record<string, Sprite[]> = {};
 
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < NUM_REELS; i++) {
         const rc = new Container();
         const rcBg = new Sprite(bgTexture);
-        const reelGap = (app.screen.width - 3 * REEL_WIDTH) / 2;
 
-        rcBg.width = (app.screen.width - 2 * reelGap) / 3;
+        rcBg.width = reelWidth;
         rcBg.height = app.screen.height;
 
-        rc.x = i * REEL_WIDTH + i * reelGap;
+        rc.x = i * (reelWidth + REEL_GAP);
         rc.y = 0;
         rcBg.x = 0;
         rcBg.y = 0;
@@ -223,12 +246,12 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
 
           symbol.label = REEL_SYMBOLS[textureIndex];
           symbol.anchor.set(0.5, 0.5);
-          symbol.y = j * SYMBOL_SIZE + SYMBOL_SIZE / 2;
+          symbol.y = j * symbolSize + symbolSize / 2;
           symbol.scale.x = symbol.scale.y = Math.min(
-            SYMBOL_SIZE / symbol.width,
-            SYMBOL_SIZE / symbol.height,
+            symbolSize / symbol.width,
+            symbolSize / symbol.height,
           );
-          symbol.x = REEL_WIDTH / 2;
+          symbol.x = reelWidth / 2;
 
           reel.symbols.push(symbol);
           rc.addChild(symbol);
@@ -246,7 +269,27 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
       if (runningRef.current) return;
       runningRef.current = true;
 
-      reelsRef.current.forEach((r) => (r.position = 0));
+      if (buzzTickerRef.current && appRef.current) {
+        appRef.current.ticker.remove(buzzTickerRef.current);
+        buzzTickerRef.current = null;
+      }
+
+      const symbolSize = symbolSizeRef.current;
+      const reelWidth = reelWidthRef.current;
+      reelsRef.current.forEach((r) => {
+        r.position = 0;
+        r.previousPosition = 0;
+        r.blur.strengthY = 0;
+        for (let j = 0; j < r.symbols.length; j++) {
+          const s = r.symbols[j];
+          buzzingSymbolsRef.current.delete(s);
+          s.filters = null;
+          s.rotation = 0;
+          s.alpha = 1;
+          s.x = reelWidth / 2;
+          s.y = j * symbolSize + symbolSize / 2;
+        }
+      });
 
       const targetSymbols = getSymbolsForWinRatio(result!);
       const randomRowOffset = Math.round(Math.random() * 2 - 1);
@@ -310,6 +353,9 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
     }
 
     function updateSlots() {
+      const symbolSize = symbolSizeRef.current;
+      if (!symbolSize) return;
+
       for (let i = 0; i < reelsRef.current.length; i++) {
         const reel = reelsRef.current[i];
         reel.blur.strengthY =
@@ -321,10 +367,10 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
           if (buzzingSymbolsRef.current.has(symbol)) continue;
           const prevy = symbol.y;
           symbol.y =
-            ((reel.position + j) % reel.symbols.length) * SYMBOL_SIZE -
-            SYMBOL_SIZE / 2;
-          if (symbol.y < 0 && prevy > SYMBOL_SIZE) {
-            symbol.y += reel.symbols.length * SYMBOL_SIZE;
+            ((reel.position + j) % reel.symbols.length) * symbolSize -
+            symbolSize / 2;
+          if (symbol.y < 0 && prevy > symbolSize) {
+            symbol.y += reel.symbols.length * symbolSize;
           }
         }
       }
@@ -542,6 +588,7 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
 
         if (elapsed >= config.duration) {
           app.ticker.remove(animate);
+          buzzTickerRef.current = null;
           symbols.forEach((symbol) => {
             const orig = originalStates.get(symbol)!;
             symbol.position.x = orig.x;
@@ -555,6 +602,7 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
         }
       };
 
+      buzzTickerRef.current = animate;
       app.ticker.add(animate);
     }
 

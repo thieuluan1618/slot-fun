@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260">
+  <defs>
+    <linearGradient id="scarabBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00CED1"/>
+      <stop offset="50%" stop-color="#008B8B"/>
+      <stop offset="100%" stop-color="#006666"/>
+    </linearGradient>
+    <linearGradient id="scarabGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="50%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    <linearGradient id="wingLeft" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#40E0D0"/>
+      <stop offset="50%" stop-color="#00CED1"/>
+      <stop offset="100%" stop-color="#1E8C8C"/>
+    </linearGradient>
+    <linearGradient id="wingRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#40E0D0"/>
+      <stop offset="50%" stop-color="#00CED1"/>
+      <stop offset="100%" stop-color="#1E8C8C"/>
+    </linearGradient>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Left wing -->
+  <path d="M 150 110 Q 80 70 30 95 Q 15 120 40 145 Q 70 160 130 140 Z" fill="url(#wingLeft)" stroke="#006666" stroke-width="2" filter="url(#glow2)"/>
+  <path d="M 130 125 Q 85 100 55 115 Q 55 130 80 138" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.6"/>
+  <!-- Right wing -->
+  <path d="M 150 110 Q 220 70 270 95 Q 285 120 260 145 Q 230 160 170 140 Z" fill="url(#wingRight)" stroke="#006666" stroke-width="2" filter="url(#glow2)"/>
+  <path d="M 170 125 Q 215 100 245 115 Q 245 130 220 138" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.6"/>
+  <!-- Body (oval) -->
+  <ellipse cx="150" cy="140" rx="30" ry="40" fill="url(#scarabBody)" stroke="#004C4C" stroke-width="3"/>
+  <!-- Body line details -->
+  <line x1="150" y1="105" x2="150" y2="175" stroke="#004C4C" stroke-width="1.5"/>
+  <path d="M 125 130 Q 150 120 175 130" fill="none" stroke="#004C4C" stroke-width="1.5"/>
+  <path d="M 125 150 Q 150 140 175 150" fill="none" stroke="#004C4C" stroke-width="1.5"/>
+  <!-- Head -->
+  <ellipse cx="150" cy="95" rx="18" ry="14" fill="url(#scarabGold)" stroke="#B8860B" stroke-width="2"/>
+  <!-- Eyes -->
+  <circle cx="142" cy="92" r="3" fill="#CC3333"/>
+  <circle cx="158" cy="92" r="3" fill="#CC3333"/>
+  <!-- Horns/antennae -->
+  <path d="M 140 84 Q 130 55 115 50" fill="none" stroke="#FFD700" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 160 84 Q 170 55 185 50" fill="none" stroke="#FFD700" stroke-width="3" stroke-linecap="round"/>
+  <!-- Sun disc between horns -->
+  <circle cx="150" cy="55" r="15" fill="#FFD700" stroke="#DAA520" stroke-width="2" filter="url(#glow2)"/>
+  <circle cx="150" cy="55" r="8" fill="#FF6347" opacity="0.7"/>
+  <!-- Legs -->
+  <path d="M 128 160 Q 110 190 95 210" fill="none" stroke="#006666" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 135 165 Q 120 200 115 225" fill="none" stroke="#006666" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 172 160 Q 190 190 205 210" fill="none" stroke="#006666" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 165 165 Q 180 200 185 225" fill="none" stroke="#006666" stroke-width="3" stroke-linecap="round"/>
+</svg>

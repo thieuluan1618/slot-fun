@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sands of Eternity — Slot Redesign</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --obsidian: oklch(7% 0.015 55);
+  --stone: oklch(13% 0.02 58);
+  --stone-mid: oklch(18% 0.025 58);
+  --stone-light: oklch(24% 0.025 60);
+  --gold: oklch(72% 0.16 82);
+  --gold-light: oklch(86% 0.13 85);
+  --gold-dark: oklch(50% 0.15 78);
+  --gold-dim: oklch(58% 0.10 80);
+  --lapis: oklch(40% 0.16 258);
+  --lapis-light: oklch(55% 0.14 252);
+  --turquoise: oklch(62% 0.14 192);
+  --amber: oklch(68% 0.19 62);
+  --crimson: oklch(48% 0.18 28);
+  --text: oklch(93% 0.025 80);
+  --text-dim: oklch(58% 0.04 75);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: #000;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+
+.stage {
+  width: 1280px; height: 720px;
+  position: relative;
+  transform-origin: top left;
+  background: var(--obsidian);
+  overflow: hidden;
+  font-family: 'Cinzel', serif;
+}
+
+/* Stone texture */
+.stage::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, oklch(72% 0.16 82 / 0.012) 2px, oklch(72% 0.16 82 / 0.012) 3px),
+    repeating-linear-gradient(90deg, transparent, transparent 5px, oklch(0% 0 0 / 0.06) 5px, oklch(0% 0 0 / 0.06) 6px);
+  pointer-events: none; z-index: 1;
+}
+
+.bg-glow {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 65% 45% at 50% 55%, oklch(22% 0.06 68 / 0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 28% 55% at 8% 50%, oklch(18% 0.08 258 / 0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 28% 55% at 92% 50%, oklch(18% 0.07 58 / 0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 50% 100%, oklch(40% 0.14 82 / 0.12) 0%, transparent 60%);
+  z-index: 0;
+}
+
+/* ===== TOP ===== */
+.top-section {
+  position: absolute; top: 0; left: 0; right: 0; height: 96px;
+  display: flex; align-items: center; z-index: 10;
+  padding: 0 14px;
+  background: linear-gradient(180deg, oklch(5% 0.015 55) 0%, oklch(9% 0.018 58 / 0.6) 100%);
+  border-bottom: 1px solid oklch(72% 0.16 82 / 0.18);
+}
+
+.jackpot-group {
+  display: flex; gap: 8px; flex: 1;
+}
+.jackpot-group.right { justify-content: flex-end; }
+
+.jackpot-item {
+  display: flex; flex-direction: column; align-items: center;
+  background: linear-gradient(180deg, oklch(16% 0.03 62) 0%, oklch(11% 0.02 60) 100%);
+  border: 1px solid oklch(72% 0.16 82 / 0.32);
+  border-radius: 5px; padding: 7px 16px; min-width: 152px;
+  position: relative; overflow: hidden;
+}
+.jackpot-item::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+.jackpot-item::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, oklch(72% 0.16 82 / 0.15), transparent);
+}
+
+.jackpot-label {
+  font-size: 8.5px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-dim); margin-bottom: 4px;
+}
+.jackpot-value {
+  font-size: 19px; font-weight: 700; color: var(--gold-light); letter-spacing: 0.04em;
+  text-shadow: 0 0 18px oklch(72% 0.16 82 / 0.55);
+}
+.jackpot-item.mega { min-width: 185px; border-color: oklch(72% 0.16 82 / 0.5); }
+.jackpot-item.mega .jackpot-label { color: var(--gold); }
+.jackpot-item.mega .jackpot-value {
+  font-size: 23px; color: #fff;
+  text-shadow: 0 0 24px oklch(72% 0.18 82 / 0.9), 0 0 50px oklch(65% 0.18 82 / 0.45);
+}
+
+.title-center {
+  flex: 0 0 auto; display: flex; flex-direction: column;
+  align-items: center; padding: 0 28px;
+}
+.game-title {
+  font-family: 'Cinzel Decorative', serif; font-size: 29px; font-weight: 900;
+  letter-spacing: 0.07em; line-height: 1;
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 45%, var(--gold-dark) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 2px 14px oklch(72% 0.18 82 / 0.45));
+}
+.game-subtitle {
+  font-size: 7.5px; letter-spacing: 0.38em; color: var(--gold-dim);
+  text-transform: uppercase; margin-top: 5px;
+}
+
+.top-controls {
+  display: flex; gap: 8px; align-items: center; flex-shrink: 0; margin-left: 14px;
+}
+.top-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1.5px solid oklch(72% 0.16 82 / 0.4);
+  background: linear-gradient(180deg, oklch(20% 0.035 65) 0%, oklch(13% 0.02 62) 100%);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--gold-dim); font-size: 15px;
+  transition: all 0.2s;
+}
+.top-btn:hover { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 12px oklch(72% 0.16 82 / 0.35); }
+.top-btn.close-btn { border-color: oklch(48% 0.18 28 / 0.5); color: oklch(70% 0.10 28); font-size: 13px; font-weight: 700; }
+.top-btn.close-btn:hover { border-color: var(--crimson); color: #fff; box-shadow: 0 0 12px oklch(48% 0.18 28 / 0.4); }
+
+/* Geo border strips */
+.geo-strip {
+  position: absolute; left: 0; right: 0; height: 2px; z-index: 6;
+  background: repeating-linear-gradient(90deg,
+    oklch(72% 0.16 82 / 0.35) 0px, oklch(72% 0.16 82 / 0.35) 4px,
+    transparent 4px, transparent 8px,
+    oklch(72% 0.16 82 / 0.15) 8px, oklch(72% 0.16 82 / 0.15) 9px,
+    transparent 9px, transparent 13px);
+}
+.geo-strip.top { top: 96px; }
+.geo-strip.bottom { bottom: 78px; }
+
+/* ===== MAIN ===== */
+.main-layout {
+  position: absolute; top: 98px; bottom: 80px; left: 0; right: 0;
+  display: flex; align-items: center; z-index: 5; padding: 6px 10px; gap: 8px;
+}
+
+/* ===== SIDEBAR SHARED ===== */
+.sidebar-panel {
+  background: linear-gradient(180deg, oklch(15% 0.025 62) 0%, oklch(11% 0.018 60) 100%);
+  border: 1px solid oklch(72% 0.16 82 / 0.28);
+  border-radius: 5px; padding: 10px 11px; position: relative; width: 100%;
+}
+.sidebar-panel::before {
+  content: ''; position: absolute; top: 0; left: 14px; right: 14px; height: 1px;
+  background: linear-gradient(90deg, transparent, oklch(72% 0.16 82 / 0.4), transparent);
+}
+
+.panel-title {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); text-align: center; margin-bottom: 9px;
+  display: flex; align-items: center; gap: 5px;
+}
+.panel-title::before, .panel-title::after {
+  content: ''; flex: 1; height: 1px; background: oklch(72% 0.16 82 / 0.28);
+}
+
+/* ===== LEFT SIDEBAR ===== */
+.left-sidebar {
+  width: 152px; flex-shrink: 0; height: 100%;
+  display: flex; flex-direction: column; gap: 7px;
+}
+
+.paytable-rows { display: flex; flex-direction: column; gap: 5px; }
+.paytable-row { display: flex; align-items: center; gap: 7px; }
+.pay-chip {
+  width: 26px; height: 19px; border-radius: 3px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cinzel', serif; font-size: 6.5px; font-weight: 700; letter-spacing: 0.04em;
+}
+.pay-info { flex: 1; display: flex; justify-content: space-between; align-items: center; }
+.pay-name { font-size: 8px; color: var(--text-dim); }
+.pay-mult { font-size: 9px; font-weight: 700; color: var(--gold); }
+
+.divider-line {
+  display: flex; align-items: center; gap: 5px; margin: 6px 0 5px;
+}
+.divider-line .dl { flex: 1; height: 1px; background: oklch(72% 0.16 82 / 0.22); }
+.divider-line span { font-size: 8px; letter-spacing: 0.14em; color: var(--gold-dim); }
+
+.royals-row { display: flex; gap: 4px; justify-content: center; }
+.royal-letter {
+  font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 14px; line-height: 1;
+}
+
+/* Feature panel */
+.feature-scroll {
+  display: flex; align-items: center; gap: 5px; margin-bottom: 8px;
+}
+.arrow-btn {
+  width: 24px; height: 26px; flex-shrink: 0;
+  background: oklch(14% 0.022 62); border: 1px solid oklch(72% 0.16 82 / 0.28);
+  border-radius: 3px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--gold-dim); font-size: 13px;
+}
+.feature-name {
+  flex: 1; background: oklch(11% 0.018 60); border: 1px solid oklch(72% 0.16 82 / 0.22);
+  border-radius: 3px; padding: 4px; text-align: center;
+  font-size: 8px; color: var(--gold-dim); letter-spacing: 0.10em; text-transform: uppercase;
+}
+.feature-desc { font-size: 7.5px; color: var(--text-dim); line-height: 1.55; margin-bottom: 8px; text-align: center; }
+.activate-btn {
+  display: flex; align-items: center; justify-content: center;
+  padding: 8px; width: 100%;
+  background: linear-gradient(180deg, var(--gold-dark) 0%, oklch(40% 0.14 76) 100%);
+  border: 1px solid var(--gold); border-radius: 3px;
+  color: oklch(10% 0.015 60); font-family: 'Cinzel', serif;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 2px 10px oklch(72% 0.18 82 / 0.25);
+}
+.activate-btn:hover { box-shadow: 0 4px 18px oklch(72% 0.18 82 / 0.45); transform: translateY(-1px); }
+
+/* ===== REEL AREA ===== */
+.reel-area {
+  flex: 1; height: 100%; display: flex; align-items: center; justify-content: center;
+}
+
+.reel-outer {
+  position: relative; padding: 14px;
+  background: linear-gradient(160deg, oklch(20% 0.04 68) 0%, oklch(15% 0.028 64) 40%, oklch(11% 0.02 60) 100%);
+  border: 2.5px solid oklch(55% 0.14 78 / 0.7);
+  border-radius: 7px;
+  box-shadow:
+    0 0 0 1px oklch(72% 0.16 82 / 0.1),
+    0 0 50px oklch(72% 0.18 82 / 0.18),
+    0 8px 40px oklch(0% 0 0 / 0.6),
+    inset 0 0 60px oklch(7% 0.018 55 / 0.7);
+}
+
+/* Outer frame corners */
+.fc { position: absolute; width: 26px; height: 26px; border: 2.5px solid var(--gold); }
+.fc.tl { top: -2.5px; left: -2.5px; border-right: none; border-bottom: none; border-radius: 5px 0 0 0; }
+.fc.tr { top: -2.5px; right: -2.5px; border-left: none; border-bottom: none; border-radius: 0 5px 0 0; }
+.fc.bl { bottom: -2.5px; left: -2.5px; border-right: none; border-top: none; border-radius: 0 0 0 5px; }
+.fc.br { bottom: -2.5px; right: -2.5px; border-left: none; border-top: none; border-radius: 0 0 5px 0; }
+
+.frame-accent-top, .frame-accent-bottom {
+  position: absolute; left: 28px; right: 28px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), var(--gold), var(--gold-dim), transparent);
+}
+.frame-accent-top { top: 6px; }
+.frame-accent-bottom { bottom: 6px; }
+
+.reel-inner {
+  border: 1.5px solid oklch(72% 0.16 82 / 0.3);
+  border-radius: 4px; overflow: hidden;
+  box-shadow: inset 0 0 35px oklch(7% 0.018 55 / 0.85), 0 0 15px oklch(72% 0.18 82 / 0.08);
+}
+
+.reel-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 124px);
+  grid-template-rows: repeat(4, 98px);
+  gap: 2px; background: oklch(8% 0.014 54); padding: 2px;
+}
+
+/* ===== SYMBOLS ===== */
+.sym {
+  border-radius: 4px; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 1px solid oklch(0% 0 0 / 0.45);
+  cursor: default; user-select: none;
+}
+.sym::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, oklch(100% 0 0 / 0.07) 0%, transparent 40%, oklch(0% 0 0 / 0.18) 100%);
+}
+
+/* Tier backgrounds */
+.s-pharaoh { background: linear-gradient(150deg, oklch(52% 0.17 79) 0%, oklch(36% 0.14 75) 55%, oklch(25% 0.09 72) 100%); border-color: oklch(68% 0.16 82 / 0.8); box-shadow: inset 0 0 22px oklch(72% 0.18 82 / 0.12), 0 0 8px oklch(72% 0.18 82 / 0.22); }
+.s-anubis  { background: linear-gradient(150deg, oklch(28% 0.12 296) 0%, oklch(18% 0.08 292) 55%, oklch(12% 0.05 288) 100%); border-color: oklch(60% 0.13 280 / 0.7); }
+.s-eye     { background: linear-gradient(150deg, oklch(52% 0.18 62) 0%, oklch(38% 0.16 59) 55%, oklch(26% 0.11 56) 100%); border-color: oklch(68% 0.17 66 / 0.7); }
+.s-scarab  { background: linear-gradient(150deg, oklch(36% 0.16 256) 0%, oklch(24% 0.12 254) 55%, oklch(16% 0.08 250) 100%); border-color: oklch(55% 0.14 254 / 0.7); }
+.s-lotus   { background: linear-gradient(150deg, oklch(40% 0.14 190) 0%, oklch(26% 0.10 186) 55%, oklch(17% 0.06 183) 100%); border-color: oklch(58% 0.13 190 / 0.65); }
+.s-a       { background: linear-gradient(150deg, oklch(22% 0.04 66) 0%, oklch(14% 0.024 63) 100%); border-color: oklch(65% 0.14 82 / 0.5); }
+.s-k       { background: linear-gradient(150deg, oklch(20% 0.035 64) 0%, oklch(13% 0.020 61) 100%); border-color: oklch(65% 0.14 82 / 0.4); }
+.s-q       { background: linear-gradient(150deg, oklch(18% 0.030 62) 0%, oklch(12% 0.018 60) 100%); border-color: oklch(65% 0.14 82 / 0.3); }
+.s-j       { background: linear-gradient(150deg, oklch(17% 0.026 61) 0%, oklch(11% 0.015 58) 100%); border-color: oklch(65% 0.14 82 / 0.25); }
+.s-10      { background: linear-gradient(150deg, oklch(15% 0.022 60) 0%, oklch(10% 0.012 56) 100%); border-color: oklch(65% 0.14 82 / 0.20); }
+
+/* Art placeholder box */
+.sym-art {
+  width: 58px; height: 44px; margin-bottom: 3px;
+  border-radius: 3px; overflow: hidden; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.s-pharaoh .sym-art { background: repeating-linear-gradient(45deg, oklch(72% 0.18 82 / 0.14) 0px, oklch(72% 0.18 82 / 0.14) 3px, transparent 3px, transparent 9px); border: 1px dashed oklch(72% 0.18 82 / 0.38); }
+.s-anubis .sym-art  { background: repeating-linear-gradient(45deg, oklch(62% 0.13 280 / 0.14) 0px, oklch(62% 0.13 280 / 0.14) 3px, transparent 3px, transparent 9px); border: 1px dashed oklch(62% 0.13 280 / 0.38); }
+.s-eye .sym-art     { background: repeating-linear-gradient(45deg, oklch(68% 0.18 62 / 0.14) 0px, oklch(68% 0.18 62 / 0.14) 3px, transparent 3px, transparent 9px); border: 1px dashed oklch(68% 0.18 62 / 0.38); }
+.s-scarab .sym-art  { background: repeating-linear-gradient(45deg, oklch(55% 0.14 254 / 0.14) 0px, oklch(55% 0.14 254 / 0.14) 3px, transparent 3px, transparent 9px); border: 1px dashed oklch(55% 0.14 254 / 0.38); }
+.s-lotus .sym-art   { background: repeating-linear-gradient(45deg, oklch(58% 0.13 190 / 0.14) 0px, oklch(58% 0.13 190 / 0.14) 3px, transparent 3px, transparent 9px); border: 1px dashed oklch(58% 0.13 190 / 0.38); }
+
+.art-tag { font-size: 6px; font-family: monospace; opacity: 0.55; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px; text-align: center; }
+.s-pharaoh .art-tag { color: var(--gold-light); }
+.s-anubis .art-tag  { color: oklch(72% 0.11 280); }
+.s-eye .art-tag     { color: oklch(80% 0.11 68); }
+.s-scarab .art-tag  { color: oklch(70% 0.11 254); }
+.s-lotus .art-tag   { color: oklch(68% 0.11 190); }
+
+.sym-letter {
+  font-family: 'Cinzel Decorative', serif; font-weight: 700; font-size: 34px; line-height: 1;
+}
+.s-a  .sym-letter { color: var(--gold); text-shadow: 0 0 14px oklch(72% 0.16 82 / 0.5); }
+.s-k  .sym-letter { color: oklch(62% 0.12 80); text-shadow: 0 0 10px oklch(72% 0.14 82 / 0.35); }
+.s-q  .sym-letter { color: oklch(56% 0.08 78); }
+.s-j  .sym-letter { color: oklch(50% 0.07 76); }
+.s-10 .sym-letter { color: oklch(44% 0.05 74); }
+
+.sym-name {
+  font-size: 7px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; margin-top: 2px; opacity: 0.75;
+}
+.s-pharaoh .sym-name { color: var(--gold-light); }
+.s-anubis .sym-name  { color: oklch(70% 0.10 280); }
+.s-eye .sym-name     { color: oklch(78% 0.10 68); }
+.s-scarab .sym-name  { color: oklch(68% 0.10 254); }
+.s-lotus .sym-name   { color: oklch(66% 0.10 190); }
+
+/* ===== RIGHT SIDEBAR ===== */
+.right-sidebar {
+  width: 152px; flex-shrink: 0; height: 100%;
+  display: flex; flex-direction: column; gap: 7px;
+}
+
+.num-control {
+  text-align: center;
+}
+.ctrl-title { font-size: 8px; font-weight: 700; letter-spacing: 0.20em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 7px; }
+.ctrl-value { font-size: 27px; font-weight: 700; color: var(--gold); line-height: 1; text-shadow: 0 0 18px oklch(72% 0.16 82 / 0.4); }
+.ctrl-btns { display: flex; gap: 6px; margin-top: 7px; justify-content: center; }
+.ctrl-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(180deg, oklch(22% 0.038 65) 0%, oklch(15% 0.024 62) 100%);
+  border: 1px solid oklch(72% 0.16 82 / 0.35);
+  color: var(--gold); font-size: 17px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; line-height: 1; font-family: monospace;
+  transition: all 0.15s;
+}
+.ctrl-btn:hover { border-color: var(--gold); box-shadow: 0 0 8px oklch(72% 0.16 82 / 0.3); }
+
+.action-btn {
+  display: block; width: 100%; padding: 9px 6px; border-radius: 4px;
+  font-family: 'Cinzel', serif; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+  text-align: center; transition: all 0.2s;
+}
+.action-btn.gold {
+  background: linear-gradient(180deg, oklch(52% 0.16 79) 0%, oklch(40% 0.14 76) 100%);
+  border: 1px solid oklch(65% 0.14 80); color: oklch(10% 0.015 60);
+  box-shadow: 0 2px 10px oklch(72% 0.18 82 / 0.22);
+}
+.action-btn.gold:hover { box-shadow: 0 4px 18px oklch(72% 0.18 82 / 0.4); transform: translateY(-1px); }
+.action-btn.teal {
+  background: linear-gradient(180deg, oklch(22% 0.06 190) 0%, oklch(15% 0.04 188) 100%);
+  border: 1px solid oklch(50% 0.12 190 / 0.55); color: oklch(68% 0.12 192);
+}
+.action-btn.teal:hover { border-color: oklch(58% 0.13 192); }
+
+.winlines-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-top: 6px;
+}
+.wl { height: 4px; border-radius: 2px; }
+.wl-info { font-size: 7.5px; letter-spacing: 0.12em; color: var(--text-dim); margin-top: 5px; text-align: center; text-transform: uppercase; }
+
+/* ===== BOTTOM HUD ===== */
+.bottom-hud {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 78px;
+  display: flex; align-items: center; z-index: 10;
+  padding: 0 16px; gap: 0;
+  background: linear-gradient(0deg, oklch(5% 0.014 54) 0%, oklch(10% 0.020 58 / 0.85) 100%);
+  border-top: 1px solid oklch(72% 0.16 82 / 0.17);
+}
+
+.hud-icon-btn {
+  width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+  border: 1px solid oklch(72% 0.16 82 / 0.28);
+  background: oklch(16% 0.026 62);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-dim); font-size: 15px; transition: all 0.2s;
+}
+.hud-icon-btn:hover { border-color: var(--gold-dim); color: var(--gold-dim); }
+
+.hud-icons { display: flex; gap: 6px; }
+
+.hud-div {
+  width: 1px; height: 46px; flex-shrink: 0;
+  background: oklch(72% 0.16 82 / 0.18); margin: 0 14px;
+}
+
+.hud-block { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.hud-label { font-size: 8px; font-weight: 600; letter-spacing: 0.20em; text-transform: uppercase; color: var(--gold-dim); }
+.hud-value { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: 0.04em; line-height: 1; }
+.hud-value.gold { color: var(--gold); text-shadow: 0 0 14px oklch(72% 0.16 82 / 0.4); }
+.hud-value.teal { color: oklch(60% 0.13 190); }
+
+.hud-toggle {
+  display: flex; align-items: center; gap: 8px;
+  background: oklch(13% 0.020 62); border: 1px solid oklch(72% 0.16 82 / 0.20);
+  border-radius: 20px; padding: 7px 13px; cursor: pointer;
+}
+.toggle-txt { font-size: 9px; font-weight: 600; letter-spacing: 0.15em; color: var(--text-dim); }
+.toggle-pill {
+  width: 32px; height: 16px; background: oklch(20% 0.032 64);
+  border-radius: 8px; border: 1px solid oklch(72% 0.16 82 / 0.28); position: relative;
+}
+.toggle-pill::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 10px; height: 10px; border-radius: 50%; background: var(--gold-dim);
+}
+
+.hud-spacer { flex: 1; }
+
+/* SPIN BUTTON */
+.spin-btn {
+  width: 118px; height: 56px; border-radius: 7px; flex-shrink: 0;
+  background: linear-gradient(180deg, oklch(66% 0.18 83) 0%, oklch(54% 0.17 79) 48%, oklch(42% 0.15 75) 100%);
+  border: 2px solid oklch(80% 0.12 86);
+  box-shadow: 0 0 0 1px oklch(72% 0.18 82 / 0.25), 0 4px 26px oklch(65% 0.18 82 / 0.38), inset 0 1px 0 oklch(100% 0 0 / 0.2), inset 0 -1px 0 oklch(0% 0 0 / 0.15);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden;
+  font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.22em; color: oklch(10% 0.015 60); text-transform: uppercase;
+}
+.spin-btn::before {
+  content: ''; position: absolute; top: 0; left: -80%; width: 55%; height: 100%;
+  background: linear-gradient(90deg, transparent, oklch(100% 0 0 / 0.18), transparent);
+  transform: skewX(-18deg); animation: shimmer 3.5s infinite ease-in-out;
+}
+@keyframes shimmer { 0% { left: -80%; } 55%, 100% { left: 140%; } }
+.spin-btn:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px oklch(72% 0.18 82 / 0.4), 0 6px 36px oklch(65% 0.18 82 / 0.55), inset 0 1px 0 oklch(100% 0 0 / 0.2); }
+.spin-icon { font-size: 17px; margin-bottom: 1px; }
+
+.hud-meta { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.hud-meta-val { font-size: 11px; color: var(--text-dim); letter-spacing: 0.07em; }
+
+/* Particles */
+@keyframes drift-up {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.25; }
+  100% { transform: translateY(-200px) translateX(var(--dx)); opacity: 0; }
+}
+.pt {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: var(--gold); z-index: 2; pointer-events: none;
+  animation: drift-up var(--d) var(--dl) infinite ease-out;
+}
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="bg-glow"></div>
+
+  <!-- Floating dust particles -->
+  <div class="pt" style="left:18%;bottom:105px;--d:7s;--dl:0s;--dx:12px;"></div>
+  <div class="pt" style="left:33%;bottom:108px;--d:9s;--dl:1.8s;--dx:-9px;opacity:0.6;"></div>
+  <div class="pt" style="left:50%;bottom:106px;--d:8s;--dl:0.6s;--dx:7px;"></div>
+  <div class="pt" style="left:66%;bottom:110px;--d:10s;--dl:2.4s;--dx:-11px;opacity:0.5;"></div>
+  <div class="pt" style="left:82%;bottom:104px;--d:7.5s;--dl:3.2s;--dx:9px;"></div>
+  <div class="pt" style="left:44%;bottom:107px;--d:8.5s;--dl:1.1s;--dx:-5px;opacity:0.7;"></div>
+  <div class="pt" style="left:12%;bottom:109px;--d:11s;--dl:4s;--dx:6px;opacity:0.4;"></div>
+  <div class="pt" style="left:74%;bottom:106px;--d:6.5s;--dl:2s;--dx:-8px;opacity:0.6;"></div>
+
+  <!-- Geometric accent strips -->
+  <div class="geo-strip top"></div>
+  <div class="geo-strip bottom"></div>
+
+  <!-- ===== TOP ===== -->
+  <div class="top-section">
+    <div class="jackpot-group">
+      <div class="jackpot-item">
+        <div class="jackpot-label">Mini Jackpot</div>
+        <div class="jackpot-value">62,820.05</div>
+      </div>
+      <div class="jackpot-item">
+        <div class="jackpot-label">Major Jackpot</div>
+        <div class="jackpot-value">209,400.16</div>
+      </div>
+    </div>
+
+    <div class="title-center">
+      <div class="game-title">Sands of Eternity</div>
+      <div class="game-subtitle">Uncover the Secrets of the Pharaohs</div>
+    </div>
+
+    <div class="jackpot-group right">
+      <div class="jackpot-item mega">
+        <div class="jackpot-label">Mega Jackpot</div>
+        <div class="jackpot-value">628,200.50</div>
+      </div>
+    </div>
+
+    <div class="top-controls">
+      <div class="top-btn">★</div>
+      <div class="top-btn" style="font-size:12px;">?</div>
+      <div class="top-btn close-btn">✕</div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <div class="main-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="left-sidebar">
+      <div class="sidebar-panel">
+        <div class="panel-title">Paytable</div>
+        <div class="paytable-rows">
+          <div class="paytable-row">
+            <div class="pay-chip" style="background:oklch(46% 0.16 78);border:1px solid oklch(65% 0.14 82);">
+              <span style="color:var(--gold-light);font-size:6px;">PHA</span>
+            </div>
+            <div class="pay-info"><span class="pay-name">Pharaoh</span><span class="pay-mult">×500</span></div>
+          </div>
+          <div class="paytable-row">
+            <div class="pay-chip" style="background:oklch(24% 0.11 294);border:1px solid oklch(58% 0.12 280);">
+              <span style="color:oklch(72% 0.10 280);font-size:6px;">ANU</span>
+            </div>
+            <div class="pay-info"><span class="pay-name">Anubis</span><span class="pay-mult">×250</span></div>
+          </div>
+          <div class="paytable-row">
+            <div class="pay-chip" style="background:oklch(44% 0.16 61);border:1px solid oklch(65% 0.16 66);">
+              <span style="color:oklch(88% 0.10 70);font-size:6px;">EYE</span>
+            </div>
+            <div class="pay-info"><span class="pay-name">Eye of Ra</span><span class="pay-mult">×100</span></div>
+          </div>
+          <div class="paytable-row">
+            <div class="pay-chip" style="background:oklch(28% 0.13 255);border:1px solid oklch(52% 0.13 254);">
+              <span style="color:oklch(68% 0.10 254);font-size:6px;">SCR</span>
+            </div>
+            <div class="pay-info"><span class="pay-name">Scarab</span><span class="pay-mult">×50</span></div>
+          </div>
+          <div class="paytable-row">
+            <div class="pay-chip" style="background:oklch(32% 0.11 190);border:1px solid oklch(54% 0.12 190);">
+              <span style="color:oklch(66% 0.10 190);font-size:6px;">LTU</span>
+            </div>
+            <div class="pay-info"><span class="pay-name">Lotus</span><span class="pay-mult">×25</span></div>
+          </div>
+        </div>
+        <div class="divider-line">
+          <div class="dl"></div><span>Royals</span><div class="dl"></div>
+        </div>
+        <div class="royals-row">
+          <span class="royal-letter" style="color:var(--gold);">A</span>
+          <span class="royal-letter" style="color:var(--gold-dim);">K</span>
+          <span class="royal-letter" style="color:oklch(56% 0.07 78);">Q</span>
+          <span class="royal-letter" style="color:oklch(50% 0.06 76);">J</span>
+          <span class="royal-letter" style="color:oklch(44% 0.05 74);">10</span>
+        </div>
+      </div>
+
+      <div class="sidebar-panel" style="flex:1;">
+        <div class="panel-title">Features</div>
+        <div class="feature-scroll">
+          <div class="arrow-btn">‹</div>
+          <div class="feature-name">Free Spins</div>
+          <div class="arrow-btn">›</div>
+        </div>
+        <div class="feature-desc">Select a feature to test, then tap Activate to trigger it.</div>
+        <div class="activate-btn">Activate</div>
+      </div>
+    </div>
+
+    <!-- REEL AREA -->
+    <div class="reel-area">
+      <div class="reel-outer">
+        <div class="fc tl"></div><div class="fc tr"></div>
+        <div class="fc bl"></div><div class="fc br"></div>
+        <div class="frame-accent-top"></div>
+        <div class="frame-accent-bottom"></div>
+
+        <div class="reel-inner">
+          <div class="reel-grid">
+            <!-- Row 1 -->
+            <div class="sym s-pharaoh"><div class="sym-art"><span class="art-tag">pharaoh</span></div><div class="sym-name">Pharaoh</div></div>
+            <div class="sym s-k"><div class="sym-letter">K</div></div>
+            <div class="sym s-eye"><div class="sym-art"><span class="art-tag">eye of ra</span></div><div class="sym-name">Eye of Ra</div></div>
+            <div class="sym s-anubis"><div class="sym-art"><span class="art-tag">anubis</span></div><div class="sym-name">Anubis</div></div>
+            <div class="sym s-lotus"><div class="sym-art"><span class="art-tag">lotus</span></div><div class="sym-name">Lotus</div></div>
+            <!-- Row 2 -->
+            <div class="sym s-a"><div class="sym-letter">A</div></div>
+            <div class="sym s-scarab"><div class="sym-art"><span class="art-tag">scarab</span></div><div class="sym-name">Scarab</div></div>
+            <div class="sym s-k"><div class="sym-letter">K</div></div>
+            <div class="sym s-a"><div class="sym-letter">A</div></div>
+            <div class="sym s-pharaoh"><div class="sym-art"><span class="art-tag">pharaoh</span></div><div class="sym-name">Pharaoh</div></div>
+            <!-- Row 3 -->
+            <div class="sym s-lotus"><div class="sym-art"><span class="art-tag">lotus</span></div><div class="sym-name">Lotus</div></div>
+            <div class="sym s-a"><div class="sym-letter">A</div></div>
+            <div class="sym s-anubis"><div class="sym-art"><span class="art-tag">anubis</span></div><div class="sym-name">Anubis</div></div>
+            <div class="sym s-scarab"><div class="sym-art"><span class="art-tag">scarab</span></div><div class="sym-name">Scarab</div></div>
+            <div class="sym s-k"><div class="sym-letter">K</div></div>
+            <!-- Row 4 -->
+            <div class="sym s-q"><div class="sym-letter">Q</div></div>
+            <div class="sym s-eye"><div class="sym-art"><span class="art-tag">eye of ra</span></div><div class="sym-name">Eye of Ra</div></div>
+            <div class="sym s-a"><div class="sym-letter">A</div></div>
+            <div class="sym s-lotus"><div class="sym-art"><span class="art-tag">lotus</span></div><div class="sym-name">Lotus</div></div>
+            <div class="sym s-j"><div class="sym-letter">J</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="right-sidebar">
+      <div class="sidebar-panel num-control">
+        <div class="ctrl-title">Bet Per Line</div>
+        <div class="ctrl-value">1.00</div>
+        <div class="ctrl-btns">
+          <div class="ctrl-btn">−</div>
+          <div class="ctrl-btn">+</div>
+        </div>
+      </div>
+
+      <div class="sidebar-panel num-control">
+        <div class="ctrl-title">Active Lines</div>
+        <div class="ctrl-value">20</div>
+        <div class="ctrl-btns">
+          <div class="ctrl-btn">−</div>
+          <div class="ctrl-btn">+</div>
+        </div>
+      </div>
+
+      <div class="sidebar-panel" style="display:flex;flex-direction:column;gap:5px;">
+        <button class="action-btn gold">Max Bet</button>
+        <button class="action-btn teal">Auto Play</button>
+      </div>
+
+      <div class="sidebar-panel" style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div class="panel-title">Win Lines</div>
+        <div class="winlines-grid">
+          <div class="wl" style="background:oklch(65% 0.15 82 / 0.7);"></div>
+          <div class="wl" style="background:oklch(58% 0.13 190 / 0.7);"></div>
+          <div class="wl" style="background:oklch(50% 0.14 254 / 0.7);"></div>
+          <div class="wl" style="background:oklch(55% 0.15 28 / 0.7);"></div>
+          <div class="wl" style="background:oklch(58% 0.14 148 / 0.7);"></div>
+          <div class="wl" style="background:oklch(62% 0.15 62 / 0.7);"></div>
+          <div class="wl" style="background:oklch(50% 0.12 310 / 0.7);"></div>
+          <div class="wl" style="background:oklch(54% 0.13 126 / 0.7);"></div>
+          <div class="wl" style="background:oklch(52% 0.13 222 / 0.7);"></div>
+          <div class="wl" style="background:oklch(65% 0.15 82 / 0.35);"></div>
+        </div>
+        <div class="wl-info">20 Lines Active</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== BOTTOM HUD ===== -->
+  <div class="bottom-hud">
+    <div class="hud-icons">
+      <div class="hud-icon-btn">☰</div>
+      <div class="hud-icon-btn">♪</div>
+    </div>
+
+    <div class="hud-div"></div>
+
+    <div class="hud-block">
+      <div class="hud-label">Credits</div>
+      <div class="hud-value">9,876.00</div>
+    </div>
+
+    <div class="hud-div"></div>
+
+    <div class="hud-toggle">
+      <span class="toggle-txt">REAL</span>
+      <div class="toggle-pill"></div>
+      <span class="toggle-txt" style="opacity:0.4;">OFF</span>
+    </div>
+
+    <div class="hud-div"></div>
+
+    <div class="hud-block">
+      <div class="hud-label">Total Bet</div>
+      <div class="hud-value gold">50.00</div>
+    </div>
+
+    <div class="hud-spacer"></div>
+
+    <div class="spin-btn">
+      <div class="spin-icon">↺</div>
+      SPIN
+    </div>
+
+    <div class="hud-spacer"></div>
+
+    <div class="hud-block">
+      <div class="hud-label">Last Win</div>
+      <div class="hud-value teal">—</div>
+    </div>
+
+    <div class="hud-div"></div>
+
+    <div class="hud-meta">
+      <div class="hud-meta-val">EGP</div>
+      <div class="hud-meta-val">22:25</div>
+    </div>
+  </div>
+</div>
+
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 56">
+  <rect width="80" height="56" fill="#0a0906"/>
+  <rect x="16" y="10" width="48" height="36" rx="2" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+  <rect x="20" y="14" width="8" height="8" rx="1" fill="#7a5c1e" opacity="0.8"/>
+  <rect x="30" y="14" width="8" height="8" rx="1" fill="#2a1a5e" opacity="0.8"/>
+  <rect x="40" y="14" width="8" height="8" rx="1" fill="#5c2800" opacity="0.8"/>
+  <rect x="50" y="14" width="8" height="8" rx="1" fill="#0d3348" opacity="0.8"/>
+  <rect x="60" y="14" width="8" height="8" rx="1" fill="#1a4040" opacity="0.8"/>
+  <rect x="16" y="50" width="48" height="4" rx="1" fill="#1a1408"/>
+  <circle cx="40" cy="52" r="3" fill="#c9a84c" opacity="0.8"/>
+</svg>
+</template>
+
+<script>
+function scaleStage() {
+  const stage = document.getElementById('stage');
+  const sx = window.innerWidth / 1280;
+  const sy = window.innerHeight / 720;
+  const s = Math.min(sx, sy);
+  const x = (window.innerWidth - 1280 * s) / 2;
+  const y = (window.innerHeight - 720 * s) / 2;
+  stage.style.transform = `translate(${x}px,${y}px) scale(${s})`;
+}
+scaleStage();
+window.addEventListener('resize', scaleStage);
+</script>
+</body>
+</html>

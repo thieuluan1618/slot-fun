@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260">
+  <defs>
+    <linearGradient id="eyeGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="50%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00E5FF"/>
+      <stop offset="60%" stop-color="#0097A7"/>
+      <stop offset="100%" stop-color="#004D40"/>
+    </radialGradient>
+    <filter id="eyeGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Eyebrow line -->
+  <path d="M 40 85 Q 150 40 260 85" fill="none" stroke="url(#eyeGold)" stroke-width="8" stroke-linecap="round"/>
+  <!-- Upper eyelid -->
+  <path d="M 45 95 Q 150 55 255 95 Q 200 100 150 105 Q 100 100 45 95 Z" fill="url(#eyeGold)" stroke="#B8860B" stroke-width="2"/>
+  <!-- Eye shape -->
+  <path d="M 55 105 Q 150 75 245 105 Q 150 145 55 105 Z" fill="white" stroke="#B8860B" stroke-width="3"/>
+  <!-- Iris -->
+  <circle cx="150" cy="108" r="28" fill="url(#iris)" filter="url(#eyeGlow)"/>
+  <!-- Pupil -->
+  <circle cx="150" cy="108" r="12" fill="#0A0A0A"/>
+  <circle cx="143" cy="102" r="4" fill="white" opacity="0.7"/>
+  <!-- Lower lid detail -->
+  <path d="M 55 105 Q 150 145 245 105" fill="none" stroke="#B8860B" stroke-width="3"/>
+  <!-- Tear drop / cheek line (iconic Horus marking) -->
+  <path d="M 130 130 Q 125 160 120 200 Q 118 215 125 220" fill="none" stroke="url(#eyeGold)" stroke-width="6" stroke-linecap="round"/>
+  <!-- Spiral at bottom of tear -->
+  <path d="M 125 220 Q 135 225 140 218 Q 142 210 135 208" fill="none" stroke="url(#eyeGold)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Tail extension (right side) -->
+  <path d="M 245 105 Q 265 100 275 95" fill="none" stroke="url(#eyeGold)" stroke-width="5" stroke-linecap="round"/>
+  <!-- Inner eye decorative marks -->
+  <path d="M 150 135 Q 170 150 180 170 Q 185 180 175 185" fill="none" stroke="#DAA520" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <!-- Turquoise accents -->
+  <circle cx="120" cy="200" r="3" fill="#40E0D0" opacity="0.8"/>
+  <circle cx="175" cy="175" r="3" fill="#40E0D0" opacity="0.8"/>
+</svg>

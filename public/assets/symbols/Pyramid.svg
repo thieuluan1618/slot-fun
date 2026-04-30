@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260">
+  <defs>
+    <linearGradient id="pyrLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE4A0"/>
+      <stop offset="50%" stop-color="#E8C860"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    <linearGradient id="pyrShadow" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#DAA520"/>
+      <stop offset="50%" stop-color="#B8860B"/>
+      <stop offset="100%" stop-color="#8B6914"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0B1A3D"/>
+      <stop offset="100%" stop-color="#1E3A6D"/>
+    </linearGradient>
+    <filter id="starGlow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Night sky background -->
+  <rect x="20" y="15" width="260" height="230" rx="12" fill="url(#sky)" opacity="0.4"/>
+  <!-- Stars -->
+  <circle cx="60" cy="40" r="2" fill="#FFE066" filter="url(#starGlow)"/>
+  <circle cx="120" cy="30" r="1.5" fill="#FFE066" filter="url(#starGlow)"/>
+  <circle cx="200" cy="35" r="2" fill="#FFE066" filter="url(#starGlow)"/>
+  <circle cx="240" cy="55" r="1.5" fill="#FFE066" filter="url(#starGlow)"/>
+  <circle cx="85" cy="60" r="1" fill="#FFE066" filter="url(#starGlow)"/>
+  <!-- Main pyramid - lit face -->
+  <polygon points="150,45 250,210 150,210" fill="url(#pyrLight)" stroke="#B8860B" stroke-width="2"/>
+  <!-- Main pyramid - shadow face -->
+  <polygon points="150,45 50,210 150,210" fill="url(#pyrShadow)" stroke="#B8860B" stroke-width="2"/>
+  <!-- Brick lines - lit side -->
+  <line x1="175" y1="120" x2="250" y2="210" stroke="#B8860B" stroke-width="0.5" opacity="0.3"/>
+  <line x1="195" y1="160" x2="250" y2="210" stroke="#B8860B" stroke-width="0.5" opacity="0.3"/>
+  <line x1="165" y1="150" x2="230" y2="150" stroke="#B8860B" stroke-width="0.5" opacity="0.3"/>
+  <line x1="158" y1="180" x2="245" y2="180" stroke="#B8860B" stroke-width="0.5" opacity="0.3"/>
+  <!-- Brick lines - shadow side -->
+  <line x1="125" y1="120" x2="50" y2="210" stroke="#8B6914" stroke-width="0.5" opacity="0.3"/>
+  <line x1="105" y1="160" x2="50" y2="210" stroke="#8B6914" stroke-width="0.5" opacity="0.3"/>
+  <line x1="135" y1="150" x2="70" y2="150" stroke="#8B6914" stroke-width="0.5" opacity="0.3"/>
+  <line x1="142" y1="180" x2="55" y2="180" stroke="#8B6914" stroke-width="0.5" opacity="0.3"/>
+  <!-- Capstone (gold) -->
+  <polygon points="150,45 140,75 160,75" fill="#FFD700" stroke="#FFE066" stroke-width="2" filter="url(#starGlow)"/>
+  <!-- Eye on pyramid -->
+  <path d="M 138 140 Q 150 132 162 140 Q 150 148 138 140 Z" fill="#40E0D0" stroke="#006666" stroke-width="1.5" opacity="0.8"/>
+  <circle cx="150" cy="140" r="4" fill="#0A0A0A"/>
+  <circle cx="148" cy="138" r="1.5" fill="white" opacity="0.6"/>
+  <!-- Sand ground -->
+  <path d="M 20 210 Q 80 205 150 210 Q 220 215 280 210 L 280 240 L 20 240 Z" fill="#DAA520" opacity="0.5"/>
+</svg>

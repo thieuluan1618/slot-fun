@@ -57,8 +57,7 @@ pnpm preview       # Preview production build
 
 ## Deployment
 
-Netlify. Build command: `pnpm build`, publish directory: `dist/`.
-Production: https://slot-fun-game.netlify.app/
+Vercel. Build command: `pnpm build`, output directory: `dist/`.
 
 ## Gotchas
 

@@ -1,82 +1,134 @@
 .loading-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(
-    135deg,
-    #1a1a2e 0%,
-    #16213e 25%,
-    #0f3460 50%,
-    #16213e 75%,
-    #1a1a2e 100%
-  );
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(80, 50, 10, 0.4) 0%, transparent 60%),
+    linear-gradient(180deg, #0a0703 0%, #1a1004 50%, #0a0703 100%);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  backdrop-filter: blur(5px);
+
+  // Faint hieroglyph-like grain
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(218, 165, 32, 0.08) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(218, 165, 32, 0.06) 0, transparent 45%);
+    pointer-events: none;
+  }
 }
 
 .loading-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  width: 300px;
-  height: 300px;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.rocket-container {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  gap: 1.25rem;
+  padding: 2.5rem 3rem;
+  border-radius: 18px;
+  border: 1px solid rgba(218, 165, 32, 0.4);
+  background: linear-gradient(180deg, rgba(20, 14, 5, 0.85), rgba(8, 6, 2, 0.85));
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(218, 165, 32, 0.15),
+    0 20px 60px rgba(0, 0, 0, 0.7);
 }
 
-.rocket {
-  font-size: 88px;
-  animation:
-    rocketFloat 2s ease-in-out infinite,
-    rocketShake 0.5s ease-in-out infinite alternate;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  transform-origin: center;
+.loading-title {
+  margin: 0;
+  font-family: serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #ffd700;
+  text-shadow:
+    0 0 16px rgba(255, 215, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.6);
+  text-align: center;
 }
 
-@keyframes rocketFloat {
-  0%,
-  100% {
-    transform: translateY(0px) rotate(-2deg);
+.loading-subtitle {
+  margin: -0.5rem 0 0;
+  font-family: serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(218, 165, 32, 0.7);
+}
+
+.ankh-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+  animation: ankhGlow 2.4s ease-in-out infinite;
+}
+
+.ankh {
+  width: 72px;
+  height: 72px;
+  filter:
+    drop-shadow(0 0 12px rgba(255, 215, 0, 0.6))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  animation: ankhFloat 3s ease-in-out infinite;
+}
+
+.loading-bar {
+  position: relative;
+  width: 240px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(218, 165, 32, 0.15);
+  overflow: hidden;
+}
+
+.loading-bar__fill {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  animation: loadingSlide 1.6s ease-in-out infinite;
+}
+
+.loading-text {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(218, 165, 32, 0.7);
+}
+
+@keyframes ankhFloat {
+  0%, 100% {
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-15px) rotate(2deg);
+    transform: translateY(-6px);
   }
 }
 
-@keyframes rocketShake {
+@keyframes ankhGlow {
+  0%, 100% {
+    box-shadow: 0 0 24px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 48px rgba(255, 215, 0, 0.5);
+  }
+}
+
+@keyframes loadingSlide {
   0% {
-    transform: translateX(0px);
+    left: -40%;
   }
   100% {
-    transform: translateX(2px);
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+    left: 100%;
   }
 }

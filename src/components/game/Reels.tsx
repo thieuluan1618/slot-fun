@@ -87,8 +87,6 @@ const SYMBOL_FILES: Record<string, string> = {
   Wild: '/assets/symbols/Wild.svg',
 };
 
-const SYMBOL_WEIGHTS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-
 const NUM_REELS = 5;
 const VISIBLE_ROWS = 4;
 const REEL_GAP = 4;
@@ -322,10 +320,11 @@ function Reels({ ref, width, height, onLoadingMessage, onLoadingDone, onSpinComp
         const extra = Math.floor(Math.random() * 3);
         const fullRotations = 10;
         const reelLength = REEL_SYMBOLS.length;
+        const weight = ((2 - targetIndex) % reelLength + reelLength) % reelLength;
         const target =
           r.position +
           reelLength * fullRotations +
-          SYMBOL_WEIGHTS[targetIndex] +
+          weight +
           randomRowOffset;
 
         const time = 5000 + i * 600 + extra * 600;
